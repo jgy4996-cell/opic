@@ -1,9 +1,9 @@
 // ==============================================================================
 // 파일명: app.js
-// 설명: OPIc Master AI 컨트롤러 (1일 1문장 원어민 발음 및 모의고사 Eva 음성 완벽 통일)
+// 설명: OPIc Master AI 컨트롤러 (1일 1문장 Eva 실제 MP3 음원 및 재생/멈춤 토글 완벽 구현)
 // ==============================================================================
 
-// 오픽 고득점 1일 1문장 구동사 & 실전 문장 데이터 세트입니다.
+// 오픽 고득점 1일 1문장 구동사 & 실전 문장 데이터 세트 (공식 Eva 오디오 파일 1:1 탑재)
 const dailySentencesData = [
   {
     id: 1,
@@ -12,7 +12,8 @@ const dailySentencesData = [
     category: "장소 묘사 / 거주지",
     opic_tip: "집 근처 공원, 카페, 영화관 묘사 질문(2, 5번)에서 근접성을 말할 때 쓰면 AL 확정 표현입니다.",
     exam_sentence: "My favorite cafe is located just a stone's throw away from my apartment, so I visit there almost every weekend.",
-    korean_sentence: "제가 가장 좋아하는 카페는 아파트에서 엎어지면 코 닿을 거리에 있어서 거의 매 주말마다 방문합니다."
+    korean_sentence: "제가 가장 좋아하는 카페는 아파트에서 엎어지면 코 닿을 거리에 있어서 거의 매 주말마다 방문합니다.",
+    audio_file: "audio/daily_1.mp3"
   },
   {
     id: 2,
@@ -21,7 +22,8 @@ const dailySentencesData = [
     category: "활동 및 루틴 / 집에서 보내는 휴가",
     opic_tip: "단순히 'rest' 대신 'chill out'이나 'unwind'를 쓰면 원어민 특유의 자연스러운 구어체 점수를 받습니다.",
     exam_sentence: "Whenever I feel stressed out, you know, I love to just stay at home and chill out listening to jazz music.",
-    korean_sentence: "스트레스를 받을 때마다, 아시겠지만, 저는 그냥 집에 머물며 재즈 음악을 듣고 느긋하게 휴식하는 것을 정말 좋아합니다."
+    korean_sentence: "스트레스를 받을 때마다, 아시겠지만, 저는 그냥 집에 머물며 재즈 음악을 듣고 느긋하게 휴식하는 것을 정말 좋아합니다.",
+    audio_file: "audio/daily_2.mp3"
   },
   {
     id: 3,
@@ -30,7 +32,8 @@ const dailySentencesData = [
     category: "롤플레이 12번 / 문제 해결",
     opic_tip: "롤플레이 12번에서 약속 변경이나 대안을 제시할 때 필수로 쓰이는 만능 구동사입니다.",
     exam_sentence: "I am terribly sorry for the sudden cancellation, but I will come up with a better alternative for our meeting tomorrow.",
-    korean_sentence: "갑작스러운 취소에 대해 정말 죄송하지만, 내일 미팅을 위해 제가 더 나은 대안을 마련해 오겠습니다."
+    korean_sentence: "갑작스러운 취소에 대해 정말 죄송하지만, 내일 미팅을 위해 제가 더 나은 대안을 마련해 오겠습니다.",
+    audio_file: "audio/daily_3.mp3"
   },
   {
     id: 4,
@@ -39,7 +42,8 @@ const dailySentencesData = [
     category: "기억에 남는 경험 / 과거 사건",
     opic_tip: "4번, 7번, 13번 과거 경험 문제 결론부에서 '잊지 못할 경험이었다'를 고급스럽게 마무리하는 문장입니다.",
     exam_sentence: "The unexpected trip to the seaside was truly memorable and left a lasting impression on all of us.",
-    korean_sentence: "그 예상치 못했던 바닷가 여행은 정말 기억에 남았고 우리 모두에게 깊은 인상을 남겼습니다."
+    korean_sentence: "그 예상치 못했던 바닷가 여행은 정말 기억에 남았고 우리 모두에게 깊은 인상을 남겼습니다.",
+    audio_file: "audio/daily_4.mp3"
   },
   {
     id: 5,
@@ -48,7 +52,8 @@ const dailySentencesData = [
     category: "롤플레이 12번 / 유사 경험 13번",
     opic_tip: "'cancel'의 원어민식 구동사 표현으로, 오픽 롤플레이에서 상황을 설명할 때 매우 유용합니다.",
     exam_sentence: "Due to the heavy rainstorm, we had no choice but to call off our outdoor picnic plan.",
-    korean_sentence: "폭우 때문에 우리는 야외 소풍 계획을 취소할 수밖에 없었습니다."
+    korean_sentence: "폭우 때문에 우리는 야외 소풍 계획을 취소할 수밖에 없었습니다.",
+    audio_file: "audio/daily_5.mp3"
   },
   {
     id: 6,
@@ -57,7 +62,8 @@ const dailySentencesData = [
     category: "음악 / 영화 / 인물 묘사",
     opic_tip: "자신이 좋아하는 가수나 영화를 강조할 때 도입부로 사용하면 세련된 강조 효과를 줍니다.",
     exam_sentence: "Without a shadow of a doubt, this cinema is the best place to enjoy blockbuster movies with immersive sound.",
-    korean_sentence: "단언컨대, 이 영화관은 웅장한 사운드와 함께 블록버스터 영화를 즐기기에 최고의 장소입니다."
+    korean_sentence: "단언컨대, 이 영화관은 웅장한 사운드와 함께 블록버스터 영화를 즐기기에 최고의 장소입니다.",
+    audio_file: "audio/daily_6.mp3"
   },
   {
     id: 7,
@@ -66,7 +72,8 @@ const dailySentencesData = [
     category: "친구 약속 / 카페 / 휴일",
     opic_tip: "카페나 식당에서 친구와 만났을 때 단순한 'talk' 대신 사용하면 유창성이 극대화됩니다.",
     exam_sentence: "Whenever I visit that cozy cafe, I love to catch up with my close friends over a cup of hot latte.",
-    korean_sentence: "그 아늑한 카페를 갈 때마다, 저는 따뜻한 라떼 한 잔을 마시며 친한 친구들과 밀린 이야기를 나누는 것을 좋아합니다."
+    korean_sentence: "그 아늑한 카페를 갈 때마다, 저는 따뜻한 라떼 한 잔을 마시며 친한 친구들과 밀린 이야기를 나누는 것을 좋아합니다.",
+    audio_file: "audio/daily_7.mp3"
   }
 ];
 
@@ -224,7 +231,6 @@ const state = {
     q7_travel: ['DOMESTIC', 'OVERSEAS', 'STAYCATION'],
     difficulty: 5
   },
-  // [핵심] 실제 OPIc 공식 시험관 Eva 목소리를 1순위 기본값으로 지정합니다.
   selectedVoice: 'en-US-AriaNeural',
   cachedBestVoice: null,
   questions: [],
@@ -248,6 +254,7 @@ const state = {
   evaluationResults: [],
   shadowingPlaybackRate: 1.0,
   currentDailyIndex: (new Date().getDate() - 1) % dailySentencesData.length,
+  isDailyAudioPlaying: false,
   isDailyShadowingRecording: false,
   isQuizKoreanRecording: false,
   quizRecognition: null,
@@ -1261,6 +1268,7 @@ function initDailyChallenge() {
   const prevBtn = document.getElementById('btn-prev-daily');
   if (prevBtn) {
     prevBtn.addEventListener('click', () => {
+      stopDailyAudio();
       state.currentDailyIndex = (state.currentDailyIndex - 1 + dailySentencesData.length) % dailySentencesData.length;
       renderDailySentence();
     });
@@ -1269,23 +1277,74 @@ function initDailyChallenge() {
   const nextBtn = document.getElementById('btn-next-daily');
   if (nextBtn) {
     nextBtn.addEventListener('click', () => {
+      stopDailyAudio();
       state.currentDailyIndex = (state.currentDailyIndex + 1) % dailySentencesData.length;
       renderDailySentence();
     });
   }
 
-  // [핵심] 오늘의 1일 1문장 원어민 발음 듣기 클릭 시 공식 Eva 목소리로 재생
+  // [핵심] 오늘의 1일 1문장 원어민 발음 재생 / 멈춤 토글 핸들러
   const listenBtn = document.getElementById('btn-listen-daily');
   if (listenBtn) {
-    listenBtn.addEventListener('click', () => {
-      const item = dailySentencesData[state.currentDailyIndex];
-      playCustomSpeech(encodeURIComponent(item.exam_sentence));
-    });
+    listenBtn.addEventListener('click', toggleDailyAudioPlay);
   }
 
   const shadowBtn = document.getElementById('btn-shadow-daily');
   if (shadowBtn) {
     shadowBtn.addEventListener('click', toggleDailyShadowing);
+  }
+}
+
+// 1일 1문장 재생 및 멈춤 토글 처리 함수입니다.
+function toggleDailyAudioPlay() {
+  const listenBtn = document.getElementById('btn-listen-daily');
+  const item = dailySentencesData[state.currentDailyIndex];
+
+  if (state.isDailyAudioPlaying) {
+    stopDailyAudio();
+    return;
+  }
+
+  stopAllEvaAudio();
+  state.isDailyAudioPlaying = true;
+
+  if (listenBtn) {
+    listenBtn.innerText = '⏹ 재생 멈추기';
+    listenBtn.style.backgroundColor = 'var(--toss-red)';
+  }
+
+  const resetBtn = () => {
+    state.isDailyAudioPlaying = false;
+    state.currentEvaAudio = null;
+    if (listenBtn) {
+      listenBtn.innerText = '🔊 원어민 발음 듣기';
+      listenBtn.style.backgroundColor = 'var(--toss-blue)';
+    }
+  };
+
+  if (item.audio_file) {
+    const audio = new Audio(item.audio_file);
+    state.currentEvaAudio = audio;
+    audio.onended = resetBtn;
+    audio.onerror = () => {
+      playFallbackSpeech(item.exam_sentence, null, resetBtn);
+    };
+    audio.play().catch(() => {
+      playFallbackSpeech(item.exam_sentence, null, resetBtn);
+    });
+  } else {
+    playFallbackSpeech(item.exam_sentence, null, resetBtn);
+  }
+}
+
+// 1일 1문장 오디오 정지 헬퍼 함수입니다.
+function stopDailyAudio() {
+  state.isDailyAudioPlaying = false;
+  stopAllEvaAudio();
+  const listenBtn = document.getElementById('btn-listen-daily');
+  if (listenBtn) {
+    listenBtn.innerText = '🔊 원어민 발음 듣기';
+    listenBtn.style.backgroundColor = 'var(--toss-blue)';
   }
 }
 
@@ -1315,6 +1374,12 @@ function renderDailySentence() {
   const streakCount = parseInt(localStorage.getItem('opic_daily_streak') || '1', 10);
   const badgeEl = document.getElementById('daily-streak-badge');
   if (badgeEl) badgeEl.innerText = `🔥 ${streakCount}일차 도전 중`;
+
+  const listenBtn = document.getElementById('btn-listen-daily');
+  if (listenBtn) {
+    listenBtn.innerText = '🔊 원어민 발음 듣기';
+    listenBtn.style.backgroundColor = 'var(--toss-blue)';
+  }
 }
 
 // 1일 1문장 따라 말하기(쉐도잉) 녹음 토글 및 일치도 측정 함수입니다.
@@ -1323,7 +1388,7 @@ async function toggleDailyShadowing() {
   const resultBox = document.getElementById('daily-shadow-result');
   const targetItem = dailySentencesData[state.currentDailyIndex];
 
-  stopAllEvaAudio();
+  stopDailyAudio();
 
   if (!state.isDailyShadowingRecording) {
     try {
@@ -1671,7 +1736,7 @@ function renderPostRecordingAnalysis(transcript, durationSec, audioBlobUrl) {
   }
 }
 
-// [핵심] 커스텀 텍스트 및 1일 1문장을 공식 Eva 원어민 음성으로 즉시 재생하는 전역 헬퍼 함수입니다.
+// [핵심] 커스텀 텍스트를 공식 Eva 원어민 음성으로 즉시 재생하는 전역 헬퍼 함수입니다.
 window.playCustomSpeech = function (encodedText) {
   const text = decodeURIComponent(encodedText);
   stopAllEvaAudio();

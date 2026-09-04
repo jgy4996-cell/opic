@@ -2,7 +2,7 @@
 /* 파일명: style.css                                                                */
 /* 설명: 토스(Toss) 미니앱 네이티브 앱 스타일시트 (한국어 질문 청취 퀴즈 & 스크립트 첨삭 지원)  */
 /* ============================================================================== */
-/* 스타일 여백 공백 라인입니다. */
+
 * { /* 모든 요소의 기본 박스 사이징 및 마진/패딩 초기화 */
   box-sizing: border-box; /* 테두리와 패딩을 너비에 포함 */
   margin: 0; /* 기본 마진 제거 */
@@ -10,7 +10,7 @@
   -webkit-tap-highlight-color: transparent; /* 모바일 터치 하이라이트 제거 */
   font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Toss Product Sans', 'Segoe UI', Roboto, sans-serif; /* 토스 기본 폰트 패밀리 지정 */
 } /* 전체 요소 선택자 블록 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 :root { /* 토스 디자인 시스템 디자인 토큰 CSS 변수 선언 */
   --toss-blue: #3182f6; /* 토스 프라이머리 블루 색상 */
   --toss-blue-active: #1b64da; /* 토스 블루 호버/액티브 딥 블루 */
@@ -26,7 +26,7 @@
   --toss-purple: #7c3aed; /* 퀴즈 포인트 보라색 */
   --safe-bottom: env(safe-area-inset-bottom, 16px); /* 아이폰 하단 세이프 에어리어 */
 } /* 루트 변수 선언 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 body { /* 전체 바디 스타일 설정 */
   background-color: var(--toss-bg); /* 배경색을 토스 라이트 그레이로 지정 */
   color: var(--toss-text-primary); /* 기본 글자색 지정 */
@@ -35,7 +35,7 @@ body { /* 전체 바디 스타일 설정 */
   flex-direction: column; /* 세로 방향 레이아웃 */
   -webkit-font-smoothing: antialiased; /* 폰트 렌더링 부드럽게 최적화 */
 } /* 바디 스타일 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 header.app-header { /* 상단 고정 헤더 스타일 */
   background-color: var(--toss-card); /* 흰색 배경 적용 */
   padding: calc(12px + env(safe-area-inset-top, 0px)) 20px 12px 20px; /* 상단 노치 세이프 에어리어 패딩 */
@@ -47,7 +47,7 @@ header.app-header { /* 상단 고정 헤더 스타일 */
   align-items: center; /* 세로 중앙 정렬 */
   border-bottom: 1px solid var(--toss-border); /* 하단 1px 구분선 */
 } /* 헤더 스타일 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 .logo-title { /* 로고 타이틀 스타일 */
   font-size: 17px; /* 17px 폰트 크기 */
   font-weight: 700; /* 700 볼드 굵기 */
@@ -56,7 +56,7 @@ header.app-header { /* 상단 고정 헤더 스타일 */
   align-items: center; /* 세로 중앙 정렬 */
   gap: 6px; /* 아이콘과 간격 6px */
 } /* 로고 타이틀 스타일 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 .timer-badge { /* 타이머 배지 스타일 */
   background-color: var(--toss-blue-light); /* 연한 블루 배경 */
   color: var(--toss-blue); /* 토스 블루 글자색 */
@@ -65,7 +65,7 @@ header.app-header { /* 상단 고정 헤더 스타일 */
   font-size: 13px; /* 13px 폰트 크기 */
   font-weight: 700; /* 700 볼드 굵기 */
 } /* 타이머 배지 스타일 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 main.container { /* 메인 모바일 컨테이너 */
   max-width: 500px; /* 최대 500px 너비 제한 */
   margin: 0 auto; /* 가로 중앙 정렬 */
@@ -73,21 +73,21 @@ main.container { /* 메인 모바일 컨테이너 */
   flex: 1; /* 남은 높이 채움 */
   width: 100%; /* 너비 100% */
 } /* 메인 컨테이너 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 .tab-content { /* 탭 컨텐츠 기본 스타일 */
   display: none; /* 기본 숨김 */
   animation: fadeIn 0.2s ease-in-out; /* 페이드인 애니메이션 */
 } /* 탭 컨텐츠 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 .tab-content.active { /* 활성 탭 컨텐츠 */
   display: block; /* 화면 표시 */
 } /* 활성 탭 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 @keyframes fadeIn { /* 페이드인 키프레임 */
   from { opacity: 0; transform: translateY(4px); } /* 시작 상태 */
   to { opacity: 1; transform: translateY(0); } /* 완료 상태 */
 } /* 키프레임 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 nav.bottom-tab-bar { /* 하단 고정 탭바 */
   position: fixed; /* 하단 고정 */
   bottom: 0; /* 최하단 배치 */
@@ -100,7 +100,7 @@ nav.bottom-tab-bar { /* 하단 고정 탭바 */
   justify-content: space-around; /* 균등 분배 */
   z-index: 100; /* 상위 레이어 */
 } /* 탭바 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 .tab-item { /* 개별 탭 버튼 */
   display: flex; /* 플렉스 컬럼 */
   flex-direction: column; /* 세로 배치 */
@@ -113,25 +113,25 @@ nav.bottom-tab-bar { /* 하단 고정 탭바 */
   transition: color 0.15s ease, transform 0.1s ease; /* 전환 효과 */
   flex: 1; /* 균등 분할 */
 } /* 탭 아이템 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 .tab-item:active { /* 탭 터치 액티브 */
   transform: scale(0.96); /* 축소 효과 */
 } /* 액티브 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 .tab-item.active { /* 활성화된 탭 */
   color: var(--toss-blue); /* 토스 블루 강조 */
 } /* 활성 탭 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 .tab-icon { /* 탭 이모지 아이콘 */
   font-size: 22px; /* 22px 크기 */
   margin-bottom: 2px; /* 하단 2px 여백 */
 } /* 탭 아이콘 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 .tab-label { /* 탭 텍스트 라벨 */
   font-size: 11px; /* 11px 폰트 크기 */
   font-weight: 600; /* 600 두께 */
 } /* 탭 라벨 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 .toss-card { /* 토스 카드 컨테이너 */
   background-color: var(--toss-card); /* 흰색 배경 */
   border-radius: 20px; /* 20px 둥근 모서리 */
@@ -139,7 +139,7 @@ nav.bottom-tab-bar { /* 하단 고정 탭바 */
   margin-bottom: 12px; /* 하단 12px 여백 */
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04); /* 미세 그림자 */
 } /* 토스 카드 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 .profile-hero-card { /* 홈 프로필 배너 */
   background: linear-gradient(135deg, #3182f6 0%, #1b64da 100%); /* 토스 블루 그라데이션 */
   border-radius: 22px; /* 22px 둥근 모서리 */
@@ -147,7 +147,7 @@ nav.bottom-tab-bar { /* 하단 고정 탭바 */
   color: #ffffff; /* 흰색 글자 */
   margin-bottom: 14px; /* 하단 여백 */
 } /* 프로필 배너 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 .quiz-hero-card { /* 퀴즈 히어로 배너 */
   background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%); /* 보라색 그라데이션 */
   border-radius: 22px; /* 22px 모서리 */
@@ -155,7 +155,7 @@ nav.bottom-tab-bar { /* 하단 고정 탭바 */
   color: #ffffff; /* 흰색 글자 */
   margin-bottom: 12px; /* 하단 여백 */
 } /* 퀴즈 히어로 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 .script-hero-card { /* 스크립트 연구소 히어로 배너 */
   background: linear-gradient(135deg, #059669 0%, #047857 100%); /* 에메랄드 그린 그라데이션 */
   border-radius: 22px; /* 22px 모서리 */
@@ -163,7 +163,7 @@ nav.bottom-tab-bar { /* 하단 고정 탭바 */
   color: #ffffff; /* 흰색 글자 */
   margin-bottom: 12px; /* 하단 여백 */
 } /* 스크립트 히어로 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 .daily-challenge-card { /* 1일 1문장 카드 */
   background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); /* 하늘색 그라데이션 */
   border: 1.5px solid #bfdbfe; /* 연한 파란 테두리 */
@@ -171,7 +171,7 @@ nav.bottom-tab-bar { /* 하단 고정 탭바 */
   padding: 18px; /* 18px 패딩 */
   margin-bottom: 12px; /* 하단 여백 */
 } /* 1일 1문장 카드 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 .daily-expr-badge { /* 1일 1문장 표현 배지 */
   display: inline-block; /* 인라인 블록 */
   background-color: var(--toss-blue); /* 토스 블루 */
@@ -182,14 +182,14 @@ nav.bottom-tab-bar { /* 하단 고정 탭바 */
   font-weight: 800; /* 굵기 */
   margin-bottom: 8px; /* 하단 여백 */
 } /* 표현 배지 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 .mode-selector-grid { /* 모드 그리드 */
   display: grid; /* 그리드 레이아웃 */
   grid-template-columns: 1fr 1fr; /* 2열 분할 */
   gap: 10px; /* 10px 간격 */
   margin-bottom: 12px; /* 하단 여백 */
 } /* 모드 그리드 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 .mode-card-btn { /* 모드 카드 버튼 */
   background-color: var(--toss-card); /* 흰색 배경 */
   border-radius: 18px; /* 18px 모서리 */
@@ -202,30 +202,30 @@ nav.bottom-tab-bar { /* 하단 고정 탭바 */
   align-items: flex-start; /* 좌측 정렬 */
   user-select: none; /* 선택 방지 */
 } /* 모드 버튼 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 .mode-card-btn.selected { /* 선택된 모드 버튼 */
   border-color: var(--toss-blue); /* 토스 블루 테두리 */
   background-color: var(--toss-blue-light); /* 연한 블루 배경 */
 } /* 선택 모드 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 .mode-icon { /* 모드 이모지 아이콘 */
   font-size: 26px; /* 26px 크기 */
   margin-bottom: 8px; /* 하단 여백 */
 } /* 모드 아이콘 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 .mode-title { /* 모드 타이틀 */
   font-size: 15px; /* 15px 폰트 크기 */
   font-weight: 700; /* 700 두께 */
   color: var(--toss-text-primary); /* 진한 글자색 */
   margin-bottom: 4px; /* 하단 여백 */
 } /* 모드 타이틀 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 .mode-desc { /* 모드 서브 설명 */
   font-size: 12px; /* 12px 폰트 크기 */
   color: var(--toss-text-secondary); /* 보조 색상 */
   line-height: 1.4; /* 줄 간격 */
 } /* 모드 설명 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 .toss-btn-primary { /* 풀 너비 프라이머리 버튼 */
   width: 100%; /* 너비 100% */
   background-color: var(--toss-blue); /* 토스 블루 */
@@ -242,12 +242,12 @@ nav.bottom-tab-bar { /* 하단 고정 탭바 */
   align-items: center; /* 세로 중앙 */
   gap: 8px; /* 간격 8px */
 } /* 버튼 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 .toss-btn-primary:active { /* 버튼 터치 액티브 */
   transform: scale(0.98); /* 축소 효과 */
   background-color: var(--toss-blue-active); /* 딥 블루 */
 } /* 액티브 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 .toss-btn-record { /* 녹음 버튼 */
   background-color: #fee2e2; /* 연한 붉은색 */
   color: #dc2626; /* 진한 빨간색 */
@@ -264,12 +264,12 @@ nav.bottom-tab-bar { /* 하단 고정 탭바 */
   gap: 6px; /* 간격 */
   transition: all 0.2s ease; /* 전환 애니메이션 */
 } /* 녹음 버튼 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 .toss-btn-record.recording { /* 녹음 중 스타일 */
   background-color: var(--toss-red); /* 토스 레드 */
   color: #ffffff; /* 흰색 글자 */
 } /* 녹음 중 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 .eva-mini-card { /* Eva 프로필 미니 카드 */
   display: flex; /* 플렉스 */
   align-items: center; /* 세로 중앙 */
@@ -279,7 +279,7 @@ nav.bottom-tab-bar { /* 하단 고정 탭바 */
   padding: 16px; /* 16px 패딩 */
   margin-bottom: 12px; /* 하단 여백 */
 } /* 미니 카드 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 .eva-avatar-circle { /* Eva 원형 아바타 */
   width: 56px; /* 너비 56px */
   height: 56px; /* 높이 56px */
@@ -291,7 +291,7 @@ nav.bottom-tab-bar { /* 하단 고정 탭바 */
   font-size: 28px; /* 이모지 크기 */
   flex-shrink: 0; /* 축소 방지 */
 } /* 아바타 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 .btn-listen-mini { /* 질문 청취 미니 버튼 */
   background-color: #f2f4f6; /* 회색 배경 */
   color: var(--toss-text-secondary); /* 보조 글자색 */
@@ -303,14 +303,14 @@ nav.bottom-tab-bar { /* 하단 고정 탭바 */
   cursor: pointer; /* 포인터 커서 */
   margin-top: 6px; /* 상단 여백 */
 } /* 미니 버튼 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 .toss-grade-text { /* 등급 텍스트 */
   font-size: 38px; /* 38px 큰 폰트 */
   font-weight: 800; /* 800 두께 */
   color: var(--toss-blue); /* 토스 블루 */
   margin: 6px 0; /* 상하 여백 */
 } /* 등급 텍스트 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 .stat-row { /* 스탯 행 */
   display: flex; /* 플렉스 */
   justify-content: space-between; /* 양 끝 정렬 */
@@ -318,17 +318,17 @@ nav.bottom-tab-bar { /* 하단 고정 탭바 */
   padding: 10px 0; /* 패딩 */
   border-bottom: 1px solid #f2f4f6; /* 하단 구분선 */
 } /* 스탯 행 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 .stat-row:last-child { /* 마지막 스탯 행 */
   border-bottom: none; /* 구분선 제거 */
 } /* 마지막 행 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 .chip-group { /* 서베이 칩 그룹 */
   display: flex; /* 플렉스 */
   flex-wrap: wrap; /* 자동 줄바꿈 */
   gap: 8px; /* 간격 8px */
 } /* 칩 그룹 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 .chip-item { /* 개별 서베이 칩 라벨 */
   display: inline-flex; /* 인라인 플렉스 */
   align-items: center; /* 세로 중앙 */
@@ -344,29 +344,29 @@ nav.bottom-tab-bar { /* 하단 고정 탭바 */
   transition: all 0.15s ease; /* 전환 효과 */
   user-select: none; /* 드래그 방지 */
 } /* 칩 라벨 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 .chip-item.selected { /* 선택된 칩 */
   background: var(--toss-blue-light); /* 연한 블루 */
   border-color: var(--toss-blue); /* 토스 블루 */
   color: var(--toss-blue); /* 토스 블루 */
   font-weight: 700; /* 볼드 강조 */
 } /* 선택 칩 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 .chip-item input { /* 숨겨진 체크/라디오 인풋 */
   display: none; /* 인풋 숨김 */
 } /* 인풋 숨김 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 .survey-section-box { /* 서베이 문항 박스 */
   margin-bottom: 14px; /* 하단 14px 여백 */
 } /* 문항 박스 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 .survey-section-title { /* 서베이 문항 제목 */
   font-size: 13px; /* 13px 폰트 */
   font-weight: 700; /* 볼드 두께 */
   color: var(--toss-text-secondary); /* 보조 글자색 */
   margin-bottom: 8px; /* 하단 여백 */
 } /* 문항 제목 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 .survey-counter-badge { /* 서베이 카운터 배지 */
   font-size: 11px; /* 11px 폰트 */
   background: var(--toss-blue-light); /* 연한 블루 */
@@ -375,7 +375,7 @@ nav.bottom-tab-bar { /* 하단 고정 탭바 */
   border-radius: 8px; /* 모서리 */
   font-weight: 700; /* 볼드 두께 */
 } /* 카운터 배지 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 .plan-day-item { /* 학습 플랜 일차 아이템 */
   background: #ffffff; /* 흰색 배경 */
   border: 1.5px solid #e5e8eb; /* 연한 테두리 */
@@ -383,12 +383,12 @@ nav.bottom-tab-bar { /* 하단 고정 탭바 */
   padding: 14px; /* 패딩 */
   margin-bottom: 10px; /* 하단 여백 */
 } /* 플랜 아이템 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 .plan-day-item.completed { /* 완료된 플랜 아이템 */
   border-color: var(--toss-green); /* 초록색 테두리 */
   background: #f0fdf4; /* 연한 초록 배경 */
 } /* 완료 플랜 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 .review-item-card { /* 복습 리포트 아이템 카드 */
   background: #ffffff; /* 흰색 배경 */
   border: 1.5px solid #e5e8eb; /* 테두리 */
@@ -396,7 +396,7 @@ nav.bottom-tab-bar { /* 하단 고정 탭바 */
   padding: 16px; /* 패딩 */
   margin-bottom: 12px; /* 하단 여백 */
 } /* 리포트 카드 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 .box-before { /* 사용자 답변 상자 */
   background: #f8fafc; /* 연회색 배경 */
   border: 1px solid #e2e8f0; /* 테두리 */
@@ -404,7 +404,7 @@ nav.bottom-tab-bar { /* 하단 고정 탭바 */
   padding: 10px; /* 패딩 */
   margin-bottom: 8px; /* 하단 여백 */
 } /* 답변 상자 종료 */
-/* 스타일 여백 공백 라인입니다. */
+
 .box-after { /* AI 업그레이드 문장 상자 */
   background: #f0fdf4; /* 연초록 배경 */
   border: 1.5px solid #86efac; /* 초록 테두리 */

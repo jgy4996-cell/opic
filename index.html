@@ -27,281 +27,281 @@
 </head> <!-- 메타데이터 영역을 닫습니다. -->
 <!-- 본문 바디 영역 시작입니다. -->
 <body> <!-- 모바일 웹앱 본문 바디 영역입니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+
   <!-- 상단 토스 스타일 네비게이션 헤더입니다. -->
   <header class="app-header"> <!-- 문서 메타데이터 설정 영역입니다. -->
-    <div class="logo-title"> <!-- UI 블록 컨테이너 요소입니다. -->
+    <div class="logo-title">
       <span style="color: var(--toss-blue);">🎙️</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
       <span id="app-header-title">오픽 마스터</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-    </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-    <div class="timer-badge" id="global-timer-display" style="display: none;">40:00</div> <!-- UI 블록 컨테이너 요소입니다. -->
+    </div>
+    <div class="timer-badge" id="global-timer-display" style="display: none;">40:00</div>
   </header> <!-- 상단 토스 헤더를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+
   <!-- 메인 모바일 앱 컨테이너입니다. -->
-  <main class="container"> <!-- 메인 모바일 뷰 컨테이너 영역입니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+  <main class="container">
+
     <!-- ========================================================================== -->
     <!-- [Tab 1]: 🏠 홈 탭                                                           -->
     <!-- ========================================================================== -->
-    <section id="tab-home" class="tab-content active"> <!-- 탭 화면 섹션 컨테이너입니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+    <section id="tab-home" class="tab-content active">
+
       <!-- 상단 프로필 환영 배너입니다. -->
-      <div class="profile-hero-card"> <!-- UI 블록 컨테이너 요소입니다. -->
-        <div style="font-size: 14px; opacity: 0.9; margin-bottom: 4px;">운전 중이거나 이동 중이신가요? 🚗</div> <!-- UI 블록 컨테이너 요소입니다. -->
-        <h2 style="font-size: 20px; font-weight: 800; line-height: 1.3; margin-bottom: 12px;"> <!-- 섹션 헤딩 타이틀 텍스트입니다. -->
-          차 안에서 부담 없이<br />귀로 듣고 말해보세요! <!-- 웹 화면 구성 요소입니다. -->
-        </h2> <!-- 헤딩 타이틀을 닫습니다. -->
-        <div style="display: flex; gap: 8px; flex-wrap: wrap;"> <!-- UI 블록 컨테이너 요소입니다. -->
-          <button id="btn-quick-start-1q" style="flex: 1; min-width: 100px; background: #ffffff; color: var(--toss-blue); border: none; border-radius: 12px; padding: 10px 12px; font-size: 13px; font-weight: 800; cursor: pointer;"> <!-- 사용자 인터랙션 버튼 요소입니다. -->
-            ⚡ 1문제 스피킹 <!-- 웹 화면 구성 요소입니다. -->
-          </button> <!-- 버튼 요소를 닫습니다. -->
-          <button id="btn-quick-start-quiz" style="flex: 1; min-width: 100px; background: #e0e7ff; color: #3730a3; border: none; border-radius: 12px; padding: 10px 12px; font-size: 13px; font-weight: 800; cursor: pointer;"> <!-- 사용자 인터랙션 버튼 요소입니다. -->
-            👂 한국어 퀴즈 <!-- 웹 화면 구성 요소입니다. -->
-          </button> <!-- 버튼 요소를 닫습니다. -->
-          <button id="btn-quick-start-script" style="flex: 1; min-width: 100px; background: #d1fae5; color: #065f46; border: none; border-radius: 12px; padding: 10px 12px; font-size: 13px; font-weight: 800; cursor: pointer;"> <!-- 사용자 인터랙션 버튼 요소입니다. -->
-            ✍️ 스크립트 첨삭 <!-- 웹 화면 구성 요소입니다. -->
-          </button> <!-- 버튼 요소를 닫습니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-      </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+      <div class="profile-hero-card">
+        <div style="font-size: 14px; opacity: 0.9; margin-bottom: 4px;">운전 중이거나 이동 중이신가요? 🚗</div>
+        <h2 style="font-size: 20px; font-weight: 800; line-height: 1.3; margin-bottom: 12px;">
+          차 안에서 부담 없이<br />귀로 듣고 말해보세요!
+        </h2>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <button id="btn-quick-start-1q" style="flex: 1; min-width: 100px; background: #ffffff; color: var(--toss-blue); border: none; border-radius: 12px; padding: 10px 12px; font-size: 13px; font-weight: 800; cursor: pointer;">
+            ⚡ 1문제 스피킹
+          </button>
+          <button id="btn-quick-start-quiz" style="flex: 1; min-width: 100px; background: #e0e7ff; color: #3730a3; border: none; border-radius: 12px; padding: 10px 12px; font-size: 13px; font-weight: 800; cursor: pointer;">
+            👂 한국어 퀴즈
+          </button>
+          <button id="btn-quick-start-script" style="flex: 1; min-width: 100px; background: #d1fae5; color: #065f46; border: none; border-radius: 12px; padding: 10px 12px; font-size: 13px; font-weight: 800; cursor: pointer;">
+            ✍️ 스크립트 첨삭
+          </button>
+        </div>
+      </div>
+
       <!-- 오늘의 1일 1문장 챌린지 카드입니다. -->
-      <div class="daily-challenge-card"> <!-- UI 블록 컨테이너 요소입니다. -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;"> <!-- UI 블록 컨테이너 요소입니다. -->
+      <div class="daily-challenge-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
           <span style="font-size: 13px; font-weight: 800; color: #1e40af; display: flex; align-items: center; gap: 4px;"> <!-- 인라인 텍스트 및 배지 요소입니다. -->
             <span>✨ 오늘의 1일 1문장 챌린지</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
             <span id="daily-streak-badge" style="background: #dcfce7; color: #166534; font-size: 10px; padding: 2px 6px; border-radius: 6px;">🔥 1일차</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
           </span> <!-- 인라인 텍스트 요소를 닫습니다. -->
-          <div style="display: flex; gap: 4px;"> <!-- UI 블록 컨테이너 요소입니다. -->
-            <button id="btn-prev-daily" style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 2px 6px; font-size: 11px; cursor: pointer;">◀</button> <!-- 사용자 인터랙션 버튼 요소입니다. -->
-            <button id="btn-next-daily" style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 2px 6px; font-size: 11px; cursor: pointer;">▶</button> <!-- 사용자 인터랙션 버튼 요소입니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
-        <div class="daily-expr-badge" id="daily-expr-title">a stone's throw away</div> <!-- UI 블록 컨테이너 요소입니다. -->
-        <div style="font-size: 14px; font-weight: 700; color: var(--toss-text-primary); margin-bottom: 4px;" id="daily-expr-korean"> <!-- UI 블록 컨테이너 요소입니다. -->
-          엎어지면 코 닿을 매우 가까운 거리 <!-- 웹 화면 구성 요소입니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-        <div style="font-size: 12px; color: #475569; margin-bottom: 10px; line-height: 1.4;" id="daily-expr-tip"> <!-- UI 블록 컨테이너 요소입니다. -->
-          💡 집 근처 공원, 카페, 영화관 묘사 질문(2, 5번)에서 근접성을 말할 때 쓰면 AL 확정 표현입니다. <!-- 웹 화면 구성 요소입니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
-        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; margin-bottom: 10px;"> <!-- UI 블록 컨테이너 요소입니다. -->
-          <div style="font-size: 14px; font-weight: 700; color: #1e3a8a; line-height: 1.5; margin-bottom: 4px;" id="daily-exam-sentence"> <!-- UI 블록 컨테이너 요소입니다. -->
-            "My favorite cafe is located just a stone's throw away from my apartment, so I visit there almost every weekend." <!-- 웹 화면 구성 요소입니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-          <div style="font-size: 12px; color: var(--toss-text-muted);" id="daily-exam-korean"> <!-- UI 블록 컨테이너 요소입니다. -->
-            "제가 가장 좋아하는 카페는 아파트에서 엎어지면 코 닿을 거리에 있어서 거의 매 주말마다 방문합니다." <!-- 웹 화면 구성 요소입니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
-        <div style="display: flex; gap: 8px;"> <!-- UI 블록 컨테이너 요소입니다. -->
-          <button id="btn-listen-daily" style="flex: 1; background: var(--toss-blue); color: #ffffff; border: none; border-radius: 10px; padding: 10px; font-size: 13px; font-weight: 700; cursor: pointer; transition: background-color 0.2s ease;"> <!-- 사용자 인터랙션 버튼 요소입니다. -->
-            🔊 원어민 발음 듣기 <!-- 웹 화면 구성 요소입니다. -->
-          </button> <!-- 버튼 요소를 닫습니다. -->
-          <button id="btn-shadow-daily" style="flex: 1; background: #ffffff; border: 1.5px solid var(--toss-blue); color: var(--toss-blue); border-radius: 10px; padding: 10px; font-size: 13px; font-weight: 700; cursor: pointer;"> <!-- 사용자 인터랙션 버튼 요소입니다. -->
-            🎙️ 따라 말하기 연습 <!-- 웹 화면 구성 요소입니다. -->
-          </button> <!-- 버튼 요소를 닫습니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
-        <div id="daily-shadow-result" style="display: none; margin-top: 10px; background: #ffffff; border: 1px solid #86efac; border-radius: 12px; padding: 10px; font-size: 12px; color: #166534;"></div> <!-- UI 블록 컨테이너 요소입니다. -->
-      </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+          <div style="display: flex; gap: 4px;">
+            <button id="btn-prev-daily" style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 2px 6px; font-size: 11px; cursor: pointer;">◀</button>
+            <button id="btn-next-daily" style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 2px 6px; font-size: 11px; cursor: pointer;">▶</button>
+          </div>
+        </div>
+
+        <div class="daily-expr-badge" id="daily-expr-title">a stone's throw away</div>
+        <div style="font-size: 14px; font-weight: 700; color: var(--toss-text-primary); margin-bottom: 4px;" id="daily-expr-korean">
+          엎어지면 코 닿을 매우 가까운 거리
+        </div>
+        <div style="font-size: 12px; color: #475569; margin-bottom: 10px; line-height: 1.4;" id="daily-expr-tip">
+          💡 집 근처 공원, 카페, 영화관 묘사 질문(2, 5번)에서 근접성을 말할 때 쓰면 AL 확정 표현입니다.
+        </div>
+
+        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; margin-bottom: 10px;">
+          <div style="font-size: 14px; font-weight: 700; color: #1e3a8a; line-height: 1.5; margin-bottom: 4px;" id="daily-exam-sentence">
+            "My favorite cafe is located just a stone's throw away from my apartment, so I visit there almost every weekend."
+          </div>
+          <div style="font-size: 12px; color: var(--toss-text-muted);" id="daily-exam-korean">
+            "제가 가장 좋아하는 카페는 아파트에서 엎어지면 코 닿을 거리에 있어서 거의 매 주말마다 방문합니다."
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 8px;">
+          <button id="btn-listen-daily" style="flex: 1; background: var(--toss-blue); color: #ffffff; border: none; border-radius: 10px; padding: 10px; font-size: 13px; font-weight: 700; cursor: pointer; transition: background-color 0.2s ease;">
+            🔊 원어민 발음 듣기
+          </button>
+          <button id="btn-shadow-daily" style="flex: 1; background: #ffffff; border: 1.5px solid var(--toss-blue); color: var(--toss-blue); border-radius: 10px; padding: 10px; font-size: 13px; font-weight: 700; cursor: pointer;">
+            🎙️ 따라 말하기 연습
+          </button>
+        </div>
+
+        <div id="daily-shadow-result" style="display: none; margin-top: 10px; background: #ffffff; border: 1px solid #86efac; border-radius: 12px; padding: 10px; font-size: 12px; color: #166534;"></div>
+      </div>
+
       <!-- 내 서베이 기반 빠른 연습 숏컷 카드입니다. -->
-      <div class="toss-card"> <!-- UI 블록 컨테이너 요소입니다. -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;"> <!-- UI 블록 컨테이너 요소입니다. -->
-          <h3 style="margin-bottom: 0;">🎯 내 맞춤 서베이 스피킹</h3> <!-- 섹션 헤딩 타이틀 텍스트입니다. -->
-          <button id="btn-go-mypage-survey" style="background: var(--toss-blue-light); color: var(--toss-blue); border: none; border-radius: 8px; padding: 4px 10px; font-size: 11px; font-weight: 700; cursor: pointer;"> <!-- 사용자 인터랙션 버튼 요소입니다. -->
-            서베이 설정 변경 ⚙️ <!-- 웹 화면 구성 요소입니다. -->
-          </button> <!-- 버튼 요소를 닫습니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
+      <div class="toss-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <h3 style="margin-bottom: 0;">🎯 내 맞춤 서베이 스피킹</h3>
+          <button id="btn-go-mypage-survey" style="background: var(--toss-blue-light); color: var(--toss-blue); border: none; border-radius: 8px; padding: 4px 10px; font-size: 11px; font-weight: 700; cursor: pointer;">
+            서베이 설정 변경 ⚙️
+          </button>
+        </div>
         <p style="font-size: 13px; color: var(--toss-text-secondary); line-height: 1.5; margin-bottom: 12px;"> <!-- 안내 문구 설명 텍스트입니다. -->
-          영화, 카페, 공원, 집 묘사 등 내가 선택한 서베이 주제로만 1문항씩 집중 발화 훈련을 진행합니다. <!-- 웹 화면 구성 요소입니다. -->
+          영화, 카페, 공원, 집 묘사 등 내가 선택한 서베이 주제로만 1문항씩 집중 발화 훈련을 진행합니다.
         </p> <!-- 안내 문구 텍스트를 닫습니다. -->
-        <button class="toss-btn-primary" id="btn-home-start-driving" style="margin-bottom: 8px;"> <!-- 사용자 인터랙션 버튼 요소입니다. -->
-          🚗 핸즈프리 드라이빙 모드 시작 <!-- 웹 화면 구성 요소입니다. -->
-        </button> <!-- 버튼 요소를 닫습니다. -->
-        <button class="toss-btn-primary" id="btn-home-start-exam" style="background-color: #ffffff; color: var(--toss-blue); border: 1.5px solid var(--toss-blue);"> <!-- 사용자 인터랙션 버튼 요소입니다. -->
-          🏆 15문항 실전 모의고사 풀세트 <!-- 웹 화면 구성 요소입니다. -->
-        </button> <!-- 버튼 요소를 닫습니다. -->
-      </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+        <button class="toss-btn-primary" id="btn-home-start-driving" style="margin-bottom: 8px;">
+          🚗 핸즈프리 드라이빙 모드 시작
+        </button>
+        <button class="toss-btn-primary" id="btn-home-start-exam" style="background-color: #ffffff; color: var(--toss-blue); border: 1.5px solid var(--toss-blue);">
+          🏆 15문항 실전 모의고사 풀세트
+        </button>
+      </div>
+
       <!-- 최근 복습 리포트 바로가기 카드입니다. -->
-      <div class="toss-card"> <!-- UI 블록 컨테이너 요소입니다. -->
-        <div style="display: flex; justify-content: space-between; align-items: center;"> <!-- UI 블록 컨테이너 요소입니다. -->
-          <div> <!-- UI 블록 컨테이너 요소입니다. -->
-            <div style="font-size: 15px; font-weight: 700; color: var(--toss-text-primary);">📝 최근 발화 분석 & AI 리포트</div> <!-- UI 블록 컨테이너 요소입니다. -->
-            <div style="font-size: 12px; color: var(--toss-text-muted);" id="home-recent-date">최근 연습 기록이 없습니다.</div> <!-- UI 블록 컨테이너 요소입니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-          <div style="display: flex; align-items: center; gap: 8px;"> <!-- UI 블록 컨테이너 요소입니다. -->
+      <div class="toss-card">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 15px; font-weight: 700; color: var(--toss-text-primary);">📝 최근 발화 분석 & AI 리포트</div>
+            <div style="font-size: 12px; color: var(--toss-text-muted);" id="home-recent-date">최근 연습 기록이 없습니다.</div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
             <span id="home-recent-level-badge" style="background: var(--toss-blue-light); color: var(--toss-blue); font-weight: 800; font-size: 14px; padding: 4px 10px; border-radius: 8px;">-</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-            <button id="btn-go-review-from-home" style="background: #f2f4f6; color: var(--toss-text-primary); border: none; border-radius: 8px; padding: 8px 12px; font-size: 12px; font-weight: 700; cursor: pointer;"> <!-- 사용자 인터랙션 버튼 요소입니다. -->
-              보기 <!-- 웹 화면 구성 요소입니다. -->
-            </button> <!-- 버튼 요소를 닫습니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-      </div> <!-- UI 블록 컨테이너를 닫습니다. -->
+            <button id="btn-go-review-from-home" style="background: #f2f4f6; color: var(--toss-text-primary); border: none; border-radius: 8px; padding: 8px 12px; font-size: 12px; font-weight: 700; cursor: pointer;">
+              보기
+            </button>
+          </div>
+        </div>
+      </div>
     </section> <!-- 탭 화면 섹션을 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+
     <!-- ========================================================================== -->
     <!-- [Tab 2]: 📅 단계별 학습플랜 탭                                             -->
     <!-- ========================================================================== -->
-    <section id="tab-plan" class="tab-content"> <!-- 탭 화면 섹션 컨테이너입니다. -->
-      <div class="toss-card" style="margin-bottom: 10px;"> <!-- UI 블록 컨테이너 요소입니다. -->
-        <h2 style="font-size: 20px; font-weight: 800; color: var(--toss-text-primary); margin-bottom: 4px;">7일 완성 목표별 플랜</h2> <!-- 섹션 헤딩 타이틀 텍스트입니다. -->
+    <section id="tab-plan" class="tab-content">
+      <div class="toss-card" style="margin-bottom: 10px;">
+        <h2 style="font-size: 20px; font-weight: 800; color: var(--toss-text-primary); margin-bottom: 4px;">7일 완성 목표별 플랜</h2>
         <p style="font-size: 13px; color: var(--toss-text-secondary);">하루 1퀘스트씩 실전 문제를 발화하고 AL까지 정복해보세요.</p> <!-- 안내 문구 설명 텍스트입니다. -->
-      </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+      </div>
+
       <!-- 레벨 선택 알약 탭 -->
-      <div style="display: flex; gap: 6px; margin-bottom: 12px;"> <!-- UI 블록 컨테이너 요소입니다. -->
-        <button class="plan-pill-btn active" data-level="beginner" style="flex: 1; background: #ffffff; border: 1.5px solid var(--toss-blue); color: var(--toss-blue); border-radius: 12px; padding: 10px; font-size: 13px; font-weight: 800; cursor: pointer;"> <!-- 사용자 인터랙션 버튼 요소입니다. -->
-          🥉 초급 (IL~IM2) <!-- 웹 화면 구성 요소입니다. -->
-        </button> <!-- 버튼 요소를 닫습니다. -->
-        <button class="plan-pill-btn" data-level="intermediate" style="flex: 1; background: #ffffff; border: 1.5px solid #cbd5e1; color: var(--toss-text-secondary); border-radius: 12px; padding: 10px; font-size: 13px; font-weight: 800; cursor: pointer;"> <!-- 사용자 인터랙션 버튼 요소입니다. -->
-          🥈 중급 (IM3~IH) <!-- 웹 화면 구성 요소입니다. -->
-        </button> <!-- 버튼 요소를 닫습니다. -->
-        <button class="plan-pill-btn" data-level="advanced" style="flex: 1; background: #ffffff; border: 1.5px solid #cbd5e1; color: var(--toss-text-secondary); border-radius: 12px; padding: 10px; font-size: 13px; font-weight: 800; cursor: pointer;"> <!-- 사용자 인터랙션 버튼 요소입니다. -->
-          🥇 고급 (AL 만점) <!-- 웹 화면 구성 요소입니다. -->
-        </button> <!-- 버튼 요소를 닫습니다. -->
-      </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+      <div style="display: flex; gap: 6px; margin-bottom: 12px;">
+        <button class="plan-pill-btn active" data-level="beginner" style="flex: 1; background: #ffffff; border: 1.5px solid var(--toss-blue); color: var(--toss-blue); border-radius: 12px; padding: 10px; font-size: 13px; font-weight: 800; cursor: pointer;">
+          🥉 초급 (IL~IM2)
+        </button>
+        <button class="plan-pill-btn" data-level="intermediate" style="flex: 1; background: #ffffff; border: 1.5px solid #cbd5e1; color: var(--toss-text-secondary); border-radius: 12px; padding: 10px; font-size: 13px; font-weight: 800; cursor: pointer;">
+          🥈 중급 (IM3~IH)
+        </button>
+        <button class="plan-pill-btn" data-level="advanced" style="flex: 1; background: #ffffff; border: 1.5px solid #cbd5e1; color: var(--toss-text-secondary); border-radius: 12px; padding: 10px; font-size: 13px; font-weight: 800; cursor: pointer;">
+          🥇 고급 (AL 만점)
+        </button>
+      </div>
+
       <!-- 플랜 진도율 카드 -->
-      <div class="toss-card"> <!-- UI 블록 컨테이너 요소입니다. -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;"> <!-- UI 블록 컨테이너 요소입니다. -->
+      <div class="toss-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
           <span style="font-size: 14px; font-weight: 700;" id="plan-progress-title">초급 플랜 진도율</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
           <span style="font-size: 13px; font-weight: 800; color: var(--toss-blue);" id="plan-progress-percent">0% (0/7)</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-        <div style="background: #e5e8eb; height: 8px; border-radius: 4px; overflow: hidden;"> <!-- UI 블록 컨테이너 요소입니다. -->
-          <div id="plan-progress-bar" style="background: var(--toss-blue); width: 0%; height: 100%; transition: width 0.3s ease;"></div> <!-- UI 블록 컨테이너 요소입니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-      </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+        </div>
+        <div style="background: #e5e8eb; height: 8px; border-radius: 4px; overflow: hidden;">
+          <div id="plan-progress-bar" style="background: var(--toss-blue); width: 0%; height: 100%; transition: width 0.3s ease;"></div>
+        </div>
+      </div>
+
       <!-- 일자별 퀘스트 카드 목록 컨테이너 -->
-      <div id="plan-quest-list-container"></div> <!-- UI 블록 컨테이너 요소입니다. -->
+      <div id="plan-quest-list-container"></div>
     </section> <!-- 탭 화면 섹션을 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+
     <!-- ========================================================================== -->
     <!-- [Tab 3]: 🎯 자투리 스피킹 연습 탭                                           -->
     <!-- ========================================================================== -->
-    <section id="tab-practice" class="tab-content"> <!-- 탭 화면 섹션 컨테이너입니다. -->
-      <div class="toss-card" style="margin-bottom: 10px;"> <!-- UI 블록 컨테이너 요소입니다. -->
-        <h2 style="font-size: 20px; font-weight: 800; color: var(--toss-text-primary); margin-bottom: 4px;">자투리 스피킹 연습</h2> <!-- 섹션 헤딩 타이틀 텍스트입니다. -->
+    <section id="tab-practice" class="tab-content">
+      <div class="toss-card" style="margin-bottom: 10px;">
+        <h2 style="font-size: 20px; font-weight: 800; color: var(--toss-text-primary); margin-bottom: 4px;">자투리 스피킹 연습</h2>
         <p style="font-size: 13px; color: var(--toss-text-secondary);">출퇴근길이나 이동 중에 부담 없이 1문항씩 집중 연습하세요.</p> <!-- 안내 문구 설명 텍스트입니다. -->
-      </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
-      <div class="toss-card"> <!-- UI 블록 컨테이너 요소입니다. -->
-        <h3 style="margin-bottom: 10px;">연습 모드 선택</h3> <!-- 섹션 헤딩 타이틀 텍스트입니다. -->
-        <div class="mode-selector-grid"> <!-- UI 블록 컨테이너 요소입니다. -->
-          <div class="mode-card-btn selected" data-mode="1q" id="prac-mode-1q"> <!-- UI 블록 컨테이너 요소입니다. -->
-            <div class="mode-icon">⚡</div> <!-- UI 블록 컨테이너 요소입니다. -->
-            <div class="mode-title">1문제 스피드</div> <!-- UI 블록 컨테이너 요소입니다. -->
-            <div class="mode-desc">랜덤 1문제 ➔ 즉시 AI 진단 및 AL 문장 추천</div> <!-- UI 블록 컨테이너 요소입니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-          <div class="mode-card-btn" data-mode="driving" id="prac-mode-driving"> <!-- UI 블록 컨테이너 요소입니다. -->
-            <div class="mode-icon">🚗</div> <!-- UI 블록 컨테이너 요소입니다. -->
-            <div class="mode-title">핸즈프리 드라이빙</div> <!-- UI 블록 컨테이너 요소입니다. -->
-            <div class="mode-desc">터치 없이 질문 청취 ➔ 녹음 ➔ 피드백</div> <!-- UI 블록 컨테이너 요소입니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
-        <div class="mode-selector-grid"> <!-- UI 블록 컨테이너 요소입니다. -->
-          <div class="mode-card-btn" data-mode="listening" id="prac-mode-listening" style="border: 1.5px solid #a855f7;"> <!-- UI 블록 컨테이너 요소입니다. -->
-            <div class="mode-icon">👂</div> <!-- UI 블록 컨테이너 요소입니다. -->
-            <div class="mode-title" style="color: #7e22ce;">한국어 질문 퀴즈 ★</div> <!-- UI 블록 컨테이너 요소입니다. -->
-            <div class="mode-desc">영어 질문 듣고 한국말로 무슨 뜻인지 맞히기</div> <!-- UI 블록 컨테이너 요소입니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-          <div class="mode-card-btn" data-mode="script" id="prac-mode-script" style="border: 1.5px solid #10b981;"> <!-- UI 블록 컨테이너 요소입니다. -->
-            <div class="mode-icon">✍️</div> <!-- UI 블록 컨테이너 요소입니다. -->
-            <div class="mode-title" style="color: #059669;">스크립트 AI 첨삭 ★</div> <!-- UI 블록 컨테이너 요소입니다. -->
-            <div class="mode-desc">내 문장 작성/녹음 ➔ AL 만점 승격 첨삭</div> <!-- UI 블록 컨테이너 요소입니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
-        <div class="mode-selector-grid"> <!-- UI 블록 컨테이너 요소입니다. -->
-          <div class="mode-card-btn" data-mode="3combo" id="prac-mode-3combo" style="grid-column: span 2;"> <!-- UI 블록 컨테이너 요소입니다. -->
-            <div class="mode-icon">🎯</div> <!-- UI 블록 컨테이너 요소입니다. -->
-            <div class="mode-title">3-콤보 집중팩</div> <!-- UI 블록 컨테이너 요소입니다. -->
-            <div class="mode-desc">장소 묘사 ➔ 루틴 ➔ 과거 기억에 남는 경험 3콤보 연속 발화 격파</div> <!-- UI 블록 컨테이너 요소입니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
-        <div class="toss-card"> <!-- UI 블록 컨테이너 요소입니다. -->
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;"> <!-- UI 블록 컨테이너 요소입니다. -->
-            <h3 style="margin-bottom: 0;">🎙️ Eva 시험관 목소리</h3> <!-- 섹션 헤딩 타이틀 텍스트입니다. -->
-            <button id="btn-preview-voice-prac" style="background: var(--toss-blue-light); color: var(--toss-blue); border: none; border-radius: 10px; padding: 6px 12px; font-size: 12px; font-weight: 700; cursor: pointer;"> <!-- 사용자 인터랙션 버튼 요소입니다. -->
-              🔊 미리듣기 <!-- 웹 화면 구성 요소입니다. -->
-            </button> <!-- 버튼 요소를 닫습니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
+      </div>
+
+      <div class="toss-card">
+        <h3 style="margin-bottom: 10px;">연습 모드 선택</h3>
+        <div class="mode-selector-grid">
+          <div class="mode-card-btn selected" data-mode="1q" id="prac-mode-1q">
+            <div class="mode-icon">⚡</div>
+            <div class="mode-title">1문제 스피드</div>
+            <div class="mode-desc">랜덤 1문제 ➔ 즉시 AI 진단 및 AL 문장 추천</div>
+          </div>
+          <div class="mode-card-btn" data-mode="driving" id="prac-mode-driving">
+            <div class="mode-icon">🚗</div>
+            <div class="mode-title">핸즈프리 드라이빙</div>
+            <div class="mode-desc">터치 없이 질문 청취 ➔ 녹음 ➔ 피드백</div>
+          </div>
+        </div>
+
+        <div class="mode-selector-grid">
+          <div class="mode-card-btn" data-mode="listening" id="prac-mode-listening" style="border: 1.5px solid #a855f7;">
+            <div class="mode-icon">👂</div>
+            <div class="mode-title" style="color: #7e22ce;">한국어 질문 퀴즈 ★</div>
+            <div class="mode-desc">영어 질문 듣고 한국말로 무슨 뜻인지 맞히기</div>
+          </div>
+          <div class="mode-card-btn" data-mode="script" id="prac-mode-script" style="border: 1.5px solid #10b981;">
+            <div class="mode-icon">✍️</div>
+            <div class="mode-title" style="color: #059669;">스크립트 AI 첨삭 ★</div>
+            <div class="mode-desc">내 문장 작성/녹음 ➔ AL 만점 승격 첨삭</div>
+          </div>
+        </div>
+
+        <div class="mode-selector-grid">
+          <div class="mode-card-btn" data-mode="3combo" id="prac-mode-3combo" style="grid-column: span 2;">
+            <div class="mode-icon">🎯</div>
+            <div class="mode-title">3-콤보 집중팩</div>
+            <div class="mode-desc">장소 묘사 ➔ 루틴 ➔ 과거 기억에 남는 경험 3콤보 연속 발화 격파</div>
+          </div>
+        </div>
+
+        <div class="toss-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <h3 style="margin-bottom: 0;">🎙️ Eva 시험관 목소리</h3>
+            <button id="btn-preview-voice-prac" style="background: var(--toss-blue-light); color: var(--toss-blue); border: none; border-radius: 10px; padding: 6px 12px; font-size: 12px; font-weight: 700; cursor: pointer;">
+              🔊 미리듣기
+            </button>
+          </div>
           <select id="select-eva-voice-prac" style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--toss-border); font-size: 14px; font-weight: 600; background: #fafbfc; color: var(--toss-text-primary);"> <!-- 옵션 선택 셀렉트박스 요소입니다. -->
             <option value="en-US-AriaNeural" selected>⭐ 실제 OPIc 공식 Eva 목소리 (오리지널)</option> <!-- 드롭다운 세부 선택 옵션입니다. -->
             <option value="en-US-AvaNeural">Ava (초자연적 미국 원어민 성우)</option> <!-- 드롭다운 세부 선택 옵션입니다. -->
             <option value="en-US-EmmaNeural">Emma (전문 면접관 성우 - 또박또박함)</option> <!-- 드롭다운 세부 선택 옵션입니다. -->
           </select> <!-- 셀렉트박스 요소를 닫습니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
-        <button class="toss-btn-primary" id="btn-start-practice"> <!-- 사용자 인터랙션 버튼 요소입니다. -->
-          🚀 선택한 모드로 시작하기 <!-- 웹 화면 구성 요소입니다. -->
-        </button> <!-- 버튼 요소를 닫습니다. -->
-      </div> <!-- UI 블록 컨테이너를 닫습니다. -->
+        </div>
+
+        <button class="toss-btn-primary" id="btn-start-practice">
+          🚀 선택한 모드로 시작하기
+        </button>
+      </div>
     </section> <!-- 탭 화면 섹션을 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+
     <!-- ========================================================================== -->
     <!-- [Tab 4]: 🏆 실전 모의고사 & 테스트 / 퀴즈 / 스크립트 랩 화면                  -->
     <!-- ========================================================================== -->
-    <section id="tab-exam" class="tab-content"> <!-- 탭 화면 섹션 컨테이너입니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+    <section id="tab-exam" class="tab-content">
+
       <!-- 서베이 확인 및 모의고사 시작 화면 -->
-      <div id="exam-view-survey"> <!-- UI 블록 컨테이너 요소입니다. -->
-        <div class="toss-card" style="margin-bottom: 10px;"> <!-- UI 블록 컨테이너 요소입니다. -->
-          <h2 style="font-size: 20px; font-weight: 800; color: var(--toss-text-primary); margin-bottom: 4px;">15문항 실전 모의고사</h2> <!-- 섹션 헤딩 타이틀 텍스트입니다. -->
+      <div id="exam-view-survey">
+        <div class="toss-card" style="margin-bottom: 10px;">
+          <h2 style="font-size: 20px; font-weight: 800; color: var(--toss-text-primary); margin-bottom: 4px;">15문항 실전 모의고사</h2>
           <p style="font-size: 13px; color: var(--toss-text-secondary);">실제 OPIc 시험장과 100% 동일한 15문항 40분 풀 테스트입니다.</p> <!-- 안내 문구 설명 텍스트입니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
-        <div class="toss-card"> <!-- UI 블록 컨테이너 요소입니다. -->
-          <h3>📋 적용될 백그라운드 서베이</h3> <!-- 섹션 헤딩 타이틀 텍스트입니다. -->
+        </div>
+
+        <div class="toss-card">
+          <h3>📋 적용될 백그라운드 서베이</h3>
           <p style="font-size: 13px; color: var(--toss-text-secondary); line-height: 1.5; margin-bottom: 10px;" id="exam-survey-preview-text"> <!-- 안내 문구 설명 텍스트입니다. -->
-            마이페이지에 설정된 서베이와 난이도(5단계)를 바탕으로 15개 콤보 문제가 자동 출제됩니다. <!-- 웹 화면 구성 요소입니다. -->
+            마이페이지에 설정된 서베이와 난이도(5단계)를 바탕으로 15개 콤보 문제가 자동 출제됩니다.
           </p> <!-- 안내 문구 텍스트를 닫습니다. -->
-          <button id="btn-go-mypage-from-exam" style="background: #f2f4f6; color: var(--toss-text-primary); border: none; border-radius: 10px; padding: 8px 12px; font-size: 12px; font-weight: 700; cursor: pointer;"> <!-- 사용자 인터랙션 버튼 요소입니다. -->
-            서베이 / 난이도 변경하기 ⚙️ <!-- 웹 화면 구성 요소입니다. -->
-          </button> <!-- 버튼 요소를 닫습니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
-        <div class="toss-card"> <!-- UI 블록 컨테이너 요소입니다. -->
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;"> <!-- UI 블록 컨테이너 요소입니다. -->
-            <h3 style="margin-bottom: 0;">🎙️ Eva 시험관 목소리</h3> <!-- 섹션 헤딩 타이틀 텍스트입니다. -->
-            <button id="btn-preview-voice" style="background: var(--toss-blue-light); color: var(--toss-blue); border: none; border-radius: 10px; padding: 6px 12px; font-size: 12px; font-weight: 700; cursor: pointer;"> <!-- 사용자 인터랙션 버튼 요소입니다. -->
-              🔊 미리듣기 <!-- 웹 화면 구성 요소입니다. -->
-            </button> <!-- 버튼 요소를 닫습니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
+          <button id="btn-go-mypage-from-exam" style="background: #f2f4f6; color: var(--toss-text-primary); border: none; border-radius: 10px; padding: 8px 12px; font-size: 12px; font-weight: 700; cursor: pointer;">
+            서베이 / 난이도 변경하기 ⚙️
+          </button>
+        </div>
+
+        <div class="toss-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <h3 style="margin-bottom: 0;">🎙️ Eva 시험관 목소리</h3>
+            <button id="btn-preview-voice" style="background: var(--toss-blue-light); color: var(--toss-blue); border: none; border-radius: 10px; padding: 6px 12px; font-size: 12px; font-weight: 700; cursor: pointer;">
+              🔊 미리듣기
+            </button>
+          </div>
           <select id="select-eva-voice" style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--toss-border); font-size: 14px; font-weight: 600; background: #fafbfc; color: var(--toss-text-primary);"> <!-- 옵션 선택 셀렉트박스 요소입니다. -->
             <option value="en-US-AriaNeural" selected>⭐ 실제 OPIc 공식 Eva 목소리 (오리지널)</option> <!-- 드롭다운 세부 선택 옵션입니다. -->
             <option value="en-US-AvaNeural">Ava (초자연적 미국 원어민 성우)</option> <!-- 드롭다운 세부 선택 옵션입니다. -->
             <option value="en-US-EmmaNeural">Emma (전문 면접관 성우 - 또박또박함)</option> <!-- 드롭다운 세부 선택 옵션입니다. -->
           </select> <!-- 셀렉트박스 요소를 닫습니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
-        <button class="toss-btn-primary" id="btn-start-exam" style="margin-top: 10px;"> <!-- 사용자 인터랙션 버튼 요소입니다. -->
-          🏆 15문항 실전 시험 시작하기 <!-- 웹 화면 구성 요소입니다. -->
-        </button> <!-- 버튼 요소를 닫습니다. -->
-      </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+        </div>
+
+        <button class="toss-btn-primary" id="btn-start-exam" style="margin-top: 10px;">
+          🏆 15문항 실전 시험 시작하기
+        </button>
+      </div>
+
       <!-- [신규] 나만의 스크립트 작성 & AI 첨삭 연구소 화면 -->
-      <div id="exam-view-script" style="display: none;"> <!-- UI 블록 컨테이너 요소입니다. -->
-        <div class="script-hero-card"> <!-- UI 블록 컨테이너 요소입니다. -->
-          <div style="font-size: 13px; opacity: 0.9; margin-bottom: 4px;">✍️ 나만의 스크립트 작성 & AI 첨삭 연구소</div> <!-- UI 블록 컨테이너 요소입니다. -->
-          <h2 style="font-size: 18px; font-weight: 800; line-height: 1.3;"> <!-- 섹션 헤딩 타이틀 텍스트입니다. -->
-            내 생각대로 적거나 말하면<br />AI가 AL 만점 문장으로 승격 첨삭해 드립니다! <!-- 웹 화면 구성 요소입니다. -->
-          </h2> <!-- 헤딩 타이틀을 닫습니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+      <div id="exam-view-script" style="display: none;">
+        <div class="script-hero-card">
+          <div style="font-size: 13px; opacity: 0.9; margin-bottom: 4px;">✍️ 나만의 스크립트 작성 & AI 첨삭 연구소</div>
+          <h2 style="font-size: 18px; font-weight: 800; line-height: 1.3;">
+            내 생각대로 적거나 말하면<br />AI가 AL 만점 문장으로 승격 첨삭해 드립니다!
+          </h2>
+        </div>
+
         <!-- 주제 선택 카드 -->
-        <div class="toss-card"> <!-- UI 블록 컨테이너 요소입니다. -->
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;"> <!-- UI 블록 컨테이너 요소입니다. -->
+        <div class="toss-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
             <span style="font-size: 14px; font-weight: 800; color: #065f46;">🎯 연습할 오픽 주제 선택</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-            <button id="btn-load-template-script" style="background: #d1fae5; color: #047857; border: none; border-radius: 8px; padding: 4px 10px; font-size: 11px; font-weight: 700; cursor: pointer;"> <!-- 사용자 인터랙션 버튼 요소입니다. -->
-              💡 1타강사 템플릿 불러오기 <!-- 웹 화면 구성 요소입니다. -->
-            </button> <!-- 버튼 요소를 닫습니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
+            <button id="btn-load-template-script" style="background: #d1fae5; color: #047857; border: none; border-radius: 8px; padding: 4px 10px; font-size: 11px; font-weight: 700; cursor: pointer;">
+              💡 1타강사 템플릿 불러오기
+            </button>
+          </div>
           <select id="select-script-topic" style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--toss-border); font-size: 13px; font-weight: 600; background: #fafbfc; color: var(--toss-text-primary); margin-bottom: 10px;"> <!-- 옵션 선택 셀렉트박스 요소입니다. -->
             <option value="영화관 장소 묘사">🎬 [영화] 좋아하는 영화관 및 위치/시설 묘사</option> <!-- 드롭다운 세부 선택 옵션입니다. -->
             <option value="영화 보기 전후 루틴">🎬 [영화] 영화 보러 가기 전후 전체 루틴</option> <!-- 드롭다운 세부 선택 옵션입니다. -->
@@ -316,290 +316,290 @@
             <option value="과거 현재 기술 비교">📱 [심화 14번] 과거와 현재의 전자기기 비교</option> <!-- 드롭다운 세부 선택 옵션입니다. -->
             <option value="최신 산업 시사 이슈">🌐 [심화 15번] 숙박/IT 분야 최신 이슈 및 견해</option> <!-- 드롭다운 세부 선택 옵션입니다. -->
           </select> <!-- 셀렉트박스 요소를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+
           <!-- 스크립트 작성 텍스트에어리어 -->
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;"> <!-- UI 블록 컨테이너 요소입니다. -->
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
             <span style="font-size: 12px; font-weight: 700; color: var(--toss-text-secondary);">내 스크립트 초안 (한글 or 영문 자유 작성)</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-            <button id="btn-stt-script-draft" style="background: #eff6ff; color: var(--toss-blue); border: 1px solid #bfdbfe; border-radius: 8px; padding: 4px 8px; font-size: 11px; font-weight: 700; cursor: pointer;"> <!-- 사용자 인터랙션 버튼 요소입니다. -->
-              🎙️ 음성으로 말해서 넣기 <!-- 웹 화면 구성 요소입니다. -->
-            </button> <!-- 버튼 요소를 닫습니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
+            <button id="btn-stt-script-draft" style="background: #eff6ff; color: var(--toss-blue); border: 1px solid #bfdbfe; border-radius: 8px; padding: 4px 8px; font-size: 11px; font-weight: 700; cursor: pointer;">
+              🎙️ 음성으로 말해서 넣기
+            </button>
+          </div>
           <textarea id="script-draft-textarea" rows="4" style="width: 100%; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 12px; font-size: 14px; line-height: 1.5; background: #fafbfc; color: var(--toss-text-primary); resize: vertical;" placeholder="예) 우리 집 근처에 있는 CGV를 자주 가는데 시설이 깨끗하고 팝콘이 맛있어서 주말마다 방문합니다. 영화 보기 전에는 카페에서 커피를 사고 끝난 후에는 친구들과 밥을 먹습니다."></textarea> <!-- 텍스트 입력 텍스트에어리어 요소입니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
-          <div style="margin-top: 10px; display: flex; gap: 8px;"> <!-- UI 블록 컨테이너 요소입니다. -->
-            <button id="btn-analyze-upgrade-script" class="toss-btn-primary" style="background: #059669; padding: 14px;"> <!-- 사용자 인터랙션 버튼 요소입니다. -->
-              ✨ AI 원클릭 첨삭 & AL 만점 스크립트 생성 <!-- 웹 화면 구성 요소입니다. -->
-            </button> <!-- 버튼 요소를 닫습니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+
+          <div style="margin-top: 10px; display: flex; gap: 8px;">
+            <button id="btn-analyze-upgrade-script" class="toss-btn-primary" style="background: #059669; padding: 14px;">
+              ✨ AI 원클릭 첨삭 & AL 만점 스크립트 생성
+            </button>
+          </div>
+        </div>
+
         <!-- AI 첨삭 및 AL 승격 결과 카드 (동적 렌더링) -->
-        <div id="script-upgrade-result-box" style="display: none;"></div> <!-- UI 블록 컨테이너 요소입니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+        <div id="script-upgrade-result-box" style="display: none;"></div>
+
         <!-- 내 저장된 스크립트 보관함 카드 -->
-        <div class="toss-card" style="margin-top: 14px;"> <!-- UI 블록 컨테이너 요소입니다. -->
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;"> <!-- UI 블록 컨테이너 요소입니다. -->
-            <h3 style="margin-bottom: 0; color: #065f46;">📖 내 스크립트 보관함</h3> <!-- 섹션 헤딩 타이틀 텍스트입니다. -->
+        <div class="toss-card" style="margin-top: 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <h3 style="margin-bottom: 0; color: #065f46;">📖 내 스크립트 보관함</h3>
             <span id="saved-script-count-badge" style="font-size: 11px; background: #d1fae5; color: #047857; padding: 3px 8px; border-radius: 8px; font-weight: 700;">0개 저장됨</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-          <div id="saved-script-list-container"> <!-- UI 블록 컨테이너 요소입니다. -->
-            <div style="font-size: 13px; color: var(--toss-text-muted); text-align: center; padding: 16px;"> <!-- UI 블록 컨테이너 요소입니다. -->
-              아직 저장된 스크립트가 없습니다. 위에서 작성하고 [보관함 저장]을 눌러보세요! <!-- 웹 화면 구성 요소입니다. -->
-            </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
-        <button id="btn-back-from-script" style="width: 100%; background: #f2f4f6; color: var(--toss-text-primary); border: none; border-radius: 14px; padding: 14px; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 10px;"> <!-- 사용자 인터랙션 버튼 요소입니다. -->
-          ⬅️ 스피킹 메뉴로 돌아가기 <!-- 웹 화면 구성 요소입니다. -->
-        </button> <!-- 버튼 요소를 닫습니다. -->
-      </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+          </div>
+          <div id="saved-script-list-container">
+            <div style="font-size: 13px; color: var(--toss-text-muted); text-align: center; padding: 16px;">
+              아직 저장된 스크립트가 없습니다. 위에서 작성하고 [보관함 저장]을 눌러보세요!
+            </div>
+          </div>
+        </div>
+
+        <button id="btn-back-from-script" style="width: 100%; background: #f2f4f6; color: var(--toss-text-primary); border: none; border-radius: 14px; padding: 14px; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 10px;">
+          ⬅️ 스피킹 메뉴로 돌아가기
+        </button>
+      </div>
+
       <!-- 한국어 질문 퀴즈 진행 화면 -->
-      <div id="exam-view-quiz" style="display: none;"> <!-- UI 블록 컨테이너 요소입니다. -->
-        <div class="quiz-hero-card"> <!-- UI 블록 컨테이너 요소입니다. -->
-          <div style="font-size: 13px; opacity: 0.9; margin-bottom: 4px;">👂 에바 질문 청취 & 한국어 뜻 맞히기</div> <!-- UI 블록 컨테이너 요소입니다. -->
-          <h2 style="font-size: 18px; font-weight: 800; line-height: 1.3;"> <!-- 섹션 헤딩 타이틀 텍스트입니다. -->
-            질문을 귀로 잘 듣고<br />무슨 뜻인지 한국말로 말해보세요! <!-- 웹 화면 구성 요소입니다. -->
-          </h2> <!-- 헤딩 타이틀을 닫습니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
-        <div class="eva-mini-card"> <!-- UI 블록 컨테이너 요소입니다. -->
-          <div class="eva-avatar-circle" id="quiz-eva-avatar-box">👩‍💼</div> <!-- UI 블록 컨테이너 요소입니다. -->
-          <div style="flex: 1;"> <!-- UI 블록 컨테이너 요소입니다. -->
-            <div style="font-size: 15px; font-weight: 700; color: var(--toss-text-primary);">Eva (OPIc 시험관)</div> <!-- UI 블록 컨테이너 요소입니다. -->
-            <button class="btn-listen-mini" id="btn-quiz-replay-audio">🔊 질문 다시듣기</button> <!-- 사용자 인터랙션 버튼 요소입니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
-        <div class="toss-card" style="background: #fdfefe; border: 1.5px dashed #cbd5e1; text-align: center; padding: 20px;"> <!-- UI 블록 컨테이너 요소입니다. -->
-          <div style="font-size: 14px; color: var(--toss-text-muted); margin-bottom: 6px;">실제 시험처럼 질문 글자는 가려집니다 🙈</div> <!-- UI 블록 컨테이너 요소입니다. -->
-          <div style="font-size: 20px; font-weight: 800; color: var(--toss-text-primary);" id="quiz-masked-title"> <!-- UI 블록 컨테이너 요소입니다. -->
-            "🎧 질문 음성이 재생 중입니다..." <!-- 웹 화면 구성 요소입니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
-        <div class="toss-card"> <!-- UI 블록 컨테이너 요소입니다. -->
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;"> <!-- UI 블록 컨테이너 요소입니다. -->
+      <div id="exam-view-quiz" style="display: none;">
+        <div class="quiz-hero-card">
+          <div style="font-size: 13px; opacity: 0.9; margin-bottom: 4px;">👂 에바 질문 청취 & 한국어 뜻 맞히기</div>
+          <h2 style="font-size: 18px; font-weight: 800; line-height: 1.3;">
+            질문을 귀로 잘 듣고<br />무슨 뜻인지 한국말로 말해보세요!
+          </h2>
+        </div>
+
+        <div class="eva-mini-card">
+          <div class="eva-avatar-circle" id="quiz-eva-avatar-box">👩‍💼</div>
+          <div style="flex: 1;">
+            <div style="font-size: 15px; font-weight: 700; color: var(--toss-text-primary);">Eva (OPIc 시험관)</div>
+            <button class="btn-listen-mini" id="btn-quiz-replay-audio">🔊 질문 다시듣기</button>
+          </div>
+        </div>
+
+        <div class="toss-card" style="background: #fdfefe; border: 1.5px dashed #cbd5e1; text-align: center; padding: 20px;">
+          <div style="font-size: 14px; color: var(--toss-text-muted); margin-bottom: 6px;">실제 시험처럼 질문 글자는 가려집니다 🙈</div>
+          <div style="font-size: 20px; font-weight: 800; color: var(--toss-text-primary);" id="quiz-masked-title">
+            "🎧 질문 음성이 재생 중입니다..."
+          </div>
+        </div>
+
+        <div class="toss-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
             <span style="font-size: 13px; font-weight: 700; color: var(--toss-text-secondary);">한국어 정답 입력 (음성 or 직접입력)</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
             <span style="font-size: 11px; color: #7c3aed; font-weight: 700;">🗣️ 한국어로 말하면 자동 기록</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+          </div>
+
           <textarea id="quiz-korean-input" rows="2" style="width: 100%; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 12px; font-size: 14px; line-height: 1.5; background: #fafbfc; color: var(--toss-text-primary); resize: none;" placeholder="예) 영화 보러 가기 전후에 주로 뭐하는지 루틴 물어보는 질문"></textarea> <!-- 텍스트 입력 텍스트에어리어 요소입니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
-          <div style="margin-top: 10px; display: flex; gap: 8px;"> <!-- UI 블록 컨테이너 요소입니다. -->
-            <button id="btn-quiz-record-korean" style="flex: 1; background: #f3e8ff; color: #7e22ce; border: none; border-radius: 12px; padding: 12px; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 6px;"> <!-- 사용자 인터랙션 버튼 요소입니다. -->
-              🎙️ 한국어 음성으로 정답 말하기 <!-- 웹 화면 구성 요소입니다. -->
-            </button> <!-- 버튼 요소를 닫습니다. -->
-            <button id="btn-quiz-check-answer" style="flex: 1; background: #7c3aed; color: #ffffff; border: none; border-radius: 12px; padding: 12px; font-size: 13px; font-weight: 700; cursor: pointer;"> <!-- 사용자 인터랙션 버튼 요소입니다. -->
-              🎯 정답 확인 & 해설 <!-- 웹 화면 구성 요소입니다. -->
-            </button> <!-- 버튼 요소를 닫습니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
-          <div id="quiz-result-card" style="display: none; margin-top: 12px;"></div> <!-- UI 블록 컨테이너 요소입니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
-        <button class="toss-btn-primary" id="btn-quiz-next-question" style="margin-top: 10px; background: #7c3aed;"> <!-- 사용자 인터랙션 버튼 요소입니다. -->
-          다음 문제로 넘어가기 ➔ <!-- 웹 화면 구성 요소입니다. -->
-        </button> <!-- 버튼 요소를 닫습니다. -->
-      </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+
+          <div style="margin-top: 10px; display: flex; gap: 8px;">
+            <button id="btn-quiz-record-korean" style="flex: 1; background: #f3e8ff; color: #7e22ce; border: none; border-radius: 12px; padding: 12px; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 6px;">
+              🎙️ 한국어 음성으로 정답 말하기
+            </button>
+            <button id="btn-quiz-check-answer" style="flex: 1; background: #7c3aed; color: #ffffff; border: none; border-radius: 12px; padding: 12px; font-size: 13px; font-weight: 700; cursor: pointer;">
+              🎯 정답 확인 & 해설
+            </button>
+          </div>
+
+          <div id="quiz-result-card" style="display: none; margin-top: 12px;"></div>
+        </div>
+
+        <button class="toss-btn-primary" id="btn-quiz-next-question" style="margin-top: 10px; background: #7c3aed;">
+          다음 문제로 넘어가기 ➔
+        </button>
+      </div>
+
       <!-- 시험 진행 화면 -->
-      <div id="exam-view-testing" style="display: none;"> <!-- UI 블록 컨테이너 요소입니다. -->
+      <div id="exam-view-testing" style="display: none;">
         <!-- 에바 면접관 프로필 카드 -->
-        <div class="eva-mini-card"> <!-- UI 블록 컨테이너 요소입니다. -->
-          <div class="eva-avatar-circle" id="eva-avatar-box">👩‍💼</div> <!-- UI 블록 컨테이너 요소입니다. -->
-          <div style="flex: 1;"> <!-- UI 블록 컨테이너 요소입니다. -->
-            <div style="display: flex; justify-content: space-between; align-items: center;"> <!-- UI 블록 컨테이너 요소입니다. -->
+        <div class="eva-mini-card">
+          <div class="eva-avatar-circle" id="eva-avatar-box">👩‍💼</div>
+          <div style="flex: 1;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
               <span style="font-size: 16px; font-weight: 800; color: var(--toss-text-primary);">Eva (OPIc 면접관)</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
               <span class="timer-badge" id="exam-progress-badge">1 / 15</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-            </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-            <div style="font-size: 12px; color: var(--toss-text-muted); margin-top: 2px;"> <!-- UI 블록 컨테이너 요소입니다. -->
+            </div>
+            <div style="font-size: 12px; color: var(--toss-text-muted); margin-top: 2px;">
               <span id="exam-current-topic">Self Introduction</span> · <span id="exam-current-type">자기소개</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-            </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-            <button class="btn-listen-mini" id="btn-replay-question">🔊 질문 다시듣기 (1회 남음)</button> <!-- 사용자 인터랙션 버튼 요소입니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+            </div>
+            <button class="btn-listen-mini" id="btn-replay-question">🔊 질문 다시듣기 (1회 남음)</button>
+          </div>
+        </div>
+
         <!-- 질문 내용 카드 -->
-        <div class="toss-card"> <!-- UI 블록 컨테이너 요소입니다. -->
-          <div style="font-size: 12px; font-weight: 700; color: var(--toss-blue); margin-bottom: 6px;">질문 지문 (모의고사에서는 실제 듣기로 진행됩니다)</div> <!-- UI 블록 컨테이너 요소입니다. -->
-          <div style="font-size: 15px; font-weight: 700; color: var(--toss-text-primary); line-height: 1.5;" id="exam-question-text"> <!-- UI 블록 컨테이너 요소입니다. -->
-            "Let's start the interview now. Tell me a little bit about yourself." <!-- 웹 화면 구성 요소입니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+        <div class="toss-card">
+          <div style="font-size: 12px; font-weight: 700; color: var(--toss-blue); margin-bottom: 6px;">질문 지문 (모의고사에서는 실제 듣기로 진행됩니다)</div>
+          <div style="font-size: 15px; font-weight: 700; color: var(--toss-text-primary); line-height: 1.5;" id="exam-question-text">
+            "Let's start the interview now. Tell me a little bit about yourself."
+          </div>
+        </div>
+
         <!-- 실시간 발화 감지 HUD 카드 -->
-        <div class="toss-card" style="background: #f8fafc; border: 1.5px solid #e2e8f0;"> <!-- UI 블록 컨테이너 요소입니다. -->
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;"> <!-- UI 블록 컨테이너 요소입니다. -->
+        <div class="toss-card" style="background: #f8fafc; border: 1.5px solid #e2e8f0;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
             <span style="font-size: 13px; font-weight: 800; color: #1e3a8a;">⚡ 실시간 발화 분석 HUD</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-            <div class="speed-btn-group"> <!-- UI 블록 컨테이너 요소입니다. -->
+            <div class="speed-btn-group">
               <span style="font-size: 11px; color: #64748b; margin-right: 4px; display: flex; align-items: center;">쉐도잉 속도:</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-              <button class="btn-speed" data-speed="0.8">0.8x</button> <!-- 사용자 인터랙션 버튼 요소입니다. -->
-              <button class="btn-speed active" data-speed="1.0">1.0x</button> <!-- 사용자 인터랙션 버튼 요소입니다. -->
-              <button class="btn-speed" data-speed="1.2">1.2x</button> <!-- 사용자 인터랙션 버튼 요소입니다. -->
-            </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
-          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; text-align: center; margin-bottom: 10px;"> <!-- UI 블록 컨테이너 요소입니다. -->
-            <div style="background: #ffffff; padding: 8px 4px; border-radius: 10px; border: 1px solid #e2e8f0;"> <!-- UI 블록 컨테이너 요소입니다. -->
-              <div style="font-size: 11px; color: #64748b;">현재 WPM</div> <!-- UI 블록 컨테이너 요소입니다. -->
-              <div style="font-size: 14px; font-weight: 800; color: var(--toss-blue);" id="hud-wpm-live">0 WPM</div> <!-- UI 블록 컨테이너 요소입니다. -->
-            </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-            <div style="background: #ffffff; padding: 8px 4px; border-radius: 10px; border: 1px solid #e2e8f0;"> <!-- UI 블록 컨테이너 요소입니다. -->
-              <div style="font-size: 11px; color: #64748b;">발화 단어수</div> <!-- UI 블록 컨테이너 요소입니다. -->
-              <div style="font-size: 14px; font-weight: 800; color: var(--toss-text-primary);" id="hud-word-count">0단어</div> <!-- UI 블록 컨테이너 요소입니다. -->
-            </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-            <div style="background: #ffffff; padding: 8px 4px; border-radius: 10px; border: 1px solid #e2e8f0;"> <!-- UI 블록 컨테이너 요소입니다. -->
-              <div style="font-size: 11px; color: #64748b;">실시간 예상</div> <!-- UI 블록 컨테이너 요소입니다. -->
-              <div style="font-size: 14px; font-weight: 800; color: var(--toss-green);" id="hud-predicted-grade">IM2</div> <!-- UI 블록 컨테이너 요소입니다. -->
-            </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
-          <div style="font-size: 12px; color: #475569; display: flex; justify-content: space-between; align-items: center;"> <!-- UI 블록 컨테이너 요소입니다. -->
+              <button class="btn-speed" data-speed="0.8">0.8x</button>
+              <button class="btn-speed active" data-speed="1.0">1.0x</button>
+              <button class="btn-speed" data-speed="1.2">1.2x</button>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; text-align: center; margin-bottom: 10px;">
+            <div style="background: #ffffff; padding: 8px 4px; border-radius: 10px; border: 1px solid #e2e8f0;">
+              <div style="font-size: 11px; color: #64748b;">현재 WPM</div>
+              <div style="font-size: 14px; font-weight: 800; color: var(--toss-blue);" id="hud-wpm-live">0 WPM</div>
+            </div>
+            <div style="background: #ffffff; padding: 8px 4px; border-radius: 10px; border: 1px solid #e2e8f0;">
+              <div style="font-size: 11px; color: #64748b;">발화 단어수</div>
+              <div style="font-size: 14px; font-weight: 800; color: var(--toss-text-primary);" id="hud-word-count">0단어</div>
+            </div>
+            <div style="background: #ffffff; padding: 8px 4px; border-radius: 10px; border: 1px solid #e2e8f0;">
+              <div style="font-size: 11px; color: #64748b;">실시간 예상</div>
+              <div style="font-size: 14px; font-weight: 800; color: var(--toss-green);" id="hud-predicted-grade">IM2</div>
+            </div>
+          </div>
+
+          <div style="font-size: 12px; color: #475569; display: flex; justify-content: space-between; align-items: center;">
             <span>감지된 필러: <strong id="hud-filler-detected" style="color: var(--toss-blue);">미사용</strong></span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-            <button id="btn-fill-sample-answer" style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 2px 8px; font-size: 11px; color: #475569; cursor: pointer;"> <!-- 사용자 인터랙션 버튼 요소입니다. -->
-              💡 모범답안 채우기 <!-- 웹 화면 구성 요소입니다. -->
-            </button> <!-- 버튼 요소를 닫습니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+            <button id="btn-fill-sample-answer" style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 2px 8px; font-size: 11px; color: #475569; cursor: pointer;">
+              💡 모범답안 채우기
+            </button>
+          </div>
+        </div>
+
         <!-- 답변 입력 및 STT 스크립트 영역 -->
-        <div class="toss-card"> <!-- UI 블록 컨테이너 요소입니다. -->
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;"> <!-- UI 블록 컨테이너 요소입니다. -->
+        <div class="toss-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
             <span style="font-size: 13px; font-weight: 700; color: var(--toss-text-secondary);">내 답변 내용 (음성 인식 및 직접 입력)</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
             <span style="font-size: 11px; color: var(--toss-blue);" id="recording-status-text">마이크를 켜고 말씀하세요</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+          </div>
+
           <textarea id="stt-input-textarea" rows="4" style="width: 100%; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 12px; font-size: 14px; line-height: 1.5; background: #fafbfc; color: var(--toss-text-primary); resize: vertical;" placeholder="음성으로 말씀하시면 이곳에 실시간 영어 자막이 입력됩니다. 직접 키보드로 수정하실 수도 있습니다."></textarea> <!-- 텍스트 입력 텍스트에어리어 요소입니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
-          <div style="margin-top: 10px;"> <!-- UI 블록 컨테이너 요소입니다. -->
-            <button class="toss-btn-record" id="btn-toggle-recording"> <!-- 사용자 인터랙션 버튼 요소입니다. -->
-              🎙️ 답변 녹음 시작 <!-- 웹 화면 구성 요소입니다. -->
-            </button> <!-- 버튼 요소를 닫습니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+
+          <div style="margin-top: 10px;">
+            <button class="toss-btn-record" id="btn-toggle-recording">
+              🎙️ 답변 녹음 시작
+            </button>
+          </div>
+
           <!-- 녹음 완료 직후 1문항 빠른 분석 결과 박스 -->
-          <div id="post-recording-analysis-box" style="display: none; margin-top: 12px;"></div> <!-- UI 블록 컨테이너 요소입니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
-        <button class="toss-btn-primary" id="btn-next-question" style="margin-top: 10px;"> <!-- 사용자 인터랙션 버튼 요소입니다. -->
-          다음 문제 ➔ <!-- 웹 화면 구성 요소입니다. -->
-        </button> <!-- 버튼 요소를 닫습니다. -->
-      </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+          <div id="post-recording-analysis-box" style="display: none; margin-top: 12px;"></div>
+        </div>
+
+        <button class="toss-btn-primary" id="btn-next-question" style="margin-top: 10px;">
+          다음 문제 ➔
+        </button>
+      </div>
+
       <!-- 시험 완료 후 1:1 비교 복습 리포트 화면 -->
-      <div id="exam-view-report" style="display: none;"> <!-- UI 블록 컨테이너 요소입니다. -->
-        <div class="toss-card" style="text-align: center; padding: 24px 18px;"> <!-- UI 블록 컨테이너 요소입니다. -->
-          <div style="font-size: 14px; font-weight: 700; color: var(--toss-text-muted);">종합 평가 결과</div> <!-- UI 블록 컨테이너 요소입니다. -->
-          <div class="toss-grade-text" id="final-grade-display">IH</div> <!-- UI 블록 컨테이너 요소입니다. -->
-          <div style="font-size: 14px; font-weight: 700; color: var(--toss-text-secondary);" id="final-score-display">평가 점수: 88점 / 100점</div> <!-- UI 블록 컨테이너 요소입니다. -->
+      <div id="exam-view-report" style="display: none;">
+        <div class="toss-card" style="text-align: center; padding: 24px 18px;">
+          <div style="font-size: 14px; font-weight: 700; color: var(--toss-text-muted);">종합 평가 결과</div>
+          <div class="toss-grade-text" id="final-grade-display">IH</div>
+          <div style="font-size: 14px; font-weight: 700; color: var(--toss-text-secondary);" id="final-score-display">평가 점수: 88점 / 100점</div>
           <p style="font-size: 13px; color: #475569; margin-top: 10px; line-height: 1.5;" id="report-summary-comment"> <!-- 안내 문구 설명 텍스트입니다. -->
-            질문의 의도를 정확히 파악하여 훌륭하게 발화하셨습니다. <!-- 웹 화면 구성 요소입니다. -->
+            질문의 의도를 정확히 파악하여 훌륭하게 발화하셨습니다.
           </p> <!-- 안내 문구 텍스트를 닫습니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+        </div>
+
         <!-- 문제별 1:1 비교 복습 리포트 카드 목록 컨테이너 -->
-        <div id="full-review-list-container"></div> <!-- UI 블록 컨테이너 요소입니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
-        <div style="display: flex; gap: 8px; margin-top: 14px;"> <!-- UI 블록 컨테이너 요소입니다. -->
-          <button id="btn-share-report" style="flex: 1; background: #ffffff; border: 1.5px solid var(--toss-blue); color: var(--toss-blue); border-radius: 14px; padding: 14px; font-size: 14px; font-weight: 700; cursor: pointer;"> <!-- 사용자 인터랙션 버튼 요소입니다. -->
-            📋 성적표 복사 & 공유 <!-- 웹 화면 구성 요소입니다. -->
-          </button> <!-- 버튼 요소를 닫습니다. -->
-          <button id="btn-restart-exam" class="toss-btn-primary" style="flex: 1; padding: 14px;"> <!-- 사용자 인터랙션 버튼 요소입니다. -->
-            🔄 다시 연습하기 <!-- 웹 화면 구성 요소입니다. -->
-          </button> <!-- 버튼 요소를 닫습니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-      </div> <!-- UI 블록 컨테이너를 닫습니다. -->
+        <div id="full-review-list-container"></div>
+
+        <div style="display: flex; gap: 8px; margin-top: 14px;">
+          <button id="btn-share-report" style="flex: 1; background: #ffffff; border: 1.5px solid var(--toss-blue); color: var(--toss-blue); border-radius: 14px; padding: 14px; font-size: 14px; font-weight: 700; cursor: pointer;">
+            📋 성적표 복사 & 공유
+          </button>
+          <button id="btn-restart-exam" class="toss-btn-primary" style="flex: 1; padding: 14px;">
+            🔄 다시 연습하기
+          </button>
+        </div>
+      </div>
     </section> <!-- 탭 화면 섹션을 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+
     <!-- ========================================================================== -->
     <!-- [Tab 5]: 👤 마이페이지 & 실제 OPIc 공식 백그라운드 서베이 전체 설정         -->
     <!-- ========================================================================== -->
-    <section id="tab-mypage" class="tab-content"> <!-- 탭 화면 섹션 컨테이너입니다. -->
-      <div class="toss-card"> <!-- UI 블록 컨테이너 요소입니다. -->
-        <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;"> <!-- UI 블록 컨테이너 요소입니다. -->
-          <div style="width: 56px; height: 56px; border-radius: 50%; background: var(--toss-blue-light); display: flex; align-items: center; justify-content: center; font-size: 28px;"> <!-- UI 블록 컨테이너 요소입니다. -->
-            🎓 <!-- 웹 화면 구성 요소입니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-          <div> <!-- UI 블록 컨테이너 요소입니다. -->
-            <div style="font-size: 17px; font-weight: 800; color: var(--toss-text-primary);">오픽 마스터 수험생</div> <!-- UI 블록 컨테이너 요소입니다. -->
-            <div style="font-size: 13px; color: var(--toss-blue); font-weight: 700;">목표 등급: AL (Advanced Low)</div> <!-- UI 블록 컨테이너 요소입니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-      </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+    <section id="tab-mypage" class="tab-content">
+      <div class="toss-card">
+        <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+          <div style="width: 56px; height: 56px; border-radius: 50%; background: var(--toss-blue-light); display: flex; align-items: center; justify-content: center; font-size: 28px;">
+            🎓
+          </div>
+          <div>
+            <div style="font-size: 17px; font-weight: 800; color: var(--toss-text-primary);">오픽 마스터 수험생</div>
+            <div style="font-size: 13px; color: var(--toss-blue); font-weight: 700;">목표 등급: AL (Advanced Low)</div>
+          </div>
+        </div>
+      </div>
+
       <!-- 내 저장된 스크립트 바로가기 카드 -->
-      <div class="toss-card"> <!-- UI 블록 컨테이너 요소입니다. -->
-        <div style="display: flex; justify-content: space-between; align-items: center;"> <!-- UI 블록 컨테이너 요소입니다. -->
-          <div> <!-- UI 블록 컨테이너 요소입니다. -->
-            <div style="font-size: 15px; font-weight: 700; color: #065f46;">✍️ 내 AL 스크립트 보관함</div> <!-- UI 블록 컨테이너 요소입니다. -->
-            <div style="font-size: 12px; color: var(--toss-text-muted);" id="mypage-script-count-text">저장된 스크립트: 0개</div> <!-- UI 블록 컨테이너 요소입니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-          <button id="btn-go-script-from-mypage" style="background: #d1fae5; color: #047857; border: none; border-radius: 10px; padding: 8px 14px; font-size: 13px; font-weight: 700; cursor: pointer;"> <!-- 사용자 인터랙션 버튼 요소입니다. -->
-            열기 ➔ <!-- 웹 화면 구성 요소입니다. -->
-          </button> <!-- 버튼 요소를 닫습니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-      </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+      <div class="toss-card">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 15px; font-weight: 700; color: #065f46;">✍️ 내 AL 스크립트 보관함</div>
+            <div style="font-size: 12px; color: var(--toss-text-muted);" id="mypage-script-count-text">저장된 스크립트: 0개</div>
+          </div>
+          <button id="btn-go-script-from-mypage" style="background: #d1fae5; color: #047857; border: none; border-radius: 10px; padding: 8px 14px; font-size: 13px; font-weight: 700; cursor: pointer;">
+            열기 ➔
+          </button>
+        </div>
+      </div>
+
       <!-- 실제 OPIc 공식 백그라운드 서베이 1~7번 전체 문항 카드 -->
-      <div class="toss-card"> <!-- UI 블록 컨테이너 요소입니다. -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;"> <!-- UI 블록 컨테이너 요소입니다. -->
-          <h3 style="margin-bottom: 0;">📋 OPIc 공식 서베이 설정</h3> <!-- 섹션 헤딩 타이틀 텍스트입니다. -->
+      <div class="toss-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <h3 style="margin-bottom: 0;">📋 OPIc 공식 서베이 설정</h3>
           <span class="survey-counter-badge" id="survey-selection-count-badge">선택: 12개 / 12개 이상</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
+        </div>
         <p style="font-size: 12px; color: var(--toss-text-muted); margin-bottom: 12px;"> <!-- 안내 문구 설명 텍스트입니다. -->
-          실제 시험장과 100% 동일한 선택지입니다. 여기서 설정하신 항목으로 스피킹과 모의고사가 출제됩니다. <!-- 웹 화면 구성 요소입니다. -->
+          실제 시험장과 100% 동일한 선택지입니다. 여기서 설정하신 항목으로 스피킹과 모의고사가 출제됩니다.
         </p> <!-- 안내 문구 텍스트를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+
         <!-- 원클릭 AL 만점 전략 세팅 버튼 -->
-        <button id="btn-apply-al-strategy" style="width: 100%; background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 1.5px solid var(--toss-blue); color: var(--toss-blue); border-radius: 12px; padding: 10px; font-size: 13px; font-weight: 800; cursor: pointer; margin-bottom: 14px;"> <!-- 사용자 인터랙션 버튼 요소입니다. -->
-          ✨ [1타 강사] AL 만점 12종 꿀조합 자동 선택하기 <!-- 웹 화면 구성 요소입니다. -->
-        </button> <!-- 버튼 요소를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+        <button id="btn-apply-al-strategy" style="width: 100%; background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 1.5px solid var(--toss-blue); color: var(--toss-blue); border-radius: 12px; padding: 10px; font-size: 13px; font-weight: 800; cursor: pointer; margin-bottom: 14px;">
+          ✨ [1타 강사] AL 만점 12종 꿀조합 자동 선택하기
+        </button>
+
         <!-- 1번 문항: 직업 / 근무 -->
-        <div class="survey-section-box"> <!-- UI 블록 컨테이너 요소입니다. -->
-          <div class="survey-section-title"> <!-- UI 블록 컨테이너 요소입니다. -->
+        <div class="survey-section-box">
+          <div class="survey-section-title">
             <span>1. 현재 어느 분야에 종사하고 계십니까?</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-          <div class="chip-group"> <!-- UI 블록 컨테이너 요소입니다. -->
+          </div>
+          <div class="chip-group">
             <label class="chip-item selected"><input type="radio" name="survey_q1_job" value="NONE" checked /> 일 경험 없음 (강력 추천 ★)</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
             <label class="chip-item"><input type="radio" name="survey_q1_job" value="OFFICE" /> 사업 / 회사원</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
             <label class="chip-item"><input type="radio" name="survey_q1_job" value="TEACHER" /> 교사 / 교육자</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
             <label class="chip-item"><input type="radio" name="survey_q1_job" value="MILITARY" /> 군인</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+          </div>
+        </div>
+
         <!-- 2번 문항: 학생 여부 -->
-        <div class="survey-section-box"> <!-- UI 블록 컨테이너 요소입니다. -->
-          <div class="survey-section-title"> <!-- UI 블록 컨테이너 요소입니다. -->
+        <div class="survey-section-box">
+          <div class="survey-section-title">
             <span>2. 현재 귀하는 학생이십니까?</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-          <div class="chip-group"> <!-- UI 블록 컨테이너 요소입니다. -->
+          </div>
+          <div class="chip-group">
             <label class="chip-item selected"><input type="radio" name="survey_q2_student" value="NO" checked /> 아니오 (강력 추천 ★)</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
             <label class="chip-item"><input type="radio" name="survey_q2_student" value="YES" /> 예 (학위/비학위 과정)</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+          </div>
+        </div>
+
         <!-- 3번 문항: 주거 형태 -->
-        <div class="survey-section-box"> <!-- UI 블록 컨테이너 요소입니다. -->
-          <div class="survey-section-title"> <!-- UI 블록 컨테이너 요소입니다. -->
+        <div class="survey-section-box">
+          <div class="survey-section-title">
             <span>3. 현재 어디에 살고 계십니까?</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-          <div class="chip-group"> <!-- UI 블록 컨테이너 요소입니다. -->
+          </div>
+          <div class="chip-group">
             <label class="chip-item selected"><input type="radio" name="survey_q3_home" value="APARTMENT_ALONE" checked /> 개인 주택/아파트 홀로 거주 ★</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
             <label class="chip-item"><input type="radio" name="survey_q3_home" value="FAMILY" /> 가족과 함께 주택/아파트 거주</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
             <label class="chip-item"><input type="radio" name="survey_q3_home" value="ROOMMATE" /> 친구/룸메이트와 거주</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
             <label class="chip-item"><input type="radio" name="survey_q3_home" value="DORM" /> 학교 기숙사</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
             <label class="chip-item"><input type="radio" name="survey_q3_home" value="BARRACKS" /> 군대 막사</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+          </div>
+        </div>
+
         <!-- 4번 문항: 여가 활동 (최소 2개 이상) -->
-        <div class="survey-section-box"> <!-- UI 블록 컨테이너 요소입니다. -->
-          <div class="survey-section-title"> <!-- UI 블록 컨테이너 요소입니다. -->
+        <div class="survey-section-box">
+          <div class="survey-section-title">
             <span>4. 여가 활동 (최소 2개 이상)</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-          <div class="chip-group" id="group-survey-q4"> <!-- UI 블록 컨테이너 요소입니다. -->
+          </div>
+          <div class="chip-group" id="group-survey-q4">
             <label class="chip-item selected"><input type="checkbox" name="survey_q4_leisure" value="MOVIE" checked /> 🎬 영화 보기 ★</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
             <label class="chip-item selected"><input type="checkbox" name="survey_q4_leisure" value="PERFORMANCE" checked /> 🎭 공연 보기 ★</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
             <label class="chip-item selected"><input type="checkbox" name="survey_q4_leisure" value="CONCERT" checked /> 🎤 콘서트 보기 ★</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
@@ -615,15 +615,15 @@
             <label class="chip-item"><input type="checkbox" name="survey_q4_leisure" value="SHOPPING" /> 🛍️ 쇼핑하기</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
             <label class="chip-item"><input type="checkbox" name="survey_q4_leisure" value="TV" /> 📺 TV 시청하기</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
             <label class="chip-item"><input type="checkbox" name="survey_q4_leisure" value="CHESS" /> ♟️ 체스하기</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+          </div>
+        </div>
+
         <!-- 5번 문항: 취미 / 관심사 (최소 1개 이상) -->
-        <div class="survey-section-box"> <!-- UI 블록 컨테이너 요소입니다. -->
-          <div class="survey-section-title"> <!-- UI 블록 컨테이너 요소입니다. -->
+        <div class="survey-section-box">
+          <div class="survey-section-title">
             <span>5. 취미 / 관심사 (최소 1개 이상)</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-          <div class="chip-group" id="group-survey-q5"> <!-- UI 블록 컨테이너 요소입니다. -->
+          </div>
+          <div class="chip-group" id="group-survey-q5">
             <label class="chip-item selected"><input type="checkbox" name="survey_q5_hobby" value="MUSIC" checked /> 🎵 음악 감상하기 ★</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
             <label class="chip-item"><input type="checkbox" name="survey_q5_hobby" value="INSTRUMENT" /> 🎸 악기 연주하기</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
             <label class="chip-item"><input type="checkbox" name="survey_q5_hobby" value="SINGING" /> 🎤 노래/합창하기</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
@@ -634,15 +634,15 @@
             <label class="chip-item"><input type="checkbox" name="survey_q5_hobby" value="PET" /> 🐶 애완동물 기르기</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
             <label class="chip-item"><input type="checkbox" name="survey_q5_hobby" value="READING" /> 📖 독서</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
             <label class="chip-item"><input type="checkbox" name="survey_q5_hobby" value="GAMING" /> 🎮 게임하기</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+          </div>
+        </div>
+
         <!-- 6번 문항: 운동 (최소 1개 이상) -->
-        <div class="survey-section-box"> <!-- UI 블록 컨테이너 요소입니다. -->
-          <div class="survey-section-title"> <!-- UI 블록 컨테이너 요소입니다. -->
+        <div class="survey-section-box">
+          <div class="survey-section-title">
             <span>6. 즐기는 운동 (최소 1개 이상)</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-          <div class="chip-group" id="group-survey-q6"> <!-- UI 블록 컨테이너 요소입니다. -->
+          </div>
+          <div class="chip-group" id="group-survey-q6">
             <label class="chip-item selected"><input type="checkbox" name="survey_q6_sports" value="JOGGING" checked /> 🏃 조깅 ★</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
             <label class="chip-item selected"><input type="checkbox" name="survey_q6_sports" value="WALKING" checked /> 🚶 걷기 ★</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
             <label class="chip-item selected"><input type="checkbox" name="survey_q6_sports" value="BIKING" checked /> 🚴 자전거 ★</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
@@ -659,27 +659,27 @@
             <label class="chip-item"><input type="checkbox" name="survey_q6_sports" value="YOGA" /> 🧘 요가/필라테스</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
             <label class="chip-item"><input type="checkbox" name="survey_q6_sports" value="SKI" /> ⛷️ 스키/스노보드</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
             <label class="chip-item"><input type="checkbox" name="survey_q6_sports" value="NO_EXERCISE" /> ❌ 운동을 전혀 하지 않음</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+          </div>
+        </div>
+
         <!-- 7번 문항: 휴가 / 여행 (최소 1개 이상) -->
-        <div class="survey-section-box"> <!-- UI 블록 컨테이너 요소입니다. -->
-          <div class="survey-section-title"> <!-- UI 블록 컨테이너 요소입니다. -->
+        <div class="survey-section-box">
+          <div class="survey-section-title">
             <span>7. 휴가나 출장을 다녀온 경험 (최소 1개 이상)</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-          <div class="chip-group" id="group-survey-q7"> <!-- UI 블록 컨테이너 요소입니다. -->
+          </div>
+          <div class="chip-group" id="group-survey-q7">
             <label class="chip-item selected"><input type="checkbox" name="survey_q7_travel" value="DOMESTIC" checked /> 🗺️ 국내 여행 ★</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
             <label class="chip-item selected"><input type="checkbox" name="survey_q7_travel" value="OVERSEAS" checked /> ✈️ 해외 여행 ★</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
             <label class="chip-item selected"><input type="checkbox" name="survey_q7_travel" value="STAYCATION" checked /> 🛋️ 집에서 보내는 휴가 ★</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
             <label class="chip-item"><input type="checkbox" name="survey_q7_travel" value="BUSINESS_DOMESTIC" /> 💼 국내 출장</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
             <label class="chip-item"><input type="checkbox" name="survey_q7_travel" value="BUSINESS_OVERSEAS" /> 🌐 해외 출장</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-          </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+          </div>
+        </div>
+
         <!-- 난이도 선택 드롭다운 -->
-        <div style="margin-top: 14px;"> <!-- UI 블록 컨테이너 요소입니다. -->
+        <div style="margin-top: 14px;">
           <label style="font-size: 13px; font-weight: 700; color: var(--toss-text-primary); display: block; margin-bottom: 6px;"> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            🎯 목표 난이도 선택 (AL 목표 시 5~6단계 추천) <!-- 웹 화면 구성 요소입니다. -->
+            🎯 목표 난이도 선택 (AL 목표 시 5~6단계 추천)
           </label> <!-- 칩 라벨 요소를 닫습니다. -->
           <select id="survey-difficulty-select" style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--toss-border); font-size: 14px; font-weight: 600; background: #fafbfc; color: var(--toss-text-primary);"> <!-- 옵션 선택 셀렉트박스 요소입니다. -->
             <option value="1">1단계: 단어 및 매우 기초적인 문장 구사</option> <!-- 드롭다운 세부 선택 옵션입니다. -->
@@ -689,88 +689,88 @@
             <option value="5" selected>5단계: 3콤보 심화 + 14-15번 시사 이슈 (IH~AL 목표 추천 ★)</option> <!-- 드롭다운 세부 선택 옵션입니다. -->
             <option value="6">6단계: 최고난도 돌발 & 전문 사회적 이슈 (AL 만점 목표)</option> <!-- 드롭다운 세부 선택 옵션입니다. -->
           </select> <!-- 셀렉트박스 요소를 닫습니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
-        <button class="toss-btn-primary" id="btn-save-survey-settings" style="margin-top: 14px;"> <!-- 사용자 인터랙션 버튼 요소입니다. -->
-          💾 서베이 설정 저장하기 <!-- 웹 화면 구성 요소입니다. -->
-        </button> <!-- 버튼 요소를 닫습니다. -->
-      </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+        </div>
+
+        <button class="toss-btn-primary" id="btn-save-survey-settings" style="margin-top: 14px;">
+          💾 서베이 설정 저장하기
+        </button>
+      </div>
+
       <!-- 누적 학습 통계 카드 -->
-      <div class="toss-card"> <!-- UI 블록 컨테이너 요소입니다. -->
-        <h3 style="margin-bottom: 12px;">📊 나의 누적 스피킹 통계</h3> <!-- 섹션 헤딩 타이틀 텍스트입니다. -->
-        <div class="stat-row"> <!-- UI 블록 컨테이너 요소입니다. -->
+      <div class="toss-card">
+        <h3 style="margin-bottom: 12px;">📊 나의 누적 스피킹 통계</h3>
+        <div class="stat-row">
           <span style="font-size: 14px; color: var(--toss-text-secondary);">총 스피킹 완료 횟수</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
           <span style="font-size: 15px; font-weight: 800; color: var(--toss-blue);" id="stat-total-exams">0회</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-        <div class="stat-row"> <!-- UI 블록 컨테이너 요소입니다. -->
+        </div>
+        <div class="stat-row">
           <span style="font-size: 14px; color: var(--toss-text-secondary);">평균 발화 속도 (WPM)</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
           <span style="font-size: 15px; font-weight: 800; color: var(--toss-green);" id="stat-avg-wpm">0 WPM</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-        <div class="stat-row"> <!-- UI 블록 컨테이너 요소입니다. -->
+        </div>
+        <div class="stat-row">
           <span style="font-size: 14px; color: var(--toss-text-secondary);">1일 1문장 연속 출석</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
           <span style="font-size: 15px; font-weight: 800; color: #f59e0b;" id="stat-streak-days">1일</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-        </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-      </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+        </div>
+      </div>
+
       <!-- 부가 설정 및 가이드 카드 -->
-      <div class="toss-card"> <!-- UI 블록 컨테이너 요소입니다. -->
-        <h3 style="margin-bottom: 10px;">⚙️ 설정 & 가이드</h3> <!-- 섹션 헤딩 타이틀 텍스트입니다. -->
-        <button id="btn-open-review-from-mypage" style="width: 100%; background: #f2f4f6; border: none; border-radius: 12px; padding: 12px; font-size: 13px; font-weight: 700; color: var(--toss-text-primary); cursor: pointer; margin-bottom: 8px;"> <!-- 사용자 인터랙션 버튼 요소입니다. -->
-          📖 오답노트 & 이전 복습 리포트 열기 <!-- 웹 화면 구성 요소입니다. -->
-        </button> <!-- 버튼 요소를 닫습니다. -->
-        <button id="btn-open-mic-guide" style="width: 100%; background: #f2f4f6; border: none; border-radius: 12px; padding: 12px; font-size: 13px; font-weight: 700; color: var(--toss-text-primary); cursor: pointer; margin-bottom: 8px;"> <!-- 사용자 인터랙션 버튼 요소입니다. -->
-          🎙️ 모바일 웹뷰 마이크 권한 해결 가이드 <!-- 웹 화면 구성 요소입니다. -->
-        </button> <!-- 버튼 요소를 닫습니다. -->
-        <button id="btn-clear-data" style="width: 100%; background: #fee2e2; border: none; border-radius: 12px; padding: 12px; font-size: 13px; font-weight: 700; color: var(--toss-red); cursor: pointer;"> <!-- 사용자 인터랙션 버튼 요소입니다. -->
-          🗑️ 모든 학습 데이터 초기화 <!-- 웹 화면 구성 요소입니다. -->
-        </button> <!-- 버튼 요소를 닫습니다. -->
-      </div> <!-- UI 블록 컨테이너를 닫습니다. -->
+      <div class="toss-card">
+        <h3 style="margin-bottom: 10px;">⚙️ 설정 & 가이드</h3>
+        <button id="btn-open-review-from-mypage" style="width: 100%; background: #f2f4f6; border: none; border-radius: 12px; padding: 12px; font-size: 13px; font-weight: 700; color: var(--toss-text-primary); cursor: pointer; margin-bottom: 8px;">
+          📖 오답노트 & 이전 복습 리포트 열기
+        </button>
+        <button id="btn-open-mic-guide" style="width: 100%; background: #f2f4f6; border: none; border-radius: 12px; padding: 12px; font-size: 13px; font-weight: 700; color: var(--toss-text-primary); cursor: pointer; margin-bottom: 8px;">
+          🎙️ 모바일 웹뷰 마이크 권한 해결 가이드
+        </button>
+        <button id="btn-clear-data" style="width: 100%; background: #fee2e2; border: none; border-radius: 12px; padding: 12px; font-size: 13px; font-weight: 700; color: var(--toss-red); cursor: pointer;">
+          🗑️ 모든 학습 데이터 초기화
+        </button>
+      </div>
     </section> <!-- 탭 화면 섹션을 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+
   </main> <!-- 메인 뷰 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+
   <!-- ========================================================================== -->
   <!-- 하단 고정 네이티브 5탭 네비게이션 바                                         -->
   <!-- ========================================================================== -->
   <nav class="bottom-tab-bar"> <!-- 하단 고정 탭바 네비게이션 영역입니다. -->
-    <div class="tab-item active" data-tab="home" id="tab-btn-home"> <!-- UI 블록 컨테이너 요소입니다. -->
-      <div class="tab-icon">🏠</div> <!-- UI 블록 컨테이너 요소입니다. -->
-      <div class="tab-label">홈</div> <!-- UI 블록 컨테이너 요소입니다. -->
-    </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-    <div class="tab-item" data-tab="plan" id="tab-btn-plan"> <!-- UI 블록 컨테이너 요소입니다. -->
-      <div class="tab-icon">📅</div> <!-- UI 블록 컨테이너 요소입니다. -->
-      <div class="tab-label">학습플랜</div> <!-- UI 블록 컨테이너 요소입니다. -->
-    </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-    <div class="tab-item" data-tab="practice" id="tab-btn-practice"> <!-- UI 블록 컨테이너 요소입니다. -->
-      <div class="tab-icon">🎯</div> <!-- UI 블록 컨테이너 요소입니다. -->
-      <div class="tab-label">스피킹</div> <!-- UI 블록 컨테이너 요소입니다. -->
-    </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-    <div class="tab-item" data-tab="exam" id="tab-btn-exam"> <!-- UI 블록 컨테이너 요소입니다. -->
-      <div class="tab-icon">🏆</div> <!-- UI 블록 컨테이너 요소입니다. -->
-      <div class="tab-label">모의고사</div> <!-- UI 블록 컨테이너 요소입니다. -->
-    </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-    <div class="tab-item" data-tab="mypage" id="tab-btn-mypage"> <!-- UI 블록 컨테이너 요소입니다. -->
-      <div class="tab-icon">👤</div> <!-- UI 블록 컨테이너 요소입니다. -->
-      <div class="tab-label">마이페이지</div> <!-- UI 블록 컨테이너 요소입니다. -->
-    </div> <!-- UI 블록 컨테이너를 닫습니다. -->
+    <div class="tab-item active" data-tab="home" id="tab-btn-home">
+      <div class="tab-icon">🏠</div>
+      <div class="tab-label">홈</div>
+    </div>
+    <div class="tab-item" data-tab="plan" id="tab-btn-plan">
+      <div class="tab-icon">📅</div>
+      <div class="tab-label">학습플랜</div>
+    </div>
+    <div class="tab-item" data-tab="practice" id="tab-btn-practice">
+      <div class="tab-icon">🎯</div>
+      <div class="tab-label">스피킹</div>
+    </div>
+    <div class="tab-item" data-tab="exam" id="tab-btn-exam">
+      <div class="tab-icon">🏆</div>
+      <div class="tab-label">모의고사</div>
+    </div>
+    <div class="tab-item" data-tab="mypage" id="tab-btn-mypage">
+      <div class="tab-icon">👤</div>
+      <div class="tab-label">마이페이지</div>
+    </div>
   </nav> <!-- 하단 탭바 네비게이션을 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+
   <!-- 마이크 권한 안내 모달 -->
-  <div id="mic-help-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; padding: 20px;"> <!-- UI 블록 컨테이너 요소입니다. -->
-    <div style="background: #ffffff; border-radius: 20px; padding: 20px; max-width: 400px; width: 100%;"> <!-- UI 블록 컨테이너 요소입니다. -->
-      <h3 style="margin-bottom: 8px; font-size: 17px; font-weight: 800;">🎙️ 마이크 권한 허용 안내</h3> <!-- 섹션 헤딩 타이틀 텍스트입니다. -->
+  <div id="mic-help-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; padding: 20px;">
+    <div style="background: #ffffff; border-radius: 20px; padding: 20px; max-width: 400px; width: 100%;">
+      <h3 style="margin-bottom: 8px; font-size: 17px; font-weight: 800;">🎙️ 마이크 권한 허용 안내</h3>
       <p style="font-size: 13px; color: var(--toss-text-secondary); line-height: 1.5; margin-bottom: 12px;"> <!-- 안내 문구 설명 텍스트입니다. -->
-        1. 브라우저 주소창 좌측의 <strong>[자물쇠(🔒)]</strong> 또는 <strong>[설정]</strong> 아이콘을 탭하세요.<br /> <!-- 웹 화면 구성 요소입니다. -->
-        2. <strong>[마이크]</strong> 권한을 <strong>[허용]</strong>으로 변경해주세요.<br /> <!-- 웹 화면 구성 요소입니다. -->
-        3. 페이지를 새로고침 후 다시 녹음을 시작하시면 정상 작동합니다. <!-- 웹 화면 구성 요소입니다. -->
+        1. 브라우저 주소창 좌측의 <strong>[자물쇠(🔒)]</strong> 또는 <strong>[설정]</strong> 아이콘을 탭하세요.<br />
+        2. <strong>[마이크]</strong> 권한을 <strong>[허용]</strong>으로 변경해주세요.<br />
+        3. 페이지를 새로고침 후 다시 녹음을 시작하시면 정상 작동합니다.
       </p> <!-- 안내 문구 텍스트를 닫습니다. -->
-      <button id="btn-close-mic-modal" class="toss-btn-primary" style="padding: 12px; font-size: 14px;"> <!-- 사용자 인터랙션 버튼 요소입니다. -->
-        확인했습니다 <!-- 웹 화면 구성 요소입니다. -->
-      </button> <!-- 버튼 요소를 닫습니다. -->
-    </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-  </div> <!-- UI 블록 컨테이너를 닫습니다. -->
-<!-- 줄바꿈 여백 라인입니다. -->
+      <button id="btn-close-mic-modal" class="toss-btn-primary" style="padding: 12px; font-size: 14px;">
+        확인했습니다
+      </button>
+    </div>
+  </div>
+
   <!-- 메인 앱 컨트롤러 스크립트 연결 (최신 캐시 버스팅 적용) -->
   <script src="app.js?v=20260904_gui_restore_v6"></script> <!-- 메인 애플리케이션 스크립트 연결입니다. -->
 <!-- body 태그를 닫습니다. -->

@@ -2162,6 +2162,51 @@ function applyALRecommendedSurvey() {
 }
 
 // 로컬 스토리지에 저장된 서베이 설정을 불러와 UI에 반영하는 함수입니다.
+// 서베이 설정 전용 팝업 모달을 여는 함수입니다.
+function openSurveySettingsModal() {
+  loadOfficialSurveySettings();
+  const modal = document.getElementById('survey-settings-modal');
+  if (modal) {
+    modal.style.display = 'flex';
+  }
+}
+
+// 서베이 설정 전용 팝업 모달을 닫는 함수입니다.
+function closeSurveySettingsModal() {
+  const modal = document.getElementById('survey-settings-modal');
+  if (modal) {
+    modal.style.display = 'none';
+  }
+}
+
+// 서베이 요약 태그 및 설명 텍스트를 최신화하는 함수입니다.
+function updateSurveySummaryUI() {
+  const s = state.officialSurvey;
+  const tagContainer = document.getElementById('mypage-survey-tag-container');
+  const countBadge = document.getElementById('survey-count-badge');
+  const homeSummary = document.getElementById('home-survey-summary-text');
+  const examSummary = document.getElementById('exam-survey-preview-text');
+
+  if (tagContainer) {
+    const leisureTags = (s.q4_leisure || []).map(item => `<span class="survey-tag">${item}</span>`).join('');
+    const hobbyTags = (s.q5_hobby || []).map(item => `<span class="survey-tag">${item}</span>`).join('');
+    const sportsTags = (s.q6_sports || []).map(item => `<span class="survey-tag">${item}</span>`).join('');
+    const travelTags = (s.q7_travel || []).map(item => `<span class="survey-tag">${item}</span>`).join('');
+    const diffTag = `<span class="survey-tag" style="background: #ecfdf5; color: #065f46; font-weight: 800; border-color: #a7f3d0;">⭐ 난이도 ${s.difficulty || 5}-${s.difficulty || 5}</span>`;
+
+    tagContainer.innerHTML = `${leisureTags}${hobbyTags}${sportsTags}${travelTags}${diffTag}`;
+  }
+
+  const totalCount = 3 + (s.q4_leisure || []).length + (s.q5_hobby || []).length + (s.q6_sports || []).length + (s.q7_travel || []).length;
+  if (countBadge) {
+    countBadge.innerText = `${totalCount}/12개 선택됨`;
+  }
+
+  const summaryStr = `현재 <strong>[1타 강사 추천 AL 12종 꿀조합]</strong>과 <strong>[난이도 ${s.difficulty || 5}-${s.difficulty || 5}]</strong>가 적용되어 15문항이 자동 출제됩니다.`;
+  if (homeSummary) homeSummary.innerHTML = summaryStr;
+  if (examSummary) examSummary.innerHTML = summaryStr;
+}
+
 function loadOfficialSurveySettings() {
   try {
     const saved = JSON.parse(localStorage.getItem('opic_official_survey') || 'null');
@@ -2200,6 +2245,7 @@ function loadOfficialSurveySettings() {
   if (diffSelect) diffSelect.value = s.difficulty || 5;
 
   updateSurveyCounterDisplay();
+  updateSurveySummaryUI();
 }
 
 // 서베이 설정을 로컬 스토리지에 저장하는 함수입니다.
@@ -2231,6 +2277,14 @@ function saveOfficialSurveySettings(showAlert = true) {
 
   state.officialSurvey = surveyData;
   localStorage.setItem('opic_official_survey', JSON.stringify(surveyData));
+
+  updateSurveySummaryUI();
+  closeSurveySettingsModal();
+
+  // 15문항 스크립트 질문 세트 갱신
+  if (state.currentTab === 'script') {
+    startScriptBuilderSession(state.scriptSelectedQIndex || 0);
+  }
 
   if (showAlert) {
     alert('📋 서베이 및 난이도 설정이 성공적으로 저장되었습니다!');
@@ -2267,12 +2321,35 @@ function initSpeedButtons() {
 
 // 모달 이벤트 초기화 함수입니다.
 function initModalEvents() {
-  const closeBtn = document.getElementById('btn-close-mic-modal');
-  const modal = document.getElementById('mic-help-modal');
-  if (closeBtn && modal) {
-    closeBtn.addEventListener('click', () => {
-      modal.style.display = 'none';
+  // 마이크 가이드 모달 닫기
+  const closeMicBtn = document.getElementById('btn-close-mic-modal');
+  const micModal = document.getElementById('mic-help-modal');
+  if (closeMicBtn && micModal) {
+    closeMicBtn.addEventListener('click', () => {
+      micModal.style.display = 'none';
     });
+  }
+
+  // 서베이 모달 열기 버튼들
+  const openSurveyBtn = document.getElementById('btn-open-survey-modal');
+  if (openSurveyBtn) {
+    openSurveyBtn.addEventListener('click', openSurveySettingsModal);
+  }
+
+  const goSurveyHomeBtn = document.getElementById('btn-go-mypage-survey');
+  if (goSurveyHomeBtn) {
+    goSurveyHomeBtn.addEventListener('click', openSurveySettingsModal);
+  }
+
+  const goSurveyExamBtn = document.getElementById('btn-go-mypage-from-exam');
+  if (goSurveyExamBtn) {
+    goSurveyExamBtn.addEventListener('click', openSurveySettingsModal);
+  }
+
+  // 서베이 모달 닫기 버튼
+  const closeSurveyBtn = document.getElementById('btn-close-survey-modal');
+  if (closeSurveyBtn) {
+    closeSurveyBtn.addEventListener('click', closeSurveySettingsModal);
   }
 }
 

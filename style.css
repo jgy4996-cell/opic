@@ -1,3 +1,48 @@
+
+/* ============================================================================== */
+/* [타이포그래피 가독성 & 자연스러운 한글 띄어쓰기/줄바꿈 최적화]                   */
+/* ============================================================================== */
+body, h1, h2, h3, h4, p, div, span, button, textarea, input, label {
+  word-break: keep-all; /* 단어가 중간에 끊기지 않고 단어 단위로 줄바꿈 */
+  word-wrap: break-word; /* 지나치게 긴 영단어 예외 처리 */
+  letter-spacing: -0.02em; /* 깔끔하고 세련된 자간 최적화 */
+}
+
+h2, h3 {
+  line-height: 1.35;
+}
+
+p, .mode-desc {
+  line-height: 1.5;
+}
+
+/* ============================================================================== */
+/* [서베이 설정 전용 모달 & 요약 태그 스타일]                                     */
+/* ============================================================================== */
+.survey-tag {
+  display: inline-block;
+  background: #f1f5f9;
+  color: #334155;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  margin-right: 4px;
+  margin-bottom: 4px;
+  border: 1px solid #e2e8f0;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
 /* ============================================================================== */
 /* 파일명: style.css                                                                */
 /* 설명: 토스(Toss) 미니앱 네이티브 앱 스타일시트 (한국어 질문 청취 퀴즈 & 스크립트 첨삭 지원)  */

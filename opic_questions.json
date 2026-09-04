@@ -1,0 +1,255 @@
+{
+  "self_introduction": [
+    {
+      "id": "intro_01",
+      "topic": "Self Introduction",
+      "question_type": "자기소개",
+      "question_text": "Let's start the interview now. Tell me a little bit about yourself.",
+      "audio_file": "audio/q1.mp3"
+    }
+  ],
+  "survey_combos": {
+    "PARK": [
+      {
+        "id": "park_01",
+        "topic": "공원 가기",
+        "question_type": "장소 묘사",
+        "question_text": "Tell me about the park you visit most often. What does it look like, and what facilities does it have?"
+      },
+      {
+        "id": "park_02",
+        "topic": "공원 가기",
+        "question_type": "활동/루틴",
+        "question_text": "What do you usually do when you go to the park from the moment you arrive until you leave?"
+      },
+      {
+        "id": "park_03",
+        "topic": "공원 가기",
+        "question_type": "기억에 남는 경험",
+        "question_text": "Tell me about a memorable or unexpected incident you experienced while spending time at a park."
+      }
+    ],
+    "CAFE": [
+      {
+        "id": "cafe_01",
+        "topic": "카페 가기",
+        "question_type": "장소 묘사",
+        "question_text": "Tell me about your favorite cafe or coffee shop. Where is it located, and what is the atmosphere like?"
+      },
+      {
+        "id": "cafe_02",
+        "topic": "카페 가기",
+        "question_type": "루틴 및 습관",
+        "question_text": "When do you usually visit cafes, and who do you go with? What do you usually order to drink or eat?"
+      },
+      {
+        "id": "cafe_03",
+        "topic": "카페 가기",
+        "question_type": "과거 경험",
+        "question_text": "Tell me about a memorable conversation or incident you had at a coffee shop. What made that day so special?"
+      }
+    ],
+    "MUSIC": [
+      {
+        "id": "music_01",
+        "topic": "음악 감상",
+        "question_type": "취향/장르 묘사",
+        "question_text": "What type of music do you like to listen to? Who is your favorite singer or composer, and why do you like them?"
+      },
+      {
+        "id": "music_02",
+        "topic": "음악 감상",
+        "question_type": "음악 감상 루틴",
+        "question_text": "When and where do you usually listen to music? What devices or apps do you use to listen to music?"
+      },
+      {
+        "id": "music_03",
+        "topic": "음악 감상",
+        "question_type": "과거 계기/변화",
+        "question_text": "How did you first become interested in listening to music? How have your music preferences changed over time?"
+      }
+    ],
+    "HOUSING": [
+      {
+        "id": "house_01",
+        "topic": "집/거주지",
+        "question_type": "집 구조 묘사",
+        "question_text": "Please describe your home to me in detail. What does your favorite room look like and what furniture is inside?"
+      },
+      {
+        "id": "house_02",
+        "topic": "집/거주지",
+        "question_type": "집에서의 루틴",
+        "question_text": "What is your daily routine at home during the weekdays and weekends from morning until you go to bed?"
+      },
+      {
+        "id": "house_03",
+        "topic": "집/거주지",
+        "question_type": "집 문제/해결 경험",
+        "question_text": "Have you ever experienced a problem at home, such as something breaking down? What was the issue and how did you resolve it?"
+      }
+    ],
+    "MOVIE": [
+      {
+        "id": "movie_01",
+        "topic": "영화 보기",
+        "question_type": "영화관 묘사",
+        "question_text": "Tell me about the movie theater you usually go to. What does it look like, and why do you prefer that cinema?",
+        "audio_file": "audio/q2.mp3"
+      },
+      {
+        "id": "movie_02",
+        "topic": "영화 보기",
+        "question_type": "영화 관람 루틴",
+        "question_text": "What do you usually do before and after watching a movie? Describe your whole routine on movie days."
+      },
+      {
+        "id": "movie_03",
+        "topic": "영화 보기",
+        "question_type": "인상 깊은 영화",
+        "question_text": "Tell me about a memorable movie you watched recently. What was the storyline and why did it leave a strong impression?"
+      }
+    ]
+  },
+  "unexpected_combos": {
+    "HOTEL": [
+      {
+        "id": "hotel_01",
+        "topic": "돌발: 호텔",
+        "question_type": "돌발: 호텔 묘사",
+        "question_text": "Tell me about a hotel you stayed at recently. What did the room and amenities look like?"
+      },
+      {
+        "id": "hotel_02",
+        "topic": "돌발: 호텔",
+        "question_type": "돌발: 호텔 루틴",
+        "question_text": "What do you usually do when you check in and stay at a hotel from start to finish?"
+      },
+      {
+        "id": "hotel_03",
+        "topic": "돌발: 호텔",
+        "question_type": "돌발: 호텔 문제 경험",
+        "question_text": "Have you ever had an unexpected issue or complaint at a hotel? What happened and how was it solved?"
+      }
+    ],
+    "BANK": [
+      {
+        "id": "bank_01",
+        "topic": "돌발: 은행",
+        "question_type": "돌발: 은행 묘사",
+        "question_text": "Describe the bank you visit most often. Where is it located and what does the inside look like?"
+      },
+      {
+        "id": "bank_02",
+        "topic": "돌발: 은행",
+        "question_type": "돌발: 은행 업무 루틴",
+        "question_text": "What tasks do you usually do when you use banking services or mobile banking apps?"
+      },
+      {
+        "id": "bank_03",
+        "topic": "돌발: 은행",
+        "question_type": "돌발: 은행 돌발 사건",
+        "question_text": "Tell me about a memorable problem you experienced while doing banking, like losing a card or a system error."
+      }
+    ],
+    "HOLIDAY": [
+      {
+        "id": "holiday_01",
+        "topic": "돌발: 명절/휴일",
+        "question_type": "돌발: 명절 풍습 묘사",
+        "question_text": "Tell me about the major national holidays in your country and what people typically do on those days."
+      },
+      {
+        "id": "holiday_02",
+        "topic": "돌발: 명절/휴일",
+        "question_type": "돌발: 최근 명절 경험",
+        "question_text": "What did you do during the most recent holiday? Describe who you met and how you spent the day."
+      },
+      {
+        "id": "holiday_03",
+        "topic": "돌발: 명절/휴일",
+        "question_type": "돌발: 명절 과거 현재 비교",
+        "question_text": "How have holiday celebrations in your country changed compared to when you were a child?"
+      }
+    ]
+  },
+  "roleplay_combos": [
+    {
+      "theme": "공연/영화 티켓 예매",
+      "q11": {
+        "id": "rp_ticket_11",
+        "topic": "롤플레이",
+        "question_type": "롤플레이 (11번: 질문하기)",
+        "question_text": "You want to buy tickets for a concert with your friend. Call the ticket office and ask 3 or 4 questions about the concert and tickets."
+      },
+      "q12": {
+        "id": "rp_ticket_12",
+        "topic": "롤플레이",
+        "question_type": "롤플레이 (12번: 대안 제시)",
+        "question_text": "Due to a sudden schedule conflict, you cannot go to the concert. Call your friend, explain the situation, and offer 2 or 3 alternative solutions."
+      },
+      "q13": {
+        "id": "rp_ticket_13",
+        "topic": "롤플레이",
+        "question_type": "롤플레이 (13번: 유사경험)",
+        "question_text": "Have you ever experienced a situation where you had to cancel an event ticket or reschedule plans with a friend? How did you handle it?"
+      }
+    },
+    {
+      "theme": "친구와 파티 계획",
+      "q11": {
+        "id": "rp_party_11",
+        "topic": "롤플레이",
+        "question_type": "롤플레이 (11번: 질문하기)",
+        "question_text": "You want to plan a party with your friend. Call your friend and ask 3 or 4 questions about planning the party.",
+        "audio_file": "audio/q8.mp3"
+      },
+      "q12": {
+        "id": "rp_party_12",
+        "topic": "롤플레이",
+        "question_type": "롤플레이 (12번: 대안 제시)",
+        "question_text": "An unexpected problem has come up and you cannot attend the party. Call your friend, explain the situation, and offer 2 or 3 alternatives.",
+        "audio_file": "audio/q9.mp3"
+      },
+      "q13": {
+        "id": "rp_party_13",
+        "topic": "롤플레이",
+        "question_type": "롤플레이 (13번: 유사경험)",
+        "question_text": "Have you ever had a memorable plan cancelled unexpectedly? How did you resolve the situation?"
+      }
+    }
+  ],
+  "advanced_issue_combos": [
+    {
+      "theme": "기술 및 전자제품 트렌드",
+      "q14": {
+        "id": "adv_tech_14",
+        "topic": "심화이슈",
+        "question_type": "심화 (14번: 과거 현재 비교)",
+        "question_text": "Compare electronic devices people used in the past with devices people use today. What are the key differences?"
+      },
+      "q15": {
+        "id": "adv_tech_15",
+        "topic": "심화이슈",
+        "question_type": "심화 (15번: 이슈 토론)",
+        "question_text": "What are some current concerns or challenges related to internet and smartphone usage today? What is your opinion?"
+      }
+    },
+    {
+      "theme": "주거 및 숙박 산업 이슈",
+      "q14": {
+        "id": "adv_house_14",
+        "topic": "심화이슈",
+        "question_type": "심화 (14번: 과거 현재 비교)",
+        "question_text": "How has the housing market or living environment changed today compared to the past in your country?"
+      },
+      "q15": {
+        "id": "adv_house_15",
+        "topic": "심화이슈",
+        "question_type": "심화 (15번: 이슈 토론)",
+        "question_text": "What are some current issues or challenges related to the hotel and accommodation industry today? What is your opinion?",
+        "audio_file": "audio/q15.mp3"
+      }
+    }
+  ]
+}

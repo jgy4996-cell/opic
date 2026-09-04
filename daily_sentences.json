@@ -1,0 +1,65 @@
+[
+  {
+    "id": 1,
+    "key_expression": "a stone's throw away",
+    "korean_meaning": "엎어지면 코 닿을 매우 가까운 거리",
+    "category": "장소 묘사 / 거주지",
+    "opic_tip": "집 근처 공원, 카페, 영화관 묘사 질문(2, 5번)에서 근접성을 말할 때 쓰면 AL 확정 표현입니다.",
+    "exam_sentence": "My favorite cafe is located just a stone's throw away from my apartment, so I visit there almost every weekend.",
+    "korean_sentence": "제가 가장 좋아하는 카페는 아파트에서 엎어지면 코 닿을 거리에 있어서 거의 매 주말마다 방문합니다."
+  },
+  {
+    "id": 2,
+    "key_expression": "chill out",
+    "korean_meaning": "느긋하게 긴장을 풀고 쉬다",
+    "category": "활동 및 루틴 / 집에서 보내는 휴가",
+    "opic_tip": "단순히 'rest' 대신 'chill out'이나 'unwind'를 쓰면 원어민 특유의 자연스러운 구어체 점수를 받습니다.",
+    "exam_sentence": "Whenever I feel stressed out, you know, I love to just stay at home and chill out listening to jazz music.",
+    "korean_sentence": "스트레스를 받을 때마다, 아시겠지만, 저는 그냥 집에 머물며 재즈 음악을 듣고 느긋하게 휴식하는 것을 정말 좋아합니다."
+  },
+  {
+    "id": 3,
+    "key_expression": "come up with",
+    "korean_meaning": "(아이디어, 해결책을) 생각해내다 / 마련하다",
+    "category": "롤플레이 12번 / 문제 해결",
+    "opic_tip": "롤플레이 12번에서 약속 변경이나 대안을 제시할 때 필수로 쓰이는 만능 구동사입니다.",
+    "exam_sentence": "I am terribly sorry for the sudden cancellation, but I will come up with a better alternative for our meeting tomorrow.",
+    "korean_sentence": "갑작스러운 취소에 대해 정말 죄송하지만, 내일 미팅을 위해 제가 더 나은 대안을 마련해 오겠습니다."
+  },
+  {
+    "id": 4,
+    "key_expression": "leave a lasting impression",
+    "korean_meaning": "오래도록 잊히지 않는 깊은 인상을 남기다",
+    "category": "기억에 남는 경험 / 과거 사건",
+    "opic_tip": "4번, 7번, 13번 과거 경험 문제 결론부에서 '잊지 못할 경험이었다'를 고급스럽게 마무리하는 문장입니다.",
+    "exam_sentence": "The unexpected trip to the seaside was truly memorable and left a lasting impression on all of us.",
+    "korean_sentence": "그 예상치 못했던 바닷가 여행은 정말 기억에 남았고 우리 모두에게 깊은 인상을 남겼습니다."
+  },
+  {
+    "id": 5,
+    "key_expression": "call off",
+    "korean_meaning": "(약속, 행사를) 취소하다",
+    "category": "롤플레이 12번 / 유사 경험 13번",
+    "opic_tip": "'cancel'의 원어민식 구동사 표현으로, 오픽 롤플레이에서 상황을 설명할 때 매우 유용합니다.",
+    "exam_sentence": "Due to the heavy rainstorm, we had no choice but to call off our outdoor picnic plan.",
+    "korean_sentence": "폭우 때문에 우리는 야외 소풍 계획을 취소할 수밖에 없었습니다."
+  },
+  {
+    "id": 6,
+    "key_expression": "without a shadow of a doubt",
+    "korean_meaning": "추호의 의심도 없이 / 단언컨대",
+    "category": "음악 / 영화 / 인물 묘사",
+    "opic_tip": "자신이 좋아하는 가수나 영화를 강조할 때 도입부로 사용하면 세련된 강조 효과를 줍니다.",
+    "exam_sentence": "Without a shadow of a doubt, this cinema is the best place to enjoy blockbuster movies with immersive sound.",
+    "korean_sentence": "단언컨대, 이 영화관은 웅장한 사운드와 함께 블록버스터 영화를 즐기기에 최고의 장소입니다."
+  },
+  {
+    "id": 7,
+    "key_expression": "catch up with",
+    "korean_meaning": "(오랜만에 만나) 밀린 이야기를 나누다 / 회포를 풀다",
+    "category": "친구 약속 / 카페 / 휴일",
+    "opic_tip": "카페나 식당에서 친구와 만났을 때 단순한 'talk' 대신 사용하면 유창성이 극대화됩니다.",
+    "exam_sentence": "Whenever I visit that cozy cafe, I love to catch up with my close friends over a cup of hot latte.",
+    "korean_sentence": "그 아늑한 카페를 갈 때마다, 저는 따뜻한 라떼 한 잔을 마시며 친한 친구들과 밀린 이야기를 나누는 것을 좋아합니다."
+  }
+]

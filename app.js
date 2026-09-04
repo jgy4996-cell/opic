@@ -1,6 +1,6 @@
 // ==============================================================================
 // 파일명: app.js
-// 설명: OPIc Master AI 컨트롤러 (학습플랜 음성을 모의고사 공식 Eva 목소리로 100% 일치화)
+// 설명: OPIc Master AI 컨트롤러 (1일 1문장 원어민 발음 및 모의고사 Eva 음성 완벽 통일)
 // ==============================================================================
 
 // 오픽 고득점 1일 1문장 구동사 & 실전 문장 데이터 세트입니다.
@@ -226,6 +226,7 @@ const state = {
   },
   // [핵심] 실제 OPIc 공식 시험관 Eva 목소리를 1순위 기본값으로 지정합니다.
   selectedVoice: 'en-US-AriaNeural',
+  cachedBestVoice: null,
   questions: [],
   currentIndex: 0,
   listenCount: 0,
@@ -259,6 +260,37 @@ document.addEventListener('DOMContentLoaded', () => {
   initApp();
 });
 
+// 브라우저 내장 최상의 Eva 원어민 보이스 객체를 찾아 캐싱하는 함수입니다.
+function cacheBestEvaVoice() {
+  if (!window.speechSynthesis) return null;
+  const voices = window.speechSynthesis.getVoices();
+  if (!voices || voices.length === 0) return null;
+
+  // 1순위: Microsoft Aria (실제 OPIc Eva 공식 성우와 100% 동일한 목소리)
+  let best = voices.find(v => v.lang.startsWith('en') && (v.name.includes('Aria') || v.name.includes('AriaNeural')));
+  // 2순위: Microsoft Natural 계열 미국 여성 성우
+  if (!best) {
+    best = voices.find(v => v.lang.startsWith('en') && v.name.includes('Natural') && (v.name.includes('Jenny') || v.name.includes('Ava') || v.name.includes('Emma')));
+  }
+  // 3순위: 구글 크롬 고품질 미국 영어 (Google US English)
+  if (!best) {
+    best = voices.find(v => v.name.includes('Google US English') || (v.lang === 'en-US' && v.name.includes('Google')));
+  }
+  // 4순위: 아이폰 Safari / Mac 고품질 미국 성우 (Samantha / Ava)
+  if (!best) {
+    best = voices.find(v => v.lang.startsWith('en') && (v.name.includes('Samantha') || v.name.includes('Ava') || v.name.includes('Victoria')));
+  }
+  // 5순위: 기본 en-US 미국 여성 음성
+  if (!best) {
+    best = voices.find(v => v.lang === 'en-US' || v.lang.startsWith('en'));
+  }
+
+  if (best) {
+    state.cachedBestVoice = best;
+  }
+  return state.cachedBestVoice;
+}
+
 // 애플리케이션 초기화 함수입니다.
 function initApp() {
   loadOfficialSurveySettings();
@@ -277,6 +309,14 @@ function initApp() {
   initSpeechRecognition();
   initKoreanSpeechRecognition();
   checkServerConnection();
+
+  // 브라우저 음성 목록 비동기 로딩 이벤트 리스너 등록입니다.
+  if (window.speechSynthesis) {
+    cacheBestEvaVoice();
+    window.speechSynthesis.onvoiceschanged = () => {
+      cacheBestEvaVoice();
+    };
+  }
 }
 
 // 한국어 질문 청취 퀴즈 전용 이벤트 및 핸들러 초기화 함수입니다.
@@ -1234,6 +1274,7 @@ function initDailyChallenge() {
     });
   }
 
+  // [핵심] 오늘의 1일 1문장 원어민 발음 듣기 클릭 시 공식 Eva 목소리로 재생
   const listenBtn = document.getElementById('btn-listen-daily');
   if (listenBtn) {
     listenBtn.addEventListener('click', () => {
@@ -1630,11 +1671,11 @@ function renderPostRecordingAnalysis(transcript, durationSec, audioBlobUrl) {
   }
 }
 
-// 커스텀 텍스트를 공식 Eva 원어민 음성으로 즉시 재생하는 전역 헬퍼 함수입니다.
+// [핵심] 커스텀 텍스트 및 1일 1문장을 공식 Eva 원어민 음성으로 즉시 재생하는 전역 헬퍼 함수입니다.
 window.playCustomSpeech = function (encodedText) {
   const text = decodeURIComponent(encodedText);
   stopAllEvaAudio();
-  const rate = state.shadowingPlaybackRate || 1.0;
+  const rate = state.shadowingPlaybackRate || 0.92;
 
   if (state.isServerAvailable) {
     const voice = state.selectedVoice || 'en-US-AriaNeural';
@@ -1873,15 +1914,15 @@ function playFallbackSpeech(text, avatarEl, onEndedCallback = null) {
       if (onEndedCallback) onEndedCallback();
     };
 
-    audio.onerror = () => playBrowserSpeechFallback(text, avatarEl, 0.95, onEndedCallback);
-    audio.play().catch(() => playBrowserSpeechFallback(text, avatarEl, 0.95, onEndedCallback));
+    audio.onerror = () => playBrowserSpeechFallback(text, avatarEl, 0.92, onEndedCallback);
+    audio.play().catch(() => playBrowserSpeechFallback(text, avatarEl, 0.92, onEndedCallback));
   } else {
-    playBrowserSpeechFallback(text, avatarEl, 0.95, onEndedCallback);
+    playBrowserSpeechFallback(text, avatarEl, 0.92, onEndedCallback);
   }
 }
 
 // 브라우저 내장 음성 중 가장 실제 OPIc 시험관과 유사한 공식 Eva 보이스를 찾아 재생하는 함수입니다.
-function playBrowserSpeechFallback(text, avatarEl, rate = 0.95, onEndedCallback = null) {
+function playBrowserSpeechFallback(text, avatarEl, rate = 0.92, onEndedCallback = null) {
   const synth = window.speechSynthesis;
   if (!synth) return;
 
@@ -1890,19 +1931,9 @@ function playBrowserSpeechFallback(text, avatarEl, rate = 0.95, onEndedCallback 
   const utterance = new SpeechSynthesisUtterance(text);
   utterance.lang = 'en-US';
   utterance.rate = rate;
+  utterance.pitch = 1.02;
 
-  const voices = synth.getVoices();
-  const preferredVoice = voices.find(v => 
-    v.lang.startsWith('en') && (
-      v.name.includes('Aria') || 
-      v.name.includes('Natural') || 
-      v.name.includes('Ava') || 
-      v.name.includes('Jenny') || 
-      v.name.includes('Google US English') || 
-      v.name.includes('Samantha')
-    )
-  );
-
+  const preferredVoice = state.cachedBestVoice || cacheBestEvaVoice();
   if (preferredVoice) {
     utterance.voice = preferredVoice;
   }

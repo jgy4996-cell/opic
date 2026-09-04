@@ -1397,6 +1397,7 @@ function initPracticeTab() {
 
 // 실전 모의고사 탭 초기화 함수입니다.
 function initExamTab() {
+  // 실전 모의고사 시작 버튼
   const startExamBtn = document.getElementById('btn-start-exam');
   if (startExamBtn) {
     startExamBtn.addEventListener('click', () => {
@@ -1405,6 +1406,7 @@ function initExamTab() {
     });
   }
 
+  // 목소리 선택 셀렉트박스
   const voiceSelect = document.getElementById('select-eva-voice');
   if (voiceSelect) {
     voiceSelect.addEventListener('change', (e) => {
@@ -1414,14 +1416,58 @@ function initExamTab() {
     });
   }
 
+  // 목소리 미리듣기 버튼
   const previewVoiceBtn = document.getElementById('btn-preview-voice');
   if (previewVoiceBtn) {
     previewVoiceBtn.addEventListener('click', previewSelectedVoice);
   }
 
+  // 서베이 변경 이동 버튼
   const goMypageBtn = document.getElementById('btn-go-mypage-from-exam');
   if (goMypageBtn) {
     goMypageBtn.addEventListener('click', () => switchTab('mypage'));
+  }
+
+  // [핵심] 답변 녹음 시작 / 중지 토글 버튼 이벤트 등록
+  const recordBtn = document.getElementById('btn-toggle-recording');
+  if (recordBtn) {
+    recordBtn.addEventListener('click', toggleRecording);
+  }
+
+  // [핵심] 다음 문제로 넘어가기 / 시험 완료 버튼 이벤트 등록
+  const nextBtn = document.getElementById('btn-next-question');
+  if (nextBtn) {
+    nextBtn.addEventListener('click', onNextQuestionClick);
+  }
+
+  // [핵심] 질문 다시듣기 버튼 이벤트 등록
+  const replayBtn = document.getElementById('btn-replay-question');
+  if (replayBtn) {
+    replayBtn.addEventListener('click', () => {
+      if (state.listenCount < 1) {
+        state.listenCount++;
+        replayBtn.innerText = '🔊 질문 다시듣기 (0회 남음)';
+        playQuestionAudio();
+      } else {
+        alert('질문 다시듣기는 문제당 최대 2회(초기 재생 1회 + 다시듣기 1회)까지만 가능합니다.');
+      }
+    });
+  }
+
+  // [핵심] 모범답안 자동 채우기 버튼 이벤트 등록
+  const fillSampleBtn = document.getElementById('btn-fill-sample-answer');
+  if (fillSampleBtn) {
+    fillSampleBtn.addEventListener('click', fillSampleAnswer);
+  }
+
+  // [핵심] 성적표 화면에서 다시 연습하기 버튼 이벤트 등록
+  const restartBtn = document.getElementById('btn-restart-exam');
+  if (restartBtn) {
+    restartBtn.addEventListener('click', () => {
+      stopAllEvaAudio();
+      switchExamSubView('intro');
+      switchTab('practice');
+    });
   }
 }
 
@@ -2235,6 +2281,20 @@ window.playCustomSpeech = function (encodedText) {
 };
 
 // 브라우저 내장 Web Speech API를 활용한 Eva 원어민 음성 발화 폴백 함수입니다.
+
+// 브라우저 음성 합성 폴백 및 공통 음성 재생 헬퍼 함수입니다.
+function playFallbackSpeech(text, avatarEl = null, rateOrCallback = 0.95, onEndCallback = null) {
+  let rate = 0.95;
+  let callback = onEndCallback;
+  if (typeof rateOrCallback === 'function') {
+    callback = rateOrCallback;
+    rate = 0.95;
+  } else if (typeof rateOrCallback === 'number') {
+    rate = rateOrCallback;
+  }
+  playBrowserSpeechFallback(text, avatarEl, rate, callback);
+}
+
 function playBrowserSpeechFallback(text, avatarEl, rate = 0.95, onEndCallback = null) {
   if (!window.speechSynthesis) return;
   window.speechSynthesis.cancel();

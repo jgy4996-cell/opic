@@ -1,6 +1,6 @@
 <!-- ============================================================================== -->
 <!-- 파일명: index.html                                                               -->
-<!-- 설명: 토스(Toss) 미니앱 네이티브 앱 (Netlify/Firebase GUI 100% 보장 인라인 스타일 내장형) -->
+<!-- 설명: 토스(Toss) 미니앱 네이티브 앱 (캐시 방지 및 모의고사 Eva 실제 음성 100% 보장형)       -->
 <!-- ============================================================================== -->
 <!DOCTYPE html>
 <!-- 한국어 기본 언어 문서 선언입니다. -->
@@ -11,6 +11,10 @@
   <meta charset="UTF-8" />
   <!-- 모바일 뷰포트 및 아이폰 노치 safe-area 최적화입니다. -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <!-- 브라우저 캐시 방지 메타태그입니다 (최신 스크립트 강제 적용). -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <!-- 아이폰 Safari 웹앱 풀스크린 메타태그입니다. -->
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <!-- 상단 상태바 테마를 밝은 톤으로 지정합니다. -->
@@ -18,7 +22,7 @@
   <!-- 웹페이지 타이틀입니다. -->
   <title>OPIc Master AI - 에바 질문 한국어 퀴즈 & 실전 스피킹</title>
 
-  <!-- [중요] Netlify/Firebase/어디서든 GUI 깨짐을 100% 방지하는 인라인 스타일시트입니다. -->
+  <!-- Netlify/Firebase/GitHub Pages 배포 시 GUI 깨짐을 100% 방지하는 인라인 스타일시트입니다. -->
   <style>
     /* 모든 요소의 기본 박스 사이징 및 마진/패딩을 초기화합니다. */
     * {
@@ -618,9 +622,6 @@
       border-bottom: none;
     }
   </style>
-
-  <!-- 외부 파일 연결도 함께 유지합니다. -->
-  <link rel="stylesheet" href="style.css" />
 <!-- head 태그를 닫습니다. -->
 </head>
 <!-- 본문 바디 영역 시작입니다. -->
@@ -690,7 +691,7 @@
         </div>
 
         <div style="display: flex; gap: 8px;">
-          <button id="btn-listen-daily" style="flex: 1; background: var(--toss-blue); color: #ffffff; border: none; border-radius: 10px; padding: 10px; font-size: 13px; font-weight: 700; cursor: pointer;">
+          <button id="btn-listen-daily" style="flex: 1; background: var(--toss-blue); color: #ffffff; border: none; border-radius: 10px; padding: 10px; font-size: 13px; font-weight: 700; cursor: pointer; transition: background-color 0.2s ease;">
             🔊 원어민 발음 듣기
           </button>
           <button id="btn-shadow-daily" style="flex: 1; background: #ffffff; border: 1.5px solid var(--toss-blue); color: var(--toss-blue); border-radius: 10px; padding: 10px; font-size: 13px; font-weight: 700; cursor: pointer;">
@@ -1217,7 +1218,7 @@
         </div>
         <div class="stat-row">
           <span style="font-size: 14px; color: var(--toss-text-primary);">앱 버전</span>
-          <span style="font-size: 13px; color: var(--toss-text-muted);">v3.1.0 (Self-Contained Clean Edition)</span>
+          <span style="font-size: 13px; color: var(--toss-text-muted);">v3.3.0 (Official Eva MP3 Native Edition)</span>
         </div>
         <div class="stat-row" id="btn-clear-data" style="cursor: pointer;">
           <span style="font-size: 14px; color: var(--toss-red);">🗑️ 학습 데이터 초기화</span>
@@ -1272,6 +1273,7 @@
     </div>
   </div>
 
-  <script src="app.js"></script>
+  <!-- 캐시 버스팅 파라미터를 추가하여 항상 최신 Eva MP3 스크립트를 강제 로드합니다. -->
+  <script src="app.js?v=20260904_real_eva_v3"></script>
 </body>
 </html>

@@ -1,43 +1,28 @@
-<!-- ============================================================================== -->
-<!-- 파일명: index.html                                                               -->
-<!-- 설명: 토스(Toss) 미니앱 네이티브 앱 (캐시 방지 및 모의고사 Eva 실제 음성 100% 보장형)       -->
-<!-- ============================================================================== -->
-<!DOCTYPE html> <!-- 표준 HTML5 문서 선언입니다. -->
-<!-- 한국어 기본 언어 문서 선언입니다. -->
-<html lang="ko"> <!-- 한국어 웹 문서 루트 태그입니다. -->
-<!-- 문서 메타데이터 및 모바일 웹뷰 설정을 포함하는 head 영역입니다. -->
-<head> <!-- 문서 메타데이터 설정 영역입니다. -->
-  <!-- UTF-8 문자 인코딩을 지정합니다. -->
-  <meta charset="UTF-8" /> <!-- 브라우저 및 뷰포트 설정 메타태그입니다. -->
-  <!-- 모바일 뷰포트 및 아이폰 노치 safe-area 최적화입니다. -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" /> <!-- 브라우저 및 뷰포트 설정 메타태그입니다. -->
-  <!-- 브라우저 캐시 방지 메타태그입니다 (최신 스크립트 강제 적용). -->
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" /> <!-- 브라우저 및 뷰포트 설정 메타태그입니다. -->
-  <meta http-equiv="Pragma" content="no-cache" /> <!-- 브라우저 및 뷰포트 설정 메타태그입니다. -->
-  <meta http-equiv="Expires" content="0" /> <!-- 브라우저 및 뷰포트 설정 메타태그입니다. -->
-  <!-- 아이폰 Safari 웹앱 풀스크린 메타태그입니다. -->
-  <meta name="apple-mobile-web-app-capable" content="yes" /> <!-- 브라우저 및 뷰포트 설정 메타태그입니다. -->
-  <!-- 상단 상태바 테마를 밝은 톤으로 지정합니다. -->
-  <meta name="theme-color" content="#ffffff" /> <!-- 브라우저 및 뷰포트 설정 메타태그입니다. -->
-  <!-- 웹페이지 타이틀입니다. -->
-  <title>OPIc Master AI - 에바 질문 한국어 퀴즈 & 실전 스피킹</title> <!-- 브라우저 탭 웹페이지 타이틀입니다. -->
-  <!-- 외장 스타일시트 연결 태그입니다. -->
-  <link rel="stylesheet" href="style.css?v=20260904_survey_script_v10" /> <!-- 토스 디자인 스타일시트 연결 태그입니다. -->
-<!-- head 태그를 닫습니다. -->
-</head> <!-- 메타데이터 영역을 닫습니다. -->
-<!-- 본문 바디 영역 시작입니다. -->
-<body> <!-- 모바일 웹앱 본문 바디 영역입니다. -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="theme-color" content="#ffffff" />
+  <title>OPIc Master AI - 15문항 서베이 스크립트 & 실전 모의고사</title>
+  <link rel="stylesheet" href="style.css?v=20260904_5tabs_v11" />
+</head>
+<body>
 
-  <!-- 상단 토스 스타일 네비게이션 헤더입니다. -->
-  <header class="app-header"> <!-- 문서 메타데이터 설정 영역입니다. -->
+  <!-- 상단 토스 스타일 네비게이션 헤더 -->
+  <header class="app-header">
     <div class="logo-title">
-      <span style="color: var(--toss-blue);">🎙️</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-      <span id="app-header-title">오픽 마스터</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
+      <span style="color: var(--toss-blue);">🎙️</span>
+      <span id="app-header-title">오픽 마스터</span>
     </div>
     <div class="timer-badge" id="global-timer-display" style="display: none;">40:00</div>
-  </header> <!-- 상단 토스 헤더를 닫습니다. -->
+  </header>
 
-  <!-- 메인 모바일 앱 컨테이너입니다. -->
+  <!-- 메인 모바일 앱 컨테이너 -->
   <main class="container">
 
     <!-- ========================================================================== -->
@@ -45,7 +30,7 @@
     <!-- ========================================================================== -->
     <section id="tab-home" class="tab-content active">
 
-      <!-- 상단 프로필 환영 배너입니다. -->
+      <!-- 상단 드라이빙/퀵스타트 배너 -->
       <div class="profile-hero-card">
         <div style="font-size: 14px; opacity: 0.9; margin-bottom: 4px;">운전 중이거나 이동 중이신가요? 🚗</div>
         <h2 style="font-size: 20px; font-weight: 800; line-height: 1.3; margin-bottom: 12px;">
@@ -58,126 +43,174 @@
           <button id="btn-quick-start-quiz" style="flex: 1; min-width: 100px; background: #e0e7ff; color: #3730a3; border: none; border-radius: 12px; padding: 10px 12px; font-size: 13px; font-weight: 800; cursor: pointer;">
             👂 한국어 퀴즈
           </button>
-          <button id="btn-quick-start-script" style="flex: 1; min-width: 100px; background: #d1fae5; color: #065f46; border: none; border-radius: 12px; padding: 10px 12px; font-size: 13px; font-weight: 800; cursor: pointer;">
+          <button id="btn-quick-start-script" style="flex: 1; min-width: 100px; background: #d1fae5; color: #047857; border: none; border-radius: 12px; padding: 10px 12px; font-size: 13px; font-weight: 800; cursor: pointer;">
             ✍️ 스크립트 첨삭
           </button>
         </div>
       </div>
 
-      <!-- 오늘의 1일 1문장 챌린지 카드입니다. -->
-      <div class="daily-challenge-card">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-          <span style="font-size: 13px; font-weight: 800; color: #1e40af; display: flex; align-items: center; gap: 4px;"> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-            <span>✨ 오늘의 1일 1문장 챌린지</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-            <span id="daily-streak-badge" style="background: #dcfce7; color: #166534; font-size: 10px; padding: 2px 6px; border-radius: 6px;">🔥 1일차</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-          </span> <!-- 인라인 텍스트 요소를 닫습니다. -->
+      <!-- 오늘의 1일 1문장 AL 구동사 챌린지 카드 -->
+      <div class="toss-card" id="daily-challenge-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span class="badge" id="daily-streak-badge">🔥 Day 1 (장소 묘사)</span>
+            <span style="font-size: 13px; font-weight: 800; color: var(--toss-text-primary);">오늘의 1일 1문장</span>
+          </div>
           <div style="display: flex; gap: 4px;">
-            <button id="btn-prev-daily" style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 2px 6px; font-size: 11px; cursor: pointer;">◀</button>
-            <button id="btn-next-daily" style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 2px 6px; font-size: 11px; cursor: pointer;">▶</button>
+            <button id="btn-prev-daily" style="background: #f2f4f6; border: none; border-radius: 8px; width: 28px; height: 28px; font-weight: 700; cursor: pointer;">◀</button>
+            <button id="btn-next-daily" style="background: #f2f4f6; border: none; border-radius: 8px; width: 28px; height: 28px; font-weight: 700; cursor: pointer;">▶</button>
           </div>
         </div>
 
-        <div class="daily-expr-badge" id="daily-expr-title">a stone's throw away</div>
-        <div style="font-size: 14px; font-weight: 700; color: var(--toss-text-primary); margin-bottom: 4px;" id="daily-expr-korean">
-          엎어지면 코 닿을 매우 가까운 거리
-        </div>
-        <div style="font-size: 12px; color: #475569; margin-bottom: 10px; line-height: 1.4;" id="daily-expr-tip">
-          💡 집 근처 공원, 카페, 영화관 묘사 질문(2, 5번)에서 근접성을 말할 때 쓰면 AL 확정 표현입니다.
-        </div>
-
-        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; margin-bottom: 10px;">
-          <div style="font-size: 14px; font-weight: 700; color: #1e3a8a; line-height: 1.5; margin-bottom: 4px;" id="daily-exam-sentence">
+        <div style="background: #f8fafc; border-radius: 14px; padding: 14px; margin-bottom: 12px; border: 1px solid #e2e8f0;">
+          <div style="font-size: 17px; font-weight: 800; color: var(--toss-blue); margin-bottom: 4px;" id="daily-expr-title">
+            a stone's throw away
+          </div>
+          <div style="font-size: 13px; font-weight: 600; color: var(--toss-text-secondary); margin-bottom: 8px;" id="daily-expr-korean">
+            엎어지면 코 닿을 매우 가까운 거리
+          </div>
+          <div style="font-size: 12px; color: #047857; background: #ecfdf5; padding: 6px 10px; border-radius: 8px; line-height: 1.4; margin-bottom: 10px;" id="daily-expr-tip">
+            💡 집 근처 공원, 카페, 영화관 묘사 질문(2, 5번)에서 근접성을 말할 때 쓰면 AL 확정 표현입니다.
+          </div>
+          <div style="font-size: 14px; font-weight: 700; color: #1e293b; line-height: 1.5; margin-bottom: 4px;" id="daily-exam-sentence">
             "My favorite cafe is located just a stone's throw away from my apartment, so I visit there almost every weekend."
           </div>
-          <div style="font-size: 12px; color: var(--toss-text-muted);" id="daily-exam-korean">
-            "제가 가장 좋아하는 카페는 아파트에서 엎어지면 코 닿을 거리에 있어서 거의 매 주말마다 방문합니다."
+          <div style="font-size: 12px; color: #64748b; line-height: 1.4;" id="daily-exam-korean">
+            제가 가장 좋아하는 카페는 아파트에서 엎어지면 코 닿을 거리에 있어서 거의 매 주말마다 방문합니다.
           </div>
         </div>
 
         <div style="display: flex; gap: 8px;">
-          <button id="btn-listen-daily" style="flex: 1; background: var(--toss-blue); color: #ffffff; border: none; border-radius: 10px; padding: 10px; font-size: 13px; font-weight: 700; cursor: pointer; transition: background-color 0.2s ease;">
+          <button id="btn-listen-daily" style="flex: 1; background: var(--toss-blue); color: #ffffff; border: none; border-radius: 12px; padding: 12px; font-size: 13px; font-weight: 700; cursor: pointer;">
             🔊 원어민 발음 듣기
           </button>
-          <button id="btn-shadow-daily" style="flex: 1; background: #ffffff; border: 1.5px solid var(--toss-blue); color: var(--toss-blue); border-radius: 10px; padding: 10px; font-size: 13px; font-weight: 700; cursor: pointer;">
+          <button id="btn-shadow-daily" style="flex: 1; background: #ffffff; border: 1.5px solid var(--toss-blue); color: var(--toss-blue); border-radius: 12px; padding: 12px; font-size: 13px; font-weight: 700; cursor: pointer;">
             🎙️ 따라 말하기 연습
           </button>
         </div>
 
-        <div id="daily-shadow-result" style="display: none; margin-top: 10px; background: #ffffff; border: 1px solid #86efac; border-radius: 12px; padding: 10px; font-size: 12px; color: #166534;"></div>
+        <div id="daily-shadow-result" style="display: none; margin-top: 10px; background: #f0fdf4; border: 1px solid #86efac; border-radius: 12px; padding: 12px; font-size: 13px; color: #166534;"></div>
       </div>
 
-      <!-- 내 서베이 기반 빠른 연습 숏컷 카드입니다. -->
+      <!-- 내 서베이 맞춤 출제 정보 카드 -->
       <div class="toss-card">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-          <h3 style="margin-bottom: 0;">🎯 내 맞춤 서베이 스피킹</h3>
-          <button id="btn-go-mypage-survey" style="background: var(--toss-blue-light); color: var(--toss-blue); border: none; border-radius: 8px; padding: 4px 10px; font-size: 11px; font-weight: 700; cursor: pointer;">
-            서베이 설정 변경 ⚙️
+          <h3 style="margin-bottom: 0;">📋 내 서베이 설정</h3>
+          <button id="btn-go-mypage-survey" style="background: #f2f4f6; color: var(--toss-text-primary); border: none; border-radius: 8px; padding: 6px 10px; font-size: 12px; font-weight: 700; cursor: pointer;">
+            설정 변경 ⚙️
           </button>
         </div>
-        <p style="font-size: 13px; color: var(--toss-text-secondary); line-height: 1.5; margin-bottom: 12px;"> <!-- 안내 문구 설명 텍스트입니다. -->
-          영화, 카페, 공원, 집 묘사 등 내가 선택한 서베이 주제로만 1문항씩 집중 발화 훈련을 진행합니다.
-        </p> <!-- 안내 문구 텍스트를 닫습니다. -->
-        <button class="toss-btn-primary" id="btn-home-start-driving" style="margin-bottom: 8px;">
-          🚗 핸즈프리 드라이빙 모드 시작
-        </button>
-        <button class="toss-btn-primary" id="btn-home-start-exam" style="background-color: #ffffff; color: var(--toss-blue); border: 1.5px solid var(--toss-blue);">
-          🏆 15문항 실전 모의고사 풀세트
-        </button>
+        <p style="font-size: 13px; color: var(--toss-text-secondary); line-height: 1.5; margin-bottom: 12px;" id="home-survey-summary-text">
+          현재 <strong>[1타 강사 추천 AL 12종 꿀조합]</strong>이 적용되어 있습니다. (영화, 공원, 카페, 거주지, 롤플레이 등)
+        </p>
+
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <button class="toss-btn-primary" id="btn-home-start-driving" style="background: #059669; padding: 12px; font-size: 14px;">
+            🚗 핸즈프리 드라이빙 모드 시작
+          </button>
+          <button class="toss-btn-primary" id="btn-home-start-exam" style="padding: 12px; font-size: 14px;">
+            🏆 15문항 실전 모의고사 풀세트
+          </button>
+        </div>
       </div>
 
-      <!-- 최근 복습 리포트 바로가기 카드입니다. -->
-      <div class="toss-card">
+      <!-- 이전 복습 리포트 바로가기 -->
+      <div class="toss-card" id="home-recent-report-card">
         <div style="display: flex; justify-content: space-between; align-items: center;">
           <div>
-            <div style="font-size: 15px; font-weight: 700; color: var(--toss-text-primary);">📝 최근 발화 분석 & AI 리포트</div>
-            <div style="font-size: 12px; color: var(--toss-text-muted);" id="home-recent-date">최근 연습 기록이 없습니다.</div>
+            <div style="font-size: 12px; color: var(--toss-text-secondary); margin-bottom: 2px;">최근 모의고사 성적</div>
+            <div style="font-size: 16px; font-weight: 800; color: var(--toss-blue);" id="home-last-grade-display">IH (평가 완료)</div>
           </div>
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <span id="home-recent-level-badge" style="background: var(--toss-blue-light); color: var(--toss-blue); font-weight: 800; font-size: 14px; padding: 4px 10px; border-radius: 8px;">-</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-            <button id="btn-go-review-from-home" style="background: #f2f4f6; color: var(--toss-text-primary); border: none; border-radius: 8px; padding: 8px 12px; font-size: 12px; font-weight: 700; cursor: pointer;">
-              보기
+          <button id="btn-go-review-from-home" style="background: var(--toss-blue-light); color: var(--toss-blue); border: none; border-radius: 10px; padding: 8px 14px; font-size: 12px; font-weight: 700; cursor: pointer;">
+            오답노트 보기
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================== -->
+    <!-- [Tab 2]: ✍️ 마이 서베이 15문항 스크립트 작성 & AI 첨삭 연구소 탭 (독립 승격) -->
+    <!-- ========================================================================== -->
+    <section id="tab-script" class="tab-content">
+      <div class="script-hero-card">
+        <div style="font-size: 13px; opacity: 0.9; margin-bottom: 4px;">✍️ 마이 서베이 15문항 스크립트 첨삭 연구소</div>
+        <h2 style="font-size: 18px; font-weight: 800; line-height: 1.3; margin-bottom: 6px;">
+          문항을 클릭하고 내 생각을 적으면<br />AI가 AL 만점 스크립트로 첨삭해 드립니다!
+        </h2>
+        <div style="font-size: 12px; opacity: 0.9;">
+          📋 내 서베이 15문항 완벽 정복 모드
+        </div>
+      </div>
+
+      <!-- 15문항 가로 스크롤 칩 네비게이터 바 -->
+      <div class="toss-card" style="padding: 12px 14px; margin-bottom: 12px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <span style="font-size: 13px; font-weight: 800; color: #065f46;">🎯 서베이 15문항 목록 (클릭하여 이동)</span>
+          <span id="script-chip-saved-count" style="font-size: 11px; background: #d1fae5; color: #047857; padding: 2px 8px; border-radius: 8px; font-weight: 700;">0/15 작성완료</span>
+        </div>
+        <div class="q-chip-scroll" id="script-q-chips-container">
+          <!-- 자바스크립트로 Q1~Q15 칩 동적 렌더링 -->
+        </div>
+      </div>
+
+      <!-- 선택된 문항 상세 및 스크립트 작성 카드 -->
+      <div class="toss-card">
+        <!-- 문항 헤더 및 질문 정보 -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 6px;">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span id="script-active-q-badge" style="font-size: 12px; font-weight: 800; background: #059669; color: #ffffff; padding: 3px 8px; border-radius: 8px;">Q1</span>
+            <span id="script-active-q-topic" style="font-size: 14px; font-weight: 800; color: var(--toss-text-primary);">[자기소개]</span>
+          </div>
+          <div style="display: flex; gap: 6px;">
+            <button id="btn-script-play-question-audio" style="background: #eff6ff; color: var(--toss-blue); border: 1px solid #bfdbfe; border-radius: 8px; padding: 4px 10px; font-size: 11px; font-weight: 700; cursor: pointer;">
+              🔊 질문 듣기
+            </button>
+            <button id="btn-load-template-script" style="background: #d1fae5; color: #047857; border: none; border-radius: 8px; padding: 4px 10px; font-size: 11px; font-weight: 700; cursor: pointer;">
+              💡 1타강사 템플릿
             </button>
           </div>
         </div>
-      </div>
-    </section> <!-- 탭 화면 섹션을 닫습니다. -->
 
-    <!-- ========================================================================== -->
-    <!-- [Tab 2]: 📅 단계별 학습플랜 탭                                             -->
-    <!-- ========================================================================== -->
-    <section id="tab-plan" class="tab-content">
-      <div class="toss-card" style="margin-bottom: 10px;">
-        <h2 style="font-size: 20px; font-weight: 800; color: var(--toss-text-primary); margin-bottom: 4px;">7일 완성 목표별 플랜</h2>
-        <p style="font-size: 13px; color: var(--toss-text-secondary);">하루 1퀘스트씩 실전 문제를 발화하고 AL까지 정복해보세요.</p> <!-- 안내 문구 설명 텍스트입니다. -->
-      </div>
-
-      <!-- 레벨 선택 알약 탭 -->
-      <div style="display: flex; gap: 6px; margin-bottom: 12px;">
-        <button class="plan-pill-btn active" data-level="beginner" style="flex: 1; background: #ffffff; border: 1.5px solid var(--toss-blue); color: var(--toss-blue); border-radius: 12px; padding: 10px; font-size: 13px; font-weight: 800; cursor: pointer;">
-          🥉 초급 (IL~IM2)
-        </button>
-        <button class="plan-pill-btn" data-level="intermediate" style="flex: 1; background: #ffffff; border: 1.5px solid #cbd5e1; color: var(--toss-text-secondary); border-radius: 12px; padding: 10px; font-size: 13px; font-weight: 800; cursor: pointer;">
-          🥈 중급 (IM3~IH)
-        </button>
-        <button class="plan-pill-btn" data-level="advanced" style="flex: 1; background: #ffffff; border: 1.5px solid #cbd5e1; color: var(--toss-text-secondary); border-radius: 12px; padding: 10px; font-size: 13px; font-weight: 800; cursor: pointer;">
-          🥇 고급 (AL 만점)
-        </button>
-      </div>
-
-      <!-- 플랜 진도율 카드 -->
-      <div class="toss-card">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-          <span style="font-size: 14px; font-weight: 700;" id="plan-progress-title">초급 플랜 진도율</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-          <span style="font-size: 13px; font-weight: 800; color: var(--toss-blue);" id="plan-progress-percent">0% (0/7)</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
+        <!-- 실제 영어 질문 텍스트 -->
+        <div id="script-active-question-box" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px 12px; margin-bottom: 12px;">
+          <div style="font-size: 11px; font-weight: 700; color: #64748b; margin-bottom: 2px;" id="script-active-q-type">질문 유형: 자기소개</div>
+          <div style="font-size: 13px; font-weight: 700; color: #1e293b; line-height: 1.4;" id="script-active-question-text">
+            "Let's start the interview now. Tell me a little bit about yourself."
+          </div>
         </div>
-        <div style="background: #e5e8eb; height: 8px; border-radius: 4px; overflow: hidden;">
-          <div id="plan-progress-bar" style="background: var(--toss-blue); width: 0%; height: 100%; transition: width 0.3s ease;"></div>
+
+        <!-- 스크립트 작성 텍스트에어리어 -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <span style="font-size: 12px; font-weight: 700; color: var(--toss-text-secondary);">내 생각 작성 (한글 또는 영어로 자유롭게 작성)</span>
+          <button id="btn-stt-script-draft" style="background: #eff6ff; color: var(--toss-blue); border: 1px solid #bfdbfe; border-radius: 8px; padding: 4px 8px; font-size: 11px; font-weight: 700; cursor: pointer;">
+            🎙️ 음성으로 말해서 넣기
+          </button>
+        </div>
+        <textarea id="script-draft-textarea" rows="4" style="width: 100%; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 12px; font-size: 14px; line-height: 1.5; background: #fafbfc; color: var(--toss-text-primary); resize: vertical;" placeholder="예) 우리 집 근처에 있는 영화관을 자주 가는데 시설이 깨끗하고 팝콘이 맛있어서 주말마다 방문합니다."></textarea>
+
+        <div style="margin-top: 10px; display: flex; gap: 8px;">
+          <button id="btn-analyze-upgrade-script" class="toss-btn-primary" style="background: #059669; padding: 14px;">
+            ✨ AI 원클릭 첨삭 & AL 만점 스크립트 생성
+          </button>
         </div>
       </div>
 
-      <!-- 일자별 퀘스트 카드 목록 컨테이너 -->
-      <div id="plan-quest-list-container"></div>
-    </section> <!-- 탭 화면 섹션을 닫습니다. -->
+      <!-- AI 첨삭 및 AL 승격 결과 카드 (동적 렌더링) -->
+      <div id="script-upgrade-result-box" style="display: none;"></div>
+
+      <!-- 내 저장된 스크립트 보관함 카드 -->
+      <div class="toss-card" style="margin-top: 14px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+          <h3 style="margin-bottom: 0; color: #065f46;">📖 내 15문항 스크립트 보관함</h3>
+          <span id="saved-script-count-badge" style="font-size: 11px; background: #d1fae5; color: #047857; padding: 3px 8px; border-radius: 8px; font-weight: 700;">0개 저장됨</span>
+        </div>
+        <div id="saved-script-list-container">
+          <div style="font-size: 13px; color: var(--toss-text-muted); text-align: center; padding: 16px;">
+            아직 저장된 스크립트가 없습니다. 위에서 작성하고 [보관함 저장]을 눌러보세요!
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!-- ========================================================================== -->
     <!-- [Tab 3]: 🎯 자투리 스피킹 연습 탭                                           -->
@@ -185,7 +218,7 @@
     <section id="tab-practice" class="tab-content">
       <div class="toss-card" style="margin-bottom: 10px;">
         <h2 style="font-size: 20px; font-weight: 800; color: var(--toss-text-primary); margin-bottom: 4px;">자투리 스피킹 연습</h2>
-        <p style="font-size: 13px; color: var(--toss-text-secondary);">출퇴근길이나 이동 중에 부담 없이 1문항씩 집중 연습하세요.</p> <!-- 안내 문구 설명 텍스트입니다. -->
+        <p style="font-size: 13px; color: var(--toss-text-secondary);">출퇴근길이나 이동 중에 부담 없이 1문항씩 집중 연습하세요.</p>
       </div>
 
       <div class="toss-card">
@@ -209,92 +242,55 @@
             <div class="mode-title" style="color: #7e22ce;">한국어 질문 퀴즈 ★</div>
             <div class="mode-desc">영어 질문 듣고 한국말로 무슨 뜻인지 맞히기</div>
           </div>
-          <div class="mode-card-btn" data-mode="script" id="prac-mode-script" style="border: 1.5px solid #10b981;">
-            <div class="mode-icon">✍️</div>
-            <div class="mode-title" style="color: #059669;">스크립트 AI 첨삭 ★</div>
-            <div class="mode-desc">내 문장 작성/녹음 ➔ AL 만점 승격 첨삭</div>
-          </div>
-        </div>
-
-        <div class="mode-selector-grid">
-          <div class="mode-card-btn" data-mode="3combo" id="prac-mode-3combo" style="grid-column: span 2;">
+          <div class="mode-card-btn" data-mode="3combo" id="prac-mode-3combo">
             <div class="mode-icon">🎯</div>
             <div class="mode-title">3-콤보 집중팩</div>
-            <div class="mode-desc">장소 묘사 ➔ 루틴 ➔ 과거 기억에 남는 경험 3콤보 연속 발화 격파</div>
+            <div class="mode-desc">장소 묘사 ➔ 루틴 ➔ 과거 기억 3연속 발화</div>
           </div>
         </div>
 
-        <div class="toss-card">
+        <div class="toss-card" style="margin-top: 10px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
             <h3 style="margin-bottom: 0;">🎙️ Eva 시험관 목소리</h3>
             <button id="btn-preview-voice-prac" style="background: var(--toss-blue-light); color: var(--toss-blue); border: none; border-radius: 10px; padding: 6px 12px; font-size: 12px; font-weight: 700; cursor: pointer;">
               🔊 미리듣기
             </button>
           </div>
-          <select id="select-eva-voice-prac" style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--toss-border); font-size: 14px; font-weight: 600; background: #fafbfc; color: var(--toss-text-primary);"> <!-- 옵션 선택 셀렉트박스 요소입니다. -->
-            <option value="en-US-AriaNeural" selected>⭐ 실제 OPIc 공식 Eva 목소리 (오리지널)</option> <!-- 드롭다운 세부 선택 옵션입니다. -->
-            <option value="en-US-AvaNeural">Ava (초자연적 미국 원어민 성우)</option> <!-- 드롭다운 세부 선택 옵션입니다. -->
-            <option value="en-US-EmmaNeural">Emma (전문 면접관 성우 - 또박또박함)</option> <!-- 드롭다운 세부 선택 옵션입니다. -->
-          </select> <!-- 셀렉트박스 요소를 닫습니다. -->
+          <select id="select-eva-voice-prac" style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--toss-border); font-size: 14px; font-weight: 600; background: #fafbfc; color: var(--toss-text-primary);">
+            <option value="en-US-AriaNeural" selected>⭐ 실제 OPIc 공식 Eva 목소리 (오리지널)</option>
+            <option value="en-US-AvaNeural">Ava (초자연적 미국 원어민 성우)</option>
+            <option value="en-US-EmmaNeural">Emma (전문 면접관 성우 - 또박또박함)</option>
+          </select>
         </div>
 
         <button class="toss-btn-primary" id="btn-start-practice">
           🚀 선택한 모드로 시작하기
         </button>
       </div>
-    </section> <!-- 탭 화면 섹션을 닫습니다. -->
+    </section>
 
     <!-- ========================================================================== -->
-    <!-- [Tab 4]: 🏆 실전 모의고사 & 테스트 / 퀴즈 / 스크립트 랩 화면                  -->
+    <!-- [Tab 4]: 🏆 15문항 실전 모의고사 탭 (40분 풀테스트 전용)                      -->
     <!-- ========================================================================== -->
     <section id="tab-exam" class="tab-content">
 
-      <!-- 서베이 확인 및 모의고사 / 스크립트 첨삭 선택 화면 -->
+      <!-- 서베이 확인 및 모의고사 시작 인트로 뷰 -->
       <div id="exam-view-survey">
         <div class="toss-card" style="margin-bottom: 12px; background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); color: #ffffff;">
-          <div style="font-size: 13px; opacity: 0.9; margin-bottom: 4px;">🏆 OPIc Master AI 실전 센터</div>
+          <div style="font-size: 13px; opacity: 0.9; margin-bottom: 4px;">🏆 OPIc 공식 실전 모의고사 센터</div>
           <h2 style="font-size: 20px; font-weight: 800; line-height: 1.3; margin-bottom: 6px;">
-            15문항 실전 모의고사 &<br />서베이 맞춤 스크립트 첨삭
+            15문항 40분 실전 풀테스트
           </h2>
           <p style="font-size: 13px; opacity: 0.9; line-height: 1.4; margin-bottom: 0;">
-            마이페이지 맞춤 서베이를 기반으로 실전 시험을 치르거나, 15개 전 문항을 하나씩 클릭하여 나만의 AL 스크립트를 완성해보세요!
+            실제 시험장과 100% 동일하게 에바 질문을 듣고 답변을 녹음하며 종합 등급(AL/IH/IM)을 판정받습니다.
           </p>
-        </div>
-
-        <!-- 2가지 핵심 학습 모드 선택 듀얼 카드 -->
-        <div style="display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 12px;">
-          <div class="exam-mode-dual-card" id="btn-start-exam" style="border: 2px solid var(--toss-blue); background: #f0f7ff;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-              <span style="font-size: 16px; font-weight: 800; color: var(--toss-blue);">🏆 1. 15문항 실전 모의고사</span>
-              <span style="font-size: 11px; background: var(--toss-blue); color: #fff; padding: 2px 8px; border-radius: 8px; font-weight: 700;">40분 풀테스트</span>
-            </div>
-            <p style="font-size: 13px; color: var(--toss-text-secondary); margin-bottom: 8px; line-height: 1.4;">
-              실제 시험과 동일하게 15문제를 연속으로 듣고 말하며 최종 등급(AL/IH/IM)을 판정받습니다.
-            </p>
-            <button class="toss-btn-primary" style="padding: 10px; font-size: 13px; border-radius: 10px;">
-              ▶ 실전 모의고사 시작하기
-            </button>
-          </div>
-
-          <div class="exam-mode-dual-card" id="btn-start-script-from-exam" style="border: 2px solid #10b981; background: #f0fdf4;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-              <span style="font-size: 16px; font-weight: 800; color: #065f46;">✍️ 2. 15문항 서베이 스크립트 첨삭 연구소 ★</span>
-              <span style="font-size: 11px; background: #10b981; color: #fff; padding: 2px 8px; border-radius: 8px; font-weight: 700;">문항별 개별 첨삭</span>
-            </div>
-            <p style="font-size: 13px; color: #047857; margin-bottom: 8px; line-height: 1.4;">
-              내 서베이 15문항을 하나씩 클릭하여 내 생각을 적고, AI가 AL 만점 문장으로 승격 첨삭해 드립니다!
-            </p>
-            <button class="toss-btn-primary" style="background: #059669; padding: 10px; font-size: 13px; border-radius: 10px;">
-              ✍️ 15문항 스크립트 첨삭 모드 열기
-            </button>
-          </div>
         </div>
 
         <div class="toss-card">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-            <h3 style="margin-bottom: 0;">📋 현재 적용된 서베이 & 난이도</h3>
+            <h3 style="margin-bottom: 0;">📋 적용된 맞춤 서베이</h3>
             <button id="btn-go-mypage-from-exam" style="background: #f2f4f6; color: var(--toss-text-primary); border: none; border-radius: 8px; padding: 6px 10px; font-size: 12px; font-weight: 700; cursor: pointer;">
-              설정 변경 ⚙️
+              서베이 변경 ⚙️
             </button>
           </div>
           <p style="font-size: 13px; color: var(--toss-text-secondary); line-height: 1.5; margin-bottom: 0;" id="exam-survey-preview-text">
@@ -315,95 +311,132 @@
             <option value="en-US-EmmaNeural">Emma (전문 면접관 성우 - 또박또박함)</option>
           </select>
         </div>
-      </div>
 
-      <!-- [신규] 나만의 서베이 15문항 스크립트 작성 & AI 첨삭 연구소 화면 -->
-      <div id="exam-view-script" style="display: none;">
-        <div class="script-hero-card">
-          <div style="font-size: 13px; opacity: 0.9; margin-bottom: 4px;">✍️ 마이 서베이 15문항 스크립트 첨삭 연구소</div>
-          <h2 style="font-size: 18px; font-weight: 800; line-height: 1.3; margin-bottom: 6px;">
-            문항을 클릭하고 내 생각을 적으면<br />AI가 AL 만점 스크립트로 첨삭해 드립니다!
-          </h2>
-          <div style="font-size: 12px; opacity: 0.9;" id="script-progress-summary-text">
-            📋 내 서베이 15문항 완벽 정복 모드
-          </div>
-        </div>
-
-        <!-- 15문항 가로 스크롤 칩 네비게이터 바 -->
-        <div class="toss-card" style="padding: 12px 14px; margin-bottom: 12px;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-            <span style="font-size: 13px; font-weight: 800; color: #065f46;">🎯 서베이 15문항 목록 (클릭하여 이동)</span>
-            <span id="script-chip-saved-count" style="font-size: 11px; background: #d1fae5; color: #047857; padding: 2px 8px; border-radius: 8px; font-weight: 700;">0/15 완료</span>
-          </div>
-          <div class="q-chip-scroll" id="script-q-chips-container">
-            <!-- 자바스크립트로 Q1~Q15 칩 동적 렌더링 -->
-          </div>
-        </div>
-
-        <!-- 선택된 문항 상세 및 스크립트 작성 카드 -->
-        <div class="toss-card">
-          <!-- 문항 헤더 및 질문 정보 -->
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 6px;">
-            <div style="display: flex; align-items: center; gap: 6px;">
-              <span id="script-active-q-badge" style="font-size: 12px; font-weight: 800; background: #059669; color: #ffffff; padding: 3px 8px; border-radius: 8px;">Q1</span>
-              <span id="script-active-q-topic" style="font-size: 14px; font-weight: 800; color: var(--toss-text-primary);">자기소개</span>
-            </div>
-            <div style="display: flex; gap: 6px;">
-              <button id="btn-script-play-question-audio" style="background: #eff6ff; color: var(--toss-blue); border: 1px solid #bfdbfe; border-radius: 8px; padding: 4px 10px; font-size: 11px; font-weight: 700; cursor: pointer;">
-                🔊 질문 듣기
-              </button>
-              <button id="btn-load-template-script" style="background: #d1fae5; color: #047857; border: none; border-radius: 8px; padding: 4px 10px; font-size: 11px; font-weight: 700; cursor: pointer;">
-                💡 1타강사 템플릿
-              </button>
-            </div>
-          </div>
-
-          <!-- 실제 영어 질문 텍스트 -->
-          <div id="script-active-question-box" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px 12px; margin-bottom: 12px;">
-            <div style="font-size: 11px; font-weight: 700; color: #64748b; margin-bottom: 2px;" id="script-active-q-type">질문 유형: 자기소개</div>
-            <div style="font-size: 13px; font-weight: 700; color: #1e293b; line-height: 1.4;" id="script-active-question-text">
-              "Let's start the interview now. Tell me a little bit about yourself."
-            </div>
-          </div>
-
-          <!-- 스크립트 작성 텍스트에어리어 -->
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-            <span style="font-size: 12px; font-weight: 700; color: var(--toss-text-secondary);">내 생각 작성 (한글 또는 영어로 자유롭게 작성)</span>
-            <button id="btn-stt-script-draft" style="background: #eff6ff; color: var(--toss-blue); border: 1px solid #bfdbfe; border-radius: 8px; padding: 4px 8px; font-size: 11px; font-weight: 700; cursor: pointer;">
-              🎙️ 음성으로 말해서 넣기
-            </button>
-          </div>
-          <textarea id="script-draft-textarea" rows="4" style="width: 100%; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 12px; font-size: 14px; line-height: 1.5; background: #fafbfc; color: var(--toss-text-primary); resize: vertical;" placeholder="예) 우리 집 근처에 있는 영화관을 자주 가는데 시설이 깨끗하고 팝콘이 맛있어서 주말마다 방문합니다."></textarea>
-
-          <div style="margin-top: 10px; display: flex; gap: 8px;">
-            <button id="btn-analyze-upgrade-script" class="toss-btn-primary" style="background: #059669; padding: 14px;">
-              ✨ AI 원클릭 첨삭 & AL 만점 스크립트 생성
-            </button>
-          </div>
-        </div>
-
-        <!-- AI 첨삭 및 AL 승격 결과 카드 (동적 렌더링) -->
-        <div id="script-upgrade-result-box" style="display: none;"></div>
-
-        <!-- 내 저장된 스크립트 보관함 카드 -->
-        <div class="toss-card" style="margin-top: 14px;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-            <h3 style="margin-bottom: 0; color: #065f46;">📖 내 15문항 스크립트 보관함</h3>
-            <span id="saved-script-count-badge" style="font-size: 11px; background: #d1fae5; color: #047857; padding: 3px 8px; border-radius: 8px; font-weight: 700;">0개 저장됨</span>
-          </div>
-          <div id="saved-script-list-container">
-            <div style="font-size: 13px; color: var(--toss-text-muted); text-align: center; padding: 16px;">
-              아직 저장된 스크립트가 없습니다. 위에서 작성하고 [보관함 저장]을 눌러보세요!
-            </div>
-          </div>
-        </div>
-
-        <button id="btn-back-from-script" style="width: 100%; background: #f2f4f6; color: var(--toss-text-primary); border: none; border-radius: 14px; padding: 14px; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 10px;">
-          ⬅️ 모의고사 메뉴로 돌아가기
+        <button class="toss-btn-primary" id="btn-start-exam" style="margin-top: 10px; padding: 16px; font-size: 16px;">
+          🏆 15문항 실전 시험 시작하기 (40분)
         </button>
       </div>
 
-      <!-- 한국어 질문 퀴즈 진행 화면 -->
+      <!-- 시험 진행 화면 (질문 청취 & 녹음 & 다음 문항 이동) -->
+      <div id="exam-view-testing" style="display: none;">
+        <div class="eva-main-card">
+          <div class="eva-avatar-large" id="eva-avatar-box">👩‍💼</div>
+          <div style="font-size: 18px; font-weight: 800; margin-bottom: 4px;">Eva (OPIc 면접관)</div>
+          <div style="font-size: 13px; color: var(--toss-blue);" id="eva-speaking-status">질문을 듣고 답변해주세요</div>
+          <button class="btn-listen-mini" id="btn-replay-question" style="margin-top: 8px;">
+            🔊 질문 다시듣기 (1회 남음)
+          </button>
+        </div>
+
+        <div class="toss-card" style="margin-bottom: 12px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span class="badge" id="exam-progress-badge">1 / 15</span>
+              <span style="font-weight: 700; font-size: 14px;" id="exam-current-topic">영화관</span>
+            </div>
+            <span style="font-size: 11px; background: #f2f4f6; color: var(--toss-text-secondary); padding: 3px 8px; border-radius: 8px;" id="exam-current-type">장소 묘사</span>
+          </div>
+          <div style="font-size: 15px; font-weight: 700; line-height: 1.4; color: var(--toss-text-primary);" id="exam-question-text">
+            "You indicated in the survey that you go to the movies. Tell me about the movie theater you usually go to..."
+          </div>
+        </div>
+
+        <!-- 실시간 발화 속도(WPM) & 단어 수 HUD -->
+        <div class="speaking-hud">
+          <div class="hud-item">
+            <span class="hud-label">발화 단어수</span>
+            <span class="hud-value" id="hud-word-count">0 단어</span>
+          </div>
+          <div class="hud-item">
+            <span class="hud-label">말하기 속도</span>
+            <span class="hud-value" id="hud-wpm">0 WPM</span>
+          </div>
+          <div class="hud-item">
+            <span class="hud-label">AL 유창성 판정</span>
+            <span class="hud-value" id="hud-fluency-grade" style="color: var(--toss-green);">준비 중</span>
+          </div>
+        </div>
+
+        <!-- 텍스트 입력 및 STT 트랜스크립트 영역 -->
+        <div class="toss-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <span style="font-size: 12px; font-weight: 700; color: var(--toss-text-secondary);">내 답변 (음성인식 STT 또는 키보드 작성)</span>
+            <button id="btn-fill-sample-answer" style="background: #eff6ff; color: var(--toss-blue); border: none; border-radius: 8px; padding: 4px 8px; font-size: 11px; font-weight: 700; cursor: pointer;">
+              💡 모범답안 채우기
+            </button>
+          </div>
+          <textarea id="stt-input-textarea" rows="4" style="width: 100%; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 12px; font-size: 14px; line-height: 1.5; background: #fafbfc; color: var(--toss-text-primary); resize: vertical;" placeholder="🎙️ [답변 녹음 시작] 버튼을 누르고 편안하게 말씀하세요..."></textarea>
+        </div>
+
+        <!-- 녹음 제어 및 다음 문제 이동 버튼 -->
+        <button class="toss-btn-record" id="btn-toggle-recording">
+          🎙️ 답변 녹음 시작
+        </button>
+
+        <div id="recording-status-text" style="font-size: 13px; color: var(--toss-text-secondary); text-align: center; margin-top: 8px; font-weight: 600;">
+          버튼을 누르면 마이크 녹음 및 실시간 STT가 시작됩니다.
+        </div>
+
+        <button class="toss-btn-primary" id="btn-next-question" style="margin-top: 10px;">
+          다음 문제 ➔
+        </button>
+
+        <!-- 녹음 직후 즉시 분석 피드백 박스 -->
+        <div id="post-recording-analysis-box" style="display: none; margin-top: 14px;"></div>
+      </div>
+
+      <!-- 모의고사 최종 1:1 비교 복습 리포트 화면 -->
+      <div id="exam-view-report" style="display: none;">
+        <div class="toss-card" style="text-align: center; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #ffffff; padding: 24px 20px;">
+          <div style="font-size: 14px; opacity: 0.9; margin-bottom: 4px;">🎉 15문항 모의고사 완료</div>
+          <div style="font-size: 32px; font-weight: 900; margin-bottom: 6px;" id="final-grade-display">AL (Advanced Low)</div>
+          <div style="font-size: 14px; opacity: 0.95;" id="final-score-display">종합 평가 점수: 94점 / 100점</div>
+        </div>
+
+        <div class="toss-card">
+          <h3>📊 영역별 성취도 분석</h3>
+          <div class="stat-row">
+            <span style="font-size: 13px; color: var(--toss-text-secondary);">과제 수행도 (Task Completion)</span>
+            <span style="font-size: 14px; font-weight: 800; color: var(--toss-blue);" id="score-task">95점</span>
+          </div>
+          <div class="stat-row">
+            <span style="font-size: 13px; color: var(--toss-text-secondary);">문법 정확도 (Grammar)</span>
+            <span style="font-size: 14px; font-weight: 800; color: var(--toss-blue);" id="score-grammar">90점</span>
+          </div>
+          <div class="stat-row">
+            <span style="font-size: 13px; color: var(--toss-text-secondary);">어휘 다양성 (Vocabulary)</span>
+            <span style="font-size: 14px; font-weight: 800; color: var(--toss-blue);" id="score-vocab">92점</span>
+          </div>
+          <div class="stat-row">
+            <span style="font-size: 13px; color: var(--toss-text-secondary);">유창성 & WPM 속도 (Fluency)</span>
+            <span style="font-size: 14px; font-weight: 800; color: var(--toss-blue);" id="score-fluency">98점</span>
+          </div>
+        </div>
+
+        <div class="toss-card">
+          <h3 style="color: #059669;">💡 1타 강사 총평 & AL 공략 팁</h3>
+          <p style="font-size: 13px; color: var(--toss-text-secondary); line-height: 1.6; margin-bottom: 0;" id="report-summary-comment">
+            전체적으로 자연스러운 원어민 필러(You know, Well)를 훌륭하게 구사하셨습니다.
+          </p>
+        </div>
+
+        <!-- 15문항 1:1 비교 복습 카드 컨테이너 -->
+        <div class="toss-card">
+          <h3 style="margin-bottom: 12px;">📝 15문항 1:1 내 답변 vs AL 모범답안 비교</h3>
+          <div id="report-question-comparison-list"></div>
+        </div>
+
+        <div style="display: flex; gap: 8px; margin-top: 12px;">
+          <button class="toss-btn-primary" id="btn-share-report" style="flex: 1; background: #3b82f6;">
+            📋 성적표 복사 & 공유
+          </button>
+          <button class="toss-btn-primary" id="btn-restart-exam" style="flex: 1; background: #10b981;">
+            🔄 다시 연습하기
+          </button>
+        </div>
+      </div>
+
+      <!-- 한국어 질문 퀴즈 서브 뷰 -->
       <div id="exam-view-quiz" style="display: none;">
         <div class="quiz-hero-card">
           <div style="font-size: 13px; opacity: 0.9; margin-bottom: 4px;">👂 에바 질문 청취 & 한국어 뜻 맞히기</div>
@@ -420,349 +453,147 @@
           </div>
         </div>
 
-        <div class="toss-card" style="background: #fdfefe; border: 1.5px dashed #cbd5e1; text-align: center; padding: 20px;">
-          <div style="font-size: 14px; color: var(--toss-text-muted); margin-bottom: 6px;">실제 시험처럼 질문 글자는 가려집니다 🙈</div>
-          <div style="font-size: 20px; font-weight: 800; color: var(--toss-text-primary);" id="quiz-masked-title">
-            "🎧 질문 음성이 재생 중입니다..."
-          </div>
-        </div>
-
         <div class="toss-card">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-            <span style="font-size: 13px; font-weight: 700; color: var(--toss-text-secondary);">한국어 정답 입력 (음성 or 직접입력)</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-            <span style="font-size: 11px; color: #7c3aed; font-weight: 700;">🗣️ 한국어로 말하면 자동 기록</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-          </div>
-
-          <textarea id="quiz-korean-input" rows="2" style="width: 100%; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 12px; font-size: 14px; line-height: 1.5; background: #fafbfc; color: var(--toss-text-primary); resize: none;" placeholder="예) 영화 보러 가기 전후에 주로 뭐하는지 루틴 물어보는 질문"></textarea> <!-- 텍스트 입력 텍스트에어리어 요소입니다. -->
-
-          <div style="margin-top: 10px; display: flex; gap: 8px;">
-            <button id="btn-quiz-record-korean" style="flex: 1; background: #f3e8ff; color: #7e22ce; border: none; border-radius: 12px; padding: 12px; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 6px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <span style="font-size: 12px; font-weight: 700; color: var(--toss-text-secondary);">한국어로 무슨 질문인지 말씀하시거나 입력하세요</span>
+            <button id="btn-quiz-record-korean" style="background: #f3e8ff; color: #7e22ce; border: none; border-radius: 8px; padding: 4px 8px; font-size: 11px; font-weight: 700; cursor: pointer;">
               🎙️ 한국어 음성으로 정답 말하기
             </button>
-            <button id="btn-quiz-check-answer" style="flex: 1; background: #7c3aed; color: #ffffff; border: none; border-radius: 12px; padding: 12px; font-size: 13px; font-weight: 700; cursor: pointer;">
-              🎯 정답 확인 & 해설
-            </button>
           </div>
-
-          <div id="quiz-result-card" style="display: none; margin-top: 12px;"></div>
+          <input type="text" id="quiz-korean-input" style="width: 100%; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 12px; font-size: 14px; background: #fafbfc; color: var(--toss-text-primary);" placeholder="예) 자주 가는 영화관과 위치를 묻는 질문" />
+          <button class="toss-btn-primary" id="btn-quiz-check-answer" style="margin-top: 10px; background: #7e22ce;">
+            🎯 정답 확인 & 해설
+          </button>
         </div>
 
-        <button class="toss-btn-primary" id="btn-quiz-next-question" style="margin-top: 10px; background: #7c3aed;">
+        <div id="quiz-result-box" style="display: none; margin-top: 12px;"></div>
+
+        <button class="toss-btn-primary" id="btn-quiz-next-question" style="display: none; margin-top: 10px; background: var(--toss-blue);">
           다음 문제로 넘어가기 ➔
         </button>
       </div>
-
-      <!-- 시험 진행 화면 -->
-      <div id="exam-view-testing" style="display: none;">
-        <!-- 에바 면접관 프로필 카드 -->
-        <div class="eva-mini-card">
-          <div class="eva-avatar-circle" id="eva-avatar-box">👩‍💼</div>
-          <div style="flex: 1;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-size: 16px; font-weight: 800; color: var(--toss-text-primary);">Eva (OPIc 면접관)</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-              <span class="timer-badge" id="exam-progress-badge">1 / 15</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-            </div>
-            <div style="font-size: 12px; color: var(--toss-text-muted); margin-top: 2px;">
-              <span id="exam-current-topic">Self Introduction</span> · <span id="exam-current-type">자기소개</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-            </div>
-            <button class="btn-listen-mini" id="btn-replay-question">🔊 질문 다시듣기 (1회 남음)</button>
-          </div>
-        </div>
-
-        <!-- 질문 내용 카드 -->
-        <div class="toss-card">
-          <div style="font-size: 12px; font-weight: 700; color: var(--toss-blue); margin-bottom: 6px;">질문 지문 (모의고사에서는 실제 듣기로 진행됩니다)</div>
-          <div style="font-size: 15px; font-weight: 700; color: var(--toss-text-primary); line-height: 1.5;" id="exam-question-text">
-            "Let's start the interview now. Tell me a little bit about yourself."
-          </div>
-        </div>
-
-        <!-- 실시간 발화 감지 HUD 카드 -->
-        <div class="toss-card" style="background: #f8fafc; border: 1.5px solid #e2e8f0;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-            <span style="font-size: 13px; font-weight: 800; color: #1e3a8a;">⚡ 실시간 발화 분석 HUD</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-            <div class="speed-btn-group">
-              <span style="font-size: 11px; color: #64748b; margin-right: 4px; display: flex; align-items: center;">쉐도잉 속도:</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-              <button class="btn-speed" data-speed="0.8">0.8x</button>
-              <button class="btn-speed active" data-speed="1.0">1.0x</button>
-              <button class="btn-speed" data-speed="1.2">1.2x</button>
-            </div>
-          </div>
-
-          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; text-align: center; margin-bottom: 10px;">
-            <div style="background: #ffffff; padding: 8px 4px; border-radius: 10px; border: 1px solid #e2e8f0;">
-              <div style="font-size: 11px; color: #64748b;">현재 WPM</div>
-              <div style="font-size: 14px; font-weight: 800; color: var(--toss-blue);" id="hud-wpm-live">0 WPM</div>
-            </div>
-            <div style="background: #ffffff; padding: 8px 4px; border-radius: 10px; border: 1px solid #e2e8f0;">
-              <div style="font-size: 11px; color: #64748b;">발화 단어수</div>
-              <div style="font-size: 14px; font-weight: 800; color: var(--toss-text-primary);" id="hud-word-count">0단어</div>
-            </div>
-            <div style="background: #ffffff; padding: 8px 4px; border-radius: 10px; border: 1px solid #e2e8f0;">
-              <div style="font-size: 11px; color: #64748b;">실시간 예상</div>
-              <div style="font-size: 14px; font-weight: 800; color: var(--toss-green);" id="hud-predicted-grade">IM2</div>
-            </div>
-          </div>
-
-          <div style="font-size: 12px; color: #475569; display: flex; justify-content: space-between; align-items: center;">
-            <span>감지된 필러: <strong id="hud-filler-detected" style="color: var(--toss-blue);">미사용</strong></span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-            <button id="btn-fill-sample-answer" style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 2px 8px; font-size: 11px; color: #475569; cursor: pointer;">
-              💡 모범답안 채우기
-            </button>
-          </div>
-        </div>
-
-        <!-- 답변 입력 및 STT 스크립트 영역 -->
-        <div class="toss-card">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-            <span style="font-size: 13px; font-weight: 700; color: var(--toss-text-secondary);">내 답변 내용 (음성 인식 및 직접 입력)</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-            <span style="font-size: 11px; color: var(--toss-blue);" id="recording-status-text">마이크를 켜고 말씀하세요</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-          </div>
-
-          <textarea id="stt-input-textarea" rows="4" style="width: 100%; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 12px; font-size: 14px; line-height: 1.5; background: #fafbfc; color: var(--toss-text-primary); resize: vertical;" placeholder="음성으로 말씀하시면 이곳에 실시간 영어 자막이 입력됩니다. 직접 키보드로 수정하실 수도 있습니다."></textarea> <!-- 텍스트 입력 텍스트에어리어 요소입니다. -->
-
-          <div style="margin-top: 10px;">
-            <button class="toss-btn-record" id="btn-toggle-recording">
-              🎙️ 답변 녹음 시작
-            </button>
-          </div>
-
-          <!-- 녹음 완료 직후 1문항 빠른 분석 결과 박스 -->
-          <div id="post-recording-analysis-box" style="display: none; margin-top: 12px;"></div>
-        </div>
-
-        <button class="toss-btn-primary" id="btn-next-question" style="margin-top: 10px;">
-          다음 문제 ➔
-        </button>
-      </div>
-
-      <!-- 시험 완료 후 1:1 비교 복습 리포트 화면 -->
-      <div id="exam-view-report" style="display: none;">
-        <div class="toss-card" style="text-align: center; padding: 24px 18px;">
-          <div style="font-size: 14px; font-weight: 700; color: var(--toss-text-muted);">종합 평가 결과</div>
-          <div class="toss-grade-text" id="final-grade-display">IH</div>
-          <div style="font-size: 14px; font-weight: 700; color: var(--toss-text-secondary);" id="final-score-display">평가 점수: 88점 / 100점</div>
-          <p style="font-size: 13px; color: #475569; margin-top: 10px; line-height: 1.5;" id="report-summary-comment"> <!-- 안내 문구 설명 텍스트입니다. -->
-            질문의 의도를 정확히 파악하여 훌륭하게 발화하셨습니다.
-          </p> <!-- 안내 문구 텍스트를 닫습니다. -->
-        </div>
-
-        <!-- 문제별 1:1 비교 복습 리포트 카드 목록 컨테이너 -->
-        <div id="full-review-list-container"></div>
-
-        <div style="display: flex; gap: 8px; margin-top: 14px;">
-          <button id="btn-share-report" style="flex: 1; background: #ffffff; border: 1.5px solid var(--toss-blue); color: var(--toss-blue); border-radius: 14px; padding: 14px; font-size: 14px; font-weight: 700; cursor: pointer;">
-            📋 성적표 복사 & 공유
-          </button>
-          <button id="btn-restart-exam" class="toss-btn-primary" style="flex: 1; padding: 14px;">
-            🔄 다시 연습하기
-          </button>
-        </div>
-      </div>
-    </section> <!-- 탭 화면 섹션을 닫습니다. -->
+    </section>
 
     <!-- ========================================================================== -->
-    <!-- [Tab 5]: 👤 마이페이지 & 실제 OPIc 공식 백그라운드 서베이 전체 설정         -->
+    <!-- [Tab 5]: 👤 마이페이지 & 서베이 설정 & 7일 플랜 탭                           -->
     <!-- ========================================================================== -->
     <section id="tab-mypage" class="tab-content">
-      <div class="toss-card">
-        <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
-          <div style="width: 56px; height: 56px; border-radius: 50%; background: var(--toss-blue-light); display: flex; align-items: center; justify-content: center; font-size: 28px;">
-            🎓
-          </div>
-          <div>
-            <div style="font-size: 17px; font-weight: 800; color: var(--toss-text-primary);">오픽 마스터 수험생</div>
-            <div style="font-size: 13px; color: var(--toss-blue); font-weight: 700;">목표 등급: AL (Advanced Low)</div>
-          </div>
-        </div>
+      <div class="toss-card" style="margin-bottom: 10px;">
+        <h2 style="font-size: 20px; font-weight: 800; color: var(--toss-text-primary); margin-bottom: 4px;">마이페이지 & 설정</h2>
+        <p style="font-size: 13px; color: var(--toss-text-secondary);">1타 강사의 AL 꿀조합 서베이와 목표 난이도를 설정하세요.</p>
       </div>
 
-      <!-- 내 저장된 스크립트 바로가기 카드 -->
+      <!-- 12종 AL 꿀조합 서베이 설정 카드 -->
       <div class="toss-card">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-          <div>
-            <div style="font-size: 15px; font-weight: 700; color: #065f46;">✍️ 내 AL 스크립트 보관함</div>
-            <div style="font-size: 12px; color: var(--toss-text-muted);" id="mypage-script-count-text">저장된 스크립트: 0개</div>
-          </div>
-          <button id="btn-go-script-from-mypage" style="background: #d1fae5; color: #047857; border: none; border-radius: 10px; padding: 8px 14px; font-size: 13px; font-weight: 700; cursor: pointer;">
-            열기 ➔
-          </button>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+          <h3 style="margin-bottom: 0;">📋 백그라운드 서베이 12종 선택</h3>
+          <span class="badge" id="survey-count-badge">12/12개 선택됨</span>
         </div>
-      </div>
 
-      <!-- 실제 OPIc 공식 백그라운드 서베이 1~7번 전체 문항 카드 -->
-      <div class="toss-card">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-          <h3 style="margin-bottom: 0;">📋 OPIc 공식 서베이 설정</h3>
-          <span class="survey-counter-badge" id="survey-selection-count-badge">선택: 12개 / 12개 이상</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-        </div>
-        <p style="font-size: 12px; color: var(--toss-text-muted); margin-bottom: 12px;"> <!-- 안내 문구 설명 텍스트입니다. -->
-          실제 시험장과 100% 동일한 선택지입니다. 여기서 설정하신 항목으로 스피킹과 모의고사가 출제됩니다.
-        </p> <!-- 안내 문구 텍스트를 닫습니다. -->
-
-        <!-- 원클릭 AL 만점 전략 세팅 버튼 -->
-        <button id="btn-apply-al-strategy" style="width: 100%; background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 1.5px solid var(--toss-blue); color: var(--toss-blue); border-radius: 12px; padding: 10px; font-size: 13px; font-weight: 800; cursor: pointer; margin-bottom: 14px;">
+        <button id="btn-apply-al-strategy" style="width: 100%; background: #ecfdf5; border: 1.5px solid #10b981; color: #065f46; border-radius: 12px; padding: 12px; font-size: 13px; font-weight: 800; cursor: pointer; margin-bottom: 12px;">
           ✨ [1타 강사] AL 만점 12종 꿀조합 자동 선택하기
         </button>
 
-        <!-- 1번 문항: 직업 / 근무 -->
-        <div class="survey-section-box">
-          <div class="survey-section-title">
-            <span>1. 현재 어느 분야에 종사하고 계십니까?</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-          </div>
-          <div class="chip-group">
-            <label class="chip-item selected"><input type="radio" name="survey_q1_job" value="NONE" checked /> 일 경험 없음 (강력 추천 ★)</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item"><input type="radio" name="survey_q1_job" value="OFFICE" /> 사업 / 회사원</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item"><input type="radio" name="survey_q1_job" value="TEACHER" /> 교사 / 교육자</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item"><input type="radio" name="survey_q1_job" value="MILITARY" /> 군인</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-          </div>
+        <!-- 서베이 1~3번 라디오 버튼 그룹 -->
+        <div style="font-size: 13px; font-weight: 700; color: var(--toss-text-primary); margin-bottom: 6px;">1. 직업 분야</div>
+        <div class="chip-group" style="margin-bottom: 10px;">
+          <label class="chip-item selected"><input type="radio" name="survey_q1_job" value="사업/회사원" checked /><span>사업/회사원</span></label>
+          <label class="chip-item"><input type="radio" name="survey_q1_job" value="일경험없음" /><span>일 경험 없음 (추천)</span></label>
         </div>
 
-        <!-- 2번 문항: 학생 여부 -->
-        <div class="survey-section-box">
-          <div class="survey-section-title">
-            <span>2. 현재 귀하는 학생이십니까?</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-          </div>
-          <div class="chip-group">
-            <label class="chip-item selected"><input type="radio" name="survey_q2_student" value="NO" checked /> 아니오 (강력 추천 ★)</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item"><input type="radio" name="survey_q2_student" value="YES" /> 예 (학위/비학위 과정)</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-          </div>
+        <div style="font-size: 13px; font-weight: 700; color: var(--toss-text-primary); margin-bottom: 6px;">2. 학생 여부</div>
+        <div class="chip-group" style="margin-bottom: 10px;">
+          <label class="chip-item selected"><input type="radio" name="survey_q2_student" value="아니오" checked /><span>아니오 (수업 들은 적 없음)</span></label>
         </div>
 
-        <!-- 3번 문항: 주거 형태 -->
-        <div class="survey-section-box">
-          <div class="survey-section-title">
-            <span>3. 현재 어디에 살고 계십니까?</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-          </div>
-          <div class="chip-group">
-            <label class="chip-item selected"><input type="radio" name="survey_q3_home" value="APARTMENT_ALONE" checked /> 개인 주택/아파트 홀로 거주 ★</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item"><input type="radio" name="survey_q3_home" value="FAMILY" /> 가족과 함께 주택/아파트 거주</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item"><input type="radio" name="survey_q3_home" value="ROOMMATE" /> 친구/룸메이트와 거주</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item"><input type="radio" name="survey_q3_home" value="DORM" /> 학교 기숙사</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item"><input type="radio" name="survey_q3_home" value="BARRACKS" /> 군대 막사</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-          </div>
+        <div style="font-size: 13px; font-weight: 700; color: var(--toss-text-primary); margin-bottom: 6px;">3. 거주지 형태</div>
+        <div class="chip-group" style="margin-bottom: 10px;">
+          <label class="chip-item selected"><input type="radio" name="survey_q3_home" value="아파트" checked /><span>개인 주택이나 아파트 홀로 거주</span></label>
         </div>
 
-        <!-- 4번 문항: 여가 활동 (최소 2개 이상) -->
-        <div class="survey-section-box">
-          <div class="survey-section-title">
-            <span>4. 여가 활동 (최소 2개 이상)</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-          </div>
-          <div class="chip-group" id="group-survey-q4">
-            <label class="chip-item selected"><input type="checkbox" name="survey_q4_leisure" value="MOVIE" checked /> 🎬 영화 보기 ★</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item selected"><input type="checkbox" name="survey_q4_leisure" value="PERFORMANCE" checked /> 🎭 공연 보기 ★</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item selected"><input type="checkbox" name="survey_q4_leisure" value="CONCERT" checked /> 🎤 콘서트 보기 ★</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item selected"><input type="checkbox" name="survey_q4_leisure" value="PARK" checked /> 🌳 공원 가기 ★</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item selected"><input type="checkbox" name="survey_q4_leisure" value="CAFE" checked /> ☕ 카페/커피전문점 ★</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item selected"><input type="checkbox" name="survey_q4_leisure" value="BEACH" checked /> 🏖️ 해변 가기 ★</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item"><input type="checkbox" name="survey_q4_leisure" value="CAMPING" /> ⛺ 캠핑 가기</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item"><input type="checkbox" name="survey_q4_leisure" value="CLUB" /> 🪩 클럽/나이트클럽</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item"><input type="checkbox" name="survey_q4_leisure" value="BAR" /> 🍺 술집/바에 가기</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item"><input type="checkbox" name="survey_q4_leisure" value="SPORTS_WATCH" /> ⚽ 스포츠 관람</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item"><input type="checkbox" name="survey_q4_leisure" value="MUSEUM" /> 🏛️ 박물관 가기</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item"><input type="checkbox" name="survey_q4_leisure" value="GALLERY" /> 🖼️ 전시회/미술관</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item"><input type="checkbox" name="survey_q4_leisure" value="SHOPPING" /> 🛍️ 쇼핑하기</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item"><input type="checkbox" name="survey_q4_leisure" value="TV" /> 📺 TV 시청하기</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item"><input type="checkbox" name="survey_q4_leisure" value="CHESS" /> ♟️ 체스하기</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-          </div>
+        <!-- 서베이 4~7번 체크박스 그룹 -->
+        <div style="font-size: 13px; font-weight: 700; color: var(--toss-text-primary); margin-bottom: 6px;">4. 여가 활동 (영화, 공원, 카페 등)</div>
+        <div class="chip-group" style="margin-bottom: 10px;">
+          <label class="chip-item selected"><input type="checkbox" name="survey_q4_leisure" value="영화보기" checked /><span>영화보기 ★</span></label>
+          <label class="chip-item selected"><input type="checkbox" name="survey_q4_leisure" value="공원가기" checked /><span>공원가기 ★</span></label>
+          <label class="chip-item selected"><input type="checkbox" name="survey_q4_leisure" value="카페가기" checked /><span>카페가기 ★</span></label>
+          <label class="chip-item"><input type="checkbox" name="survey_q4_leisure" value="콘서트보기" /><span>콘서트보기</span></label>
         </div>
 
-        <!-- 5번 문항: 취미 / 관심사 (최소 1개 이상) -->
-        <div class="survey-section-box">
-          <div class="survey-section-title">
-            <span>5. 취미 / 관심사 (최소 1개 이상)</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-          </div>
-          <div class="chip-group" id="group-survey-q5">
-            <label class="chip-item selected"><input type="checkbox" name="survey_q5_hobby" value="MUSIC" checked /> 🎵 음악 감상하기 ★</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item"><input type="checkbox" name="survey_q5_hobby" value="INSTRUMENT" /> 🎸 악기 연주하기</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item"><input type="checkbox" name="survey_q5_hobby" value="SINGING" /> 🎤 노래/합창하기</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item"><input type="checkbox" name="survey_q5_hobby" value="DANCE" /> 💃 춤추기</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item"><input type="checkbox" name="survey_q5_hobby" value="WRITING" /> ✍️ 글쓰기</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item"><input type="checkbox" name="survey_q5_hobby" value="DRAWING" /> 🎨 그림 그리기</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item"><input type="checkbox" name="survey_q5_hobby" value="COOKING" /> 🍳 요리하기</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item"><input type="checkbox" name="survey_q5_hobby" value="PET" /> 🐶 애완동물 기르기</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item"><input type="checkbox" name="survey_q5_hobby" value="READING" /> 📖 독서</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item"><input type="checkbox" name="survey_q5_hobby" value="GAMING" /> 🎮 게임하기</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-          </div>
+        <div style="font-size: 13px; font-weight: 700; color: var(--toss-text-primary); margin-bottom: 6px;">5. 취미 및 관심사 (음악 감상 등)</div>
+        <div class="chip-group" style="margin-bottom: 10px;">
+          <label class="chip-item selected"><input type="checkbox" name="survey_q5_hobby" value="음악감상" checked /><span>음악 감상하기 ★</span></label>
+          <label class="chip-item"><input type="checkbox" name="survey_q5_hobby" value="악기연주" /><span>악기 연주</span></label>
         </div>
 
-        <!-- 6번 문항: 운동 (최소 1개 이상) -->
-        <div class="survey-section-box">
-          <div class="survey-section-title">
-            <span>6. 즐기는 운동 (최소 1개 이상)</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-          </div>
-          <div class="chip-group" id="group-survey-q6">
-            <label class="chip-item selected"><input type="checkbox" name="survey_q6_sports" value="JOGGING" checked /> 🏃 조깅 ★</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item selected"><input type="checkbox" name="survey_q6_sports" value="WALKING" checked /> 🚶 걷기 ★</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item selected"><input type="checkbox" name="survey_q6_sports" value="BIKING" checked /> 🚴 자전거 ★</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item selected"><input type="checkbox" name="survey_q6_sports" value="GYM" checked /> 🏋️ 헬스(체육관) ★</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item"><input type="checkbox" name="survey_q6_sports" value="SWIMMING" /> 🏊 수영</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item"><input type="checkbox" name="survey_q6_sports" value="HIKING" /> ⛰️ 하이킹/트레킹</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item"><input type="checkbox" name="survey_q6_sports" value="GOLF" /> ⛳ 골프</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item"><input type="checkbox" name="survey_q6_sports" value="SOCCER" /> ⚽ 축구</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item"><input type="checkbox" name="survey_q6_sports" value="BASKETBALL" /> 🏀 농구</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item"><input type="checkbox" name="survey_q6_sports" value="BASEBALL" /> ⚾ 야구</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item"><input type="checkbox" name="survey_q6_sports" value="TENNIS" /> 🎾 테니스</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item"><input type="checkbox" name="survey_q6_sports" value="BADMINTON" /> 🏸 배드민턴</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item"><input type="checkbox" name="survey_q6_sports" value="TABLETENNIS" /> 🏓 탁구</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item"><input type="checkbox" name="survey_q6_sports" value="YOGA" /> 🧘 요가/필라테스</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item"><input type="checkbox" name="survey_q6_sports" value="SKI" /> ⛷️ 스키/스노보드</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item"><input type="checkbox" name="survey_q6_sports" value="NO_EXERCISE" /> ❌ 운동을 전혀 하지 않음</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-          </div>
+        <div style="font-size: 13px; font-weight: 700; color: var(--toss-text-primary); margin-bottom: 6px;">6. 운동 및 스포츠 (조깅, 걷기 등)</div>
+        <div class="chip-group" style="margin-bottom: 10px;">
+          <label class="chip-item selected"><input type="checkbox" name="survey_q6_sports" value="조깅" checked /><span>조깅 ★</span></label>
+          <label class="chip-item selected"><input type="checkbox" name="survey_q6_sports" value="걷기" checked /><span>걷기 ★</span></label>
+          <label class="chip-item selected"><input type="checkbox" name="survey_q6_sports" value="하이킹" checked /><span>하이킹/트레킹 ★</span></label>
         </div>
 
-        <!-- 7번 문항: 휴가 / 여행 (최소 1개 이상) -->
-        <div class="survey-section-box">
-          <div class="survey-section-title">
-            <span>7. 휴가나 출장을 다녀온 경험 (최소 1개 이상)</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-          </div>
-          <div class="chip-group" id="group-survey-q7">
-            <label class="chip-item selected"><input type="checkbox" name="survey_q7_travel" value="DOMESTIC" checked /> 🗺️ 국내 여행 ★</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item selected"><input type="checkbox" name="survey_q7_travel" value="OVERSEAS" checked /> ✈️ 해외 여행 ★</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item selected"><input type="checkbox" name="survey_q7_travel" value="STAYCATION" checked /> 🛋️ 집에서 보내는 휴가 ★</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item"><input type="checkbox" name="survey_q7_travel" value="BUSINESS_DOMESTIC" /> 💼 국내 출장</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            <label class="chip-item"><input type="checkbox" name="survey_q7_travel" value="BUSINESS_OVERSEAS" /> 🌐 해외 출장</label> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-          </div>
+        <div style="font-size: 13px; font-weight: 700; color: var(--toss-text-primary); margin-bottom: 6px;">7. 휴가 및 출장 (국내/해외 여행, 집에서 보내는 휴가)</div>
+        <div class="chip-group" style="margin-bottom: 12px;">
+          <label class="chip-item selected"><input type="checkbox" name="survey_q7_travel" value="국내여행" checked /><span>국내 여행 ★</span></label>
+          <label class="chip-item selected"><input type="checkbox" name="survey_q7_travel" value="해외여행" checked /><span>해외 여행 ★</span></label>
+          <label class="chip-item selected"><input type="checkbox" name="survey_q7_travel" value="집에서보내는휴가" checked /><span>집에서 보내는 휴가 ★</span></label>
         </div>
 
-        <!-- 난이도 선택 드롭다운 -->
-        <div style="margin-top: 14px;">
-          <label style="font-size: 13px; font-weight: 700; color: var(--toss-text-primary); display: block; margin-bottom: 6px;"> <!-- 서베이 칩 라벨 컨트롤 요소입니다. -->
-            🎯 목표 난이도 선택 (AL 목표 시 5~6단계 추천)
-          </label> <!-- 칩 라벨 요소를 닫습니다. -->
-          <select id="survey-difficulty-select" style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--toss-border); font-size: 14px; font-weight: 600; background: #fafbfc; color: var(--toss-text-primary);"> <!-- 옵션 선택 셀렉트박스 요소입니다. -->
-            <option value="1">1단계: 단어 및 매우 기초적인 문장 구사</option> <!-- 드롭다운 세부 선택 옵션입니다. -->
-            <option value="2">2단계: 일상적인 단순 문장 표현</option> <!-- 드롭다운 세부 선택 옵션입니다. -->
-            <option value="3">3단계: 기본 롤플레이 및 친숙한 주제 대화 (IM1~IM2)</option> <!-- 드롭다운 세부 선택 옵션입니다. -->
-            <option value="4">4단계: 과거 시제 및 문단 단위 발화 (IM3~IH)</option> <!-- 드롭다운 세부 선택 옵션입니다. -->
-            <option value="5" selected>5단계: 3콤보 심화 + 14-15번 시사 이슈 (IH~AL 목표 추천 ★)</option> <!-- 드롭다운 세부 선택 옵션입니다. -->
-            <option value="6">6단계: 최고난도 돌발 & 전문 사회적 이슈 (AL 만점 목표)</option> <!-- 드롭다운 세부 선택 옵션입니다. -->
-          </select> <!-- 셀렉트박스 요소를 닫습니다. -->
-        </div>
+        <div style="font-size: 13px; font-weight: 700; color: var(--toss-text-primary); margin-bottom: 6px;">🎯 목표 난이도 선택</div>
+        <select id="survey-difficulty-select" style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--toss-border); font-size: 14px; font-weight: 600; background: #fafbfc; color: var(--toss-text-primary); margin-bottom: 12px;">
+          <option value="5" selected>⭐ 난이도 5-5 (IH / AL 목표 추천)</option>
+          <option value="6">난이도 6-6 (AL 만점 목표)</option>
+          <option value="4">난이도 4-4 (IM2 / IM3 목표)</option>
+          <option value="3">난이도 3-3 (IL / IM1 목표)</option>
+        </select>
 
-        <button class="toss-btn-primary" id="btn-save-survey-settings" style="margin-top: 14px;">
+        <button class="toss-btn-primary" id="btn-save-survey-settings" style="padding: 12px; font-size: 14px;">
           💾 서베이 설정 저장하기
         </button>
       </div>
 
-      <!-- 누적 학습 통계 카드 -->
+      <!-- 7일 완성 학습플랜 진도율 카드 (마이페이지 결합) -->
+      <div class="toss-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <h3 style="margin-bottom: 0;">📅 7일 완성 단계별 학습플랜</h3>
+          <span style="font-size: 13px; font-weight: 800; color: var(--toss-blue);" id="plan-progress-percent">0% (0/7)</span>
+        </div>
+        <div style="display: flex; gap: 6px; margin-bottom: 10px;">
+          <button class="plan-pill-btn active" data-level="beginner" style="flex: 1; background: #ffffff; border: 1.5px solid var(--toss-blue); color: var(--toss-blue); border-radius: 10px; padding: 8px; font-size: 11px; font-weight: 800; cursor: pointer;">
+            🥉 초급 (IL~IM2)
+          </button>
+          <button class="plan-pill-btn" data-level="intermediate" style="flex: 1; background: #ffffff; border: 1.5px solid #cbd5e1; color: var(--toss-text-secondary); border-radius: 10px; padding: 8px; font-size: 11px; font-weight: 800; cursor: pointer;">
+            🥈 중급 (IM3~IH)
+          </button>
+          <button class="plan-pill-btn" data-level="advanced" style="flex: 1; background: #ffffff; border: 1.5px solid #cbd5e1; color: var(--toss-text-secondary); border-radius: 10px; padding: 8px; font-size: 11px; font-weight: 800; cursor: pointer;">
+            🥇 고급 (AL 만점)
+          </button>
+        </div>
+        <div style="background: #e5e8eb; height: 6px; border-radius: 3px; overflow: hidden; margin-bottom: 12px;">
+          <div id="plan-progress-bar" style="background: var(--toss-blue); width: 0%; height: 100%; transition: width 0.3s ease;"></div>
+        </div>
+        <div id="plan-quest-list-container"></div>
+      </div>
+
+      <!-- 나의 스피킹 통계 카드 -->
       <div class="toss-card">
         <h3 style="margin-bottom: 12px;">📊 나의 누적 스피킹 통계</h3>
         <div class="stat-row">
-          <span style="font-size: 14px; color: var(--toss-text-secondary);">총 스피킹 완료 횟수</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-          <span style="font-size: 15px; font-weight: 800; color: var(--toss-blue);" id="stat-total-exams">0회</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
+          <span style="font-size: 14px; color: var(--toss-text-secondary);">총 스피킹 완료 횟수</span>
+          <span style="font-size: 15px; font-weight: 800; color: var(--toss-blue);" id="stat-total-exams">0회</span>
         </div>
         <div class="stat-row">
-          <span style="font-size: 14px; color: var(--toss-text-secondary);">평균 발화 속도 (WPM)</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-          <span style="font-size: 15px; font-weight: 800; color: var(--toss-green);" id="stat-avg-wpm">0 WPM</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
+          <span style="font-size: 14px; color: var(--toss-text-secondary);">평균 발화 속도 (WPM)</span>
+          <span style="font-size: 15px; font-weight: 800; color: var(--toss-green);" id="stat-avg-wpm">0 WPM</span>
         </div>
         <div class="stat-row">
-          <span style="font-size: 14px; color: var(--toss-text-secondary);">1일 1문장 연속 출석</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-          <span style="font-size: 15px; font-weight: 800; color: #f59e0b;" id="stat-streak-days">1일</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
+          <span style="font-size: 14px; color: var(--toss-text-secondary);">1일 1문장 연속 출석</span>
+          <span style="font-size: 15px; font-weight: 800; color: #f59e0b;" id="stat-streak-days">1일</span>
         </div>
       </div>
 
-      <!-- 부가 설정 및 가이드 카드 -->
+      <!-- 설정 & 오답노트 가이드 카드 -->
       <div class="toss-card">
         <h3 style="margin-bottom: 10px;">⚙️ 설정 & 가이드</h3>
         <button id="btn-open-review-from-mypage" style="width: 100%; background: #f2f4f6; border: none; border-radius: 12px; padding: 12px; font-size: 13px; font-weight: 700; color: var(--toss-text-primary); cursor: pointer; margin-bottom: 8px;">
@@ -775,21 +606,21 @@
           🗑️ 모든 학습 데이터 초기화
         </button>
       </div>
-    </section> <!-- 탭 화면 섹션을 닫습니다. -->
+    </section>
 
-  </main> <!-- 메인 뷰 컨테이너를 닫습니다. -->
+  </main>
 
   <!-- ========================================================================== -->
-  <!-- 하단 고정 네이티브 5탭 네비게이션 바                                         -->
+  <!-- 하단 고정 네이티브 5탭 네비게이션 바 (홈 / 스크립트 / 스피킹 / 모의고사 / 마이페이지) -->
   <!-- ========================================================================== -->
-  <nav class="bottom-tab-bar"> <!-- 하단 고정 탭바 네비게이션 영역입니다. -->
+  <nav class="bottom-tab-bar">
     <div class="tab-item active" data-tab="home" id="tab-btn-home">
       <div class="tab-icon">🏠</div>
       <div class="tab-label">홈</div>
     </div>
-    <div class="tab-item" data-tab="plan" id="tab-btn-plan">
-      <div class="tab-icon">📅</div>
-      <div class="tab-label">학습플랜</div>
+    <div class="tab-item" data-tab="script" id="tab-btn-script">
+      <div class="tab-icon">✍️</div>
+      <div class="tab-label">스크립트</div>
     </div>
     <div class="tab-item" data-tab="practice" id="tab-btn-practice">
       <div class="tab-icon">🎯</div>
@@ -803,26 +634,24 @@
       <div class="tab-icon">👤</div>
       <div class="tab-label">마이페이지</div>
     </div>
-  </nav> <!-- 하단 탭바 네비게이션을 닫습니다. -->
+  </nav>
 
   <!-- 마이크 권한 안내 모달 -->
   <div id="mic-help-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; padding: 20px;">
     <div style="background: #ffffff; border-radius: 20px; padding: 20px; max-width: 400px; width: 100%;">
       <h3 style="margin-bottom: 8px; font-size: 17px; font-weight: 800;">🎙️ 마이크 권한 허용 안내</h3>
-      <p style="font-size: 13px; color: var(--toss-text-secondary); line-height: 1.5; margin-bottom: 12px;"> <!-- 안내 문구 설명 텍스트입니다. -->
+      <p style="font-size: 13px; color: var(--toss-text-secondary); line-height: 1.5; margin-bottom: 12px;">
         1. 브라우저 주소창 좌측의 <strong>[자물쇠(🔒)]</strong> 또는 <strong>[설정]</strong> 아이콘을 탭하세요.<br />
         2. <strong>[마이크]</strong> 권한을 <strong>[허용]</strong>으로 변경해주세요.<br />
         3. 페이지를 새로고침 후 다시 녹음을 시작하시면 정상 작동합니다.
-      </p> <!-- 안내 문구 텍스트를 닫습니다. -->
+      </p>
       <button id="btn-close-mic-modal" class="toss-btn-primary" style="padding: 12px; font-size: 14px;">
         확인했습니다
       </button>
     </div>
   </div>
 
-  <!-- 메인 앱 컨트롤러 스크립트 연결 (최신 캐시 버스팅 적용) -->
-  <script src="app.js?v=20260904_survey_script_v10"></script> <!-- 메인 애플리케이션 스크립트 연결입니다. -->
-<!-- body 태그를 닫습니다. -->
-</body> <!-- 본문 바디 영역을 닫습니다. -->
-<!-- html 태그를 닫습니다. -->
-</html> <!-- 웹 문서 루트 태그를 닫습니다. -->
+  <!-- 메인 앱 컨트롤러 스크립트 연결 -->
+  <script src="app.js?v=20260904_5tabs_v11"></script>
+</body>
+</html>

@@ -575,20 +575,21 @@ function initScriptBuilderEvents() {
 
 // 스크립트 작성 및 AI 첨삭 연구소 화면으로 전환하는 세션 시작 함수입니다.
 function startScriptBuilderSession(initialQIndex = 0) {
-  stopAllEvaAudio(); // 모든 오디오를 중단합니다.
-  stopScriptAudio(); // 스크립트 오디오를 중단합니다.
-  state.practiceMode = 'script'; // 모드를 스크립트로 지정합니다.
+  stopAllEvaAudio();
+  stopScriptAudio();
+  state.practiceMode = 'script';
 
   // 현재 서베이에 맞는 15개 문항 세트 로드
   state.scriptQuestions = createSurveyBasedExamSet(state.officialSurvey);
   state.scriptSelectedQIndex = initialQIndex >= 0 && initialQIndex < state.scriptQuestions.length ? initialQIndex : 0;
 
-  switchTab('exam'); // exam 메인 탭을 활성화합니다.
-  switchExamSubView('script'); // 스크립트 연구소 서브 뷰로 전환합니다.
-
-  renderScriptQuestionChips(); // 15문항 네비게이터 칩 렌더링
-  selectScriptQuestion(state.scriptSelectedQIndex); // 초기 문항 선택
-  renderSavedScriptList(); // 보관함 목록을 최신화합니다.
+  if (state.currentTab !== 'script') {
+    switchTab('script');
+  } else {
+    renderScriptQuestionChips();
+    selectScriptQuestion(state.scriptSelectedQIndex);
+    renderSavedScriptList();
+  }
 }
 
 // 15문항 가로 스크롤 칩 네비게이터를 렌더링하는 함수입니다.
@@ -1777,21 +1778,22 @@ function switchTab(tabName) {
     if (headerTitle) headerTitle.innerText = '오픽 마스터';
     if (timerBadge) timerBadge.style.display = 'none';
     renderHomeDashboard();
-  } else if (tabName === 'plan') {
-    if (headerTitle) headerTitle.innerText = '단계별 학습플랜';
+  } else if (tabName === 'script') {
+    if (headerTitle) headerTitle.innerText = '스크립트 첨삭';
     if (timerBadge) timerBadge.style.display = 'none';
-    renderStudyPlanQuests();
+    startScriptBuilderSession(state.scriptSelectedQIndex || 0);
   } else if (tabName === 'practice') {
     if (headerTitle) headerTitle.innerText = '자투리 스피킹';
     if (timerBadge) timerBadge.style.display = 'none';
   } else if (tabName === 'exam') {
-    if (headerTitle) headerTitle.innerText = state.practiceMode === 'listening' ? '질문 청취 퀴즈' : (state.practiceMode === 'script' ? '스크립트 연구소' : '실전 모의고사');
+    if (headerTitle) headerTitle.innerText = state.practiceMode === 'listening' ? '질문 청취 퀴즈' : '실전 모의고사';
     if (timerBadge) {
       timerBadge.style.display = state.examSubView === 'testing' ? 'block' : 'none';
     }
   } else if (tabName === 'mypage') {
     if (headerTitle) headerTitle.innerText = '마이페이지';
     if (timerBadge) timerBadge.style.display = 'none';
+    renderStudyPlanQuests();
     renderMyPageStats();
   }
 

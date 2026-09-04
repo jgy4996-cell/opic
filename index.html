@@ -22,7 +22,7 @@
   <!-- 웹페이지 타이틀입니다. -->
   <title>OPIc Master AI - 에바 질문 한국어 퀴즈 & 실전 스피킹</title> <!-- 브라우저 탭 웹페이지 타이틀입니다. -->
   <!-- 외장 스타일시트 연결 태그입니다. -->
-  <link rel="stylesheet" href="style.css?v=20260904_answering_fix_v9" /> <!-- 토스 디자인 스타일시트 연결 태그입니다. -->
+  <link rel="stylesheet" href="style.css?v=20260904_survey_script_v10" /> <!-- 토스 디자인 스타일시트 연결 태그입니다. -->
 <!-- head 태그를 닫습니다. -->
 </head> <!-- 메타데이터 영역을 닫습니다. -->
 <!-- 본문 바디 영역 시작입니다. -->
@@ -249,21 +249,57 @@
     <!-- ========================================================================== -->
     <section id="tab-exam" class="tab-content">
 
-      <!-- 서베이 확인 및 모의고사 시작 화면 -->
+      <!-- 서베이 확인 및 모의고사 / 스크립트 첨삭 선택 화면 -->
       <div id="exam-view-survey">
-        <div class="toss-card" style="margin-bottom: 10px;">
-          <h2 style="font-size: 20px; font-weight: 800; color: var(--toss-text-primary); margin-bottom: 4px;">15문항 실전 모의고사</h2>
-          <p style="font-size: 13px; color: var(--toss-text-secondary);">실제 OPIc 시험장과 100% 동일한 15문항 40분 풀 테스트입니다.</p> <!-- 안내 문구 설명 텍스트입니다. -->
+        <div class="toss-card" style="margin-bottom: 12px; background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); color: #ffffff;">
+          <div style="font-size: 13px; opacity: 0.9; margin-bottom: 4px;">🏆 OPIc Master AI 실전 센터</div>
+          <h2 style="font-size: 20px; font-weight: 800; line-height: 1.3; margin-bottom: 6px;">
+            15문항 실전 모의고사 &<br />서베이 맞춤 스크립트 첨삭
+          </h2>
+          <p style="font-size: 13px; opacity: 0.9; line-height: 1.4; margin-bottom: 0;">
+            마이페이지 맞춤 서베이를 기반으로 실전 시험을 치르거나, 15개 전 문항을 하나씩 클릭하여 나만의 AL 스크립트를 완성해보세요!
+          </p>
+        </div>
+
+        <!-- 2가지 핵심 학습 모드 선택 듀얼 카드 -->
+        <div style="display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 12px;">
+          <div class="exam-mode-dual-card" id="btn-start-exam" style="border: 2px solid var(--toss-blue); background: #f0f7ff;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <span style="font-size: 16px; font-weight: 800; color: var(--toss-blue);">🏆 1. 15문항 실전 모의고사</span>
+              <span style="font-size: 11px; background: var(--toss-blue); color: #fff; padding: 2px 8px; border-radius: 8px; font-weight: 700;">40분 풀테스트</span>
+            </div>
+            <p style="font-size: 13px; color: var(--toss-text-secondary); margin-bottom: 8px; line-height: 1.4;">
+              실제 시험과 동일하게 15문제를 연속으로 듣고 말하며 최종 등급(AL/IH/IM)을 판정받습니다.
+            </p>
+            <button class="toss-btn-primary" style="padding: 10px; font-size: 13px; border-radius: 10px;">
+              ▶ 실전 모의고사 시작하기
+            </button>
+          </div>
+
+          <div class="exam-mode-dual-card" id="btn-start-script-from-exam" style="border: 2px solid #10b981; background: #f0fdf4;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <span style="font-size: 16px; font-weight: 800; color: #065f46;">✍️ 2. 15문항 서베이 스크립트 첨삭 연구소 ★</span>
+              <span style="font-size: 11px; background: #10b981; color: #fff; padding: 2px 8px; border-radius: 8px; font-weight: 700;">문항별 개별 첨삭</span>
+            </div>
+            <p style="font-size: 13px; color: #047857; margin-bottom: 8px; line-height: 1.4;">
+              내 서베이 15문항을 하나씩 클릭하여 내 생각을 적고, AI가 AL 만점 문장으로 승격 첨삭해 드립니다!
+            </p>
+            <button class="toss-btn-primary" style="background: #059669; padding: 10px; font-size: 13px; border-radius: 10px;">
+              ✍️ 15문항 스크립트 첨삭 모드 열기
+            </button>
+          </div>
         </div>
 
         <div class="toss-card">
-          <h3>📋 적용될 백그라운드 서베이</h3>
-          <p style="font-size: 13px; color: var(--toss-text-secondary); line-height: 1.5; margin-bottom: 10px;" id="exam-survey-preview-text"> <!-- 안내 문구 설명 텍스트입니다. -->
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <h3 style="margin-bottom: 0;">📋 현재 적용된 서베이 & 난이도</h3>
+            <button id="btn-go-mypage-from-exam" style="background: #f2f4f6; color: var(--toss-text-primary); border: none; border-radius: 8px; padding: 6px 10px; font-size: 12px; font-weight: 700; cursor: pointer;">
+              설정 변경 ⚙️
+            </button>
+          </div>
+          <p style="font-size: 13px; color: var(--toss-text-secondary); line-height: 1.5; margin-bottom: 0;" id="exam-survey-preview-text">
             마이페이지에 설정된 서베이와 난이도(5단계)를 바탕으로 15개 콤보 문제가 자동 출제됩니다.
-          </p> <!-- 안내 문구 텍스트를 닫습니다. -->
-          <button id="btn-go-mypage-from-exam" style="background: #f2f4f6; color: var(--toss-text-primary); border: none; border-radius: 10px; padding: 8px 12px; font-size: 12px; font-weight: 700; cursor: pointer;">
-            서베이 / 난이도 변경하기 ⚙️
-          </button>
+          </p>
         </div>
 
         <div class="toss-card">
@@ -273,58 +309,71 @@
               🔊 미리듣기
             </button>
           </div>
-          <select id="select-eva-voice" style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--toss-border); font-size: 14px; font-weight: 600; background: #fafbfc; color: var(--toss-text-primary);"> <!-- 옵션 선택 셀렉트박스 요소입니다. -->
-            <option value="en-US-AriaNeural" selected>⭐ 실제 OPIc 공식 Eva 목소리 (오리지널)</option> <!-- 드롭다운 세부 선택 옵션입니다. -->
-            <option value="en-US-AvaNeural">Ava (초자연적 미국 원어민 성우)</option> <!-- 드롭다운 세부 선택 옵션입니다. -->
-            <option value="en-US-EmmaNeural">Emma (전문 면접관 성우 - 또박또박함)</option> <!-- 드롭다운 세부 선택 옵션입니다. -->
-          </select> <!-- 셀렉트박스 요소를 닫습니다. -->
+          <select id="select-eva-voice" style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--toss-border); font-size: 14px; font-weight: 600; background: #fafbfc; color: var(--toss-text-primary);">
+            <option value="en-US-AriaNeural" selected>⭐ 실제 OPIc 공식 Eva 목소리 (오리지널)</option>
+            <option value="en-US-AvaNeural">Ava (초자연적 미국 원어민 성우)</option>
+            <option value="en-US-EmmaNeural">Emma (전문 면접관 성우 - 또박또박함)</option>
+          </select>
         </div>
-
-        <button class="toss-btn-primary" id="btn-start-exam" style="margin-top: 10px;">
-          🏆 15문항 실전 시험 시작하기
-        </button>
       </div>
 
-      <!-- [신규] 나만의 스크립트 작성 & AI 첨삭 연구소 화면 -->
+      <!-- [신규] 나만의 서베이 15문항 스크립트 작성 & AI 첨삭 연구소 화면 -->
       <div id="exam-view-script" style="display: none;">
         <div class="script-hero-card">
-          <div style="font-size: 13px; opacity: 0.9; margin-bottom: 4px;">✍️ 나만의 스크립트 작성 & AI 첨삭 연구소</div>
-          <h2 style="font-size: 18px; font-weight: 800; line-height: 1.3;">
-            내 생각대로 적거나 말하면<br />AI가 AL 만점 문장으로 승격 첨삭해 드립니다!
+          <div style="font-size: 13px; opacity: 0.9; margin-bottom: 4px;">✍️ 마이 서베이 15문항 스크립트 첨삭 연구소</div>
+          <h2 style="font-size: 18px; font-weight: 800; line-height: 1.3; margin-bottom: 6px;">
+            문항을 클릭하고 내 생각을 적으면<br />AI가 AL 만점 스크립트로 첨삭해 드립니다!
           </h2>
+          <div style="font-size: 12px; opacity: 0.9;" id="script-progress-summary-text">
+            📋 내 서베이 15문항 완벽 정복 모드
+          </div>
         </div>
 
-        <!-- 주제 선택 카드 -->
-        <div class="toss-card">
+        <!-- 15문항 가로 스크롤 칩 네비게이터 바 -->
+        <div class="toss-card" style="padding: 12px 14px; margin-bottom: 12px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-            <span style="font-size: 14px; font-weight: 800; color: #065f46;">🎯 연습할 오픽 주제 선택</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
-            <button id="btn-load-template-script" style="background: #d1fae5; color: #047857; border: none; border-radius: 8px; padding: 4px 10px; font-size: 11px; font-weight: 700; cursor: pointer;">
-              💡 1타강사 템플릿 불러오기
-            </button>
+            <span style="font-size: 13px; font-weight: 800; color: #065f46;">🎯 서베이 15문항 목록 (클릭하여 이동)</span>
+            <span id="script-chip-saved-count" style="font-size: 11px; background: #d1fae5; color: #047857; padding: 2px 8px; border-radius: 8px; font-weight: 700;">0/15 완료</span>
           </div>
-          <select id="select-script-topic" style="width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--toss-border); font-size: 13px; font-weight: 600; background: #fafbfc; color: var(--toss-text-primary); margin-bottom: 10px;"> <!-- 옵션 선택 셀렉트박스 요소입니다. -->
-            <option value="영화관 장소 묘사">🎬 [영화] 좋아하는 영화관 및 위치/시설 묘사</option> <!-- 드롭다운 세부 선택 옵션입니다. -->
-            <option value="영화 보기 전후 루틴">🎬 [영화] 영화 보러 가기 전후 전체 루틴</option> <!-- 드롭다운 세부 선택 옵션입니다. -->
-            <option value="영화관 과거 잊지 못할 경험">🎬 [영화] 영화관에서 겪은 특별한 과거 경험</option> <!-- 드롭다운 세부 선택 옵션입니다. -->
-            <option value="공원 장소 묘사">🌳 [공원] 자주 가는 공원 및 풍경 묘사</option> <!-- 드롭다운 세부 선택 옵션입니다. -->
-            <option value="카페 장소 묘사">☕ [카페] 단골 카페 및 분위기 묘사</option> <!-- 드롭다운 세부 선택 옵션입니다. -->
-            <option value="집 묘사">🏠 [거주지] 내가 사는 집 구조 및 방 묘사</option> <!-- 드롭다운 세부 선택 옵션입니다. -->
-            <option value="집에서 보내는 휴가">🛋️ [휴가] 집에서 편안하게 휴식하는 루틴</option> <!-- 드롭다운 세부 선택 옵션입니다. -->
-            <option value="호텔 묘사">🏨 [돌발] 최근 투숙한 호텔 객실 및 시설 묘사</option> <!-- 드롭다운 세부 선택 옵션입니다. -->
-            <option value="롤플레이 질문하기">🎭 [롤플레이 11번] 친구/여행사에 질문 3~4개 하기</option> <!-- 드롭다운 세부 선택 옵션입니다. -->
-            <option value="롤플레이 대안제시">🎭 [롤플레이 12번] 약속 취소 사과 및 대안 2~3개 제시</option> <!-- 드롭다운 세부 선택 옵션입니다. -->
-            <option value="과거 현재 기술 비교">📱 [심화 14번] 과거와 현재의 전자기기 비교</option> <!-- 드롭다운 세부 선택 옵션입니다. -->
-            <option value="최신 산업 시사 이슈">🌐 [심화 15번] 숙박/IT 분야 최신 이슈 및 견해</option> <!-- 드롭다운 세부 선택 옵션입니다. -->
-          </select> <!-- 셀렉트박스 요소를 닫습니다. -->
+          <div class="q-chip-scroll" id="script-q-chips-container">
+            <!-- 자바스크립트로 Q1~Q15 칩 동적 렌더링 -->
+          </div>
+        </div>
+
+        <!-- 선택된 문항 상세 및 스크립트 작성 카드 -->
+        <div class="toss-card">
+          <!-- 문항 헤더 및 질문 정보 -->
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 6px;">
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span id="script-active-q-badge" style="font-size: 12px; font-weight: 800; background: #059669; color: #ffffff; padding: 3px 8px; border-radius: 8px;">Q1</span>
+              <span id="script-active-q-topic" style="font-size: 14px; font-weight: 800; color: var(--toss-text-primary);">자기소개</span>
+            </div>
+            <div style="display: flex; gap: 6px;">
+              <button id="btn-script-play-question-audio" style="background: #eff6ff; color: var(--toss-blue); border: 1px solid #bfdbfe; border-radius: 8px; padding: 4px 10px; font-size: 11px; font-weight: 700; cursor: pointer;">
+                🔊 질문 듣기
+              </button>
+              <button id="btn-load-template-script" style="background: #d1fae5; color: #047857; border: none; border-radius: 8px; padding: 4px 10px; font-size: 11px; font-weight: 700; cursor: pointer;">
+                💡 1타강사 템플릿
+              </button>
+            </div>
+          </div>
+
+          <!-- 실제 영어 질문 텍스트 -->
+          <div id="script-active-question-box" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px 12px; margin-bottom: 12px;">
+            <div style="font-size: 11px; font-weight: 700; color: #64748b; margin-bottom: 2px;" id="script-active-q-type">질문 유형: 자기소개</div>
+            <div style="font-size: 13px; font-weight: 700; color: #1e293b; line-height: 1.4;" id="script-active-question-text">
+              "Let's start the interview now. Tell me a little bit about yourself."
+            </div>
+          </div>
 
           <!-- 스크립트 작성 텍스트에어리어 -->
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-            <span style="font-size: 12px; font-weight: 700; color: var(--toss-text-secondary);">내 스크립트 초안 (한글 or 영문 자유 작성)</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
+            <span style="font-size: 12px; font-weight: 700; color: var(--toss-text-secondary);">내 생각 작성 (한글 또는 영어로 자유롭게 작성)</span>
             <button id="btn-stt-script-draft" style="background: #eff6ff; color: var(--toss-blue); border: 1px solid #bfdbfe; border-radius: 8px; padding: 4px 8px; font-size: 11px; font-weight: 700; cursor: pointer;">
               🎙️ 음성으로 말해서 넣기
             </button>
           </div>
-          <textarea id="script-draft-textarea" rows="4" style="width: 100%; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 12px; font-size: 14px; line-height: 1.5; background: #fafbfc; color: var(--toss-text-primary); resize: vertical;" placeholder="예) 우리 집 근처에 있는 CGV를 자주 가는데 시설이 깨끗하고 팝콘이 맛있어서 주말마다 방문합니다. 영화 보기 전에는 카페에서 커피를 사고 끝난 후에는 친구들과 밥을 먹습니다."></textarea> <!-- 텍스트 입력 텍스트에어리어 요소입니다. -->
+          <textarea id="script-draft-textarea" rows="4" style="width: 100%; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 12px; font-size: 14px; line-height: 1.5; background: #fafbfc; color: var(--toss-text-primary); resize: vertical;" placeholder="예) 우리 집 근처에 있는 영화관을 자주 가는데 시설이 깨끗하고 팝콘이 맛있어서 주말마다 방문합니다."></textarea>
 
           <div style="margin-top: 10px; display: flex; gap: 8px;">
             <button id="btn-analyze-upgrade-script" class="toss-btn-primary" style="background: #059669; padding: 14px;">
@@ -339,8 +388,8 @@
         <!-- 내 저장된 스크립트 보관함 카드 -->
         <div class="toss-card" style="margin-top: 14px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-            <h3 style="margin-bottom: 0; color: #065f46;">📖 내 스크립트 보관함</h3>
-            <span id="saved-script-count-badge" style="font-size: 11px; background: #d1fae5; color: #047857; padding: 3px 8px; border-radius: 8px; font-weight: 700;">0개 저장됨</span> <!-- 인라인 텍스트 및 배지 요소입니다. -->
+            <h3 style="margin-bottom: 0; color: #065f46;">📖 내 15문항 스크립트 보관함</h3>
+            <span id="saved-script-count-badge" style="font-size: 11px; background: #d1fae5; color: #047857; padding: 3px 8px; border-radius: 8px; font-weight: 700;">0개 저장됨</span>
           </div>
           <div id="saved-script-list-container">
             <div style="font-size: 13px; color: var(--toss-text-muted); text-align: center; padding: 16px;">
@@ -350,7 +399,7 @@
         </div>
 
         <button id="btn-back-from-script" style="width: 100%; background: #f2f4f6; color: var(--toss-text-primary); border: none; border-radius: 14px; padding: 14px; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 10px;">
-          ⬅️ 스피킹 메뉴로 돌아가기
+          ⬅️ 모의고사 메뉴로 돌아가기
         </button>
       </div>
 
@@ -772,7 +821,7 @@
   </div>
 
   <!-- 메인 앱 컨트롤러 스크립트 연결 (최신 캐시 버스팅 적용) -->
-  <script src="app.js?v=20260904_answering_fix_v9"></script> <!-- 메인 애플리케이션 스크립트 연결입니다. -->
+  <script src="app.js?v=20260904_survey_script_v10"></script> <!-- 메인 애플리케이션 스크립트 연결입니다. -->
 <!-- body 태그를 닫습니다. -->
 </body> <!-- 본문 바디 영역을 닫습니다. -->
 <!-- html 태그를 닫습니다. -->

@@ -411,3 +411,82 @@ nav.bottom-tab-bar { /* 하단 고정 탭바 */
   border-radius: 12px; /* 모서리 */
   padding: 12px; /* 패딩 */
 } /* 업그레이드 상자 종료 */
+/* ============================================================================== */
+/* [15문항 서베이 맞춤 스크립트 첨삭 모드 & 칩 네비게이터 스타일]                    */
+/* ============================================================================== */
+.q-chip-scroll {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 4px 2px 10px 2px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.q-chip-scroll::-webkit-scrollbar {
+  height: 4px;
+}
+
+.q-chip-scroll::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.q-chip-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 14px;
+  border-radius: 20px;
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.q-chip-btn:hover {
+  border-color: #10b981;
+  color: #059669;
+  background: #f0fdf4;
+}
+
+.q-chip-btn.active {
+  background: #059669;
+  border-color: #047857;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(5, 150, 105, 0.3);
+}
+
+.q-chip-btn.saved {
+  border-color: #10b981;
+}
+
+.q-chip-btn .saved-check {
+  font-size: 11px;
+  color: #10b981;
+}
+
+.q-chip-btn.active .saved-check {
+  color: #a7f3d0;
+}
+
+.exam-mode-dual-card {
+  background: #ffffff;
+  border: 1.5px solid var(--toss-border);
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.exam-mode-dual-card:hover {
+  border-color: var(--toss-blue);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}

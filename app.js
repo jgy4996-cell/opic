@@ -507,77 +507,245 @@ function initApp() {
 }
 
 // ==============================================================================
-// [신규] 나만의 스크립트 작성 & AI 첨삭 연구소 및 보관함 핵심 로직
+// [신규] 마이 서베이 15문항 스크립트 작성 & AI 첨삭 연구소 및 보관함 핵심 로직
 // ==============================================================================
 
 // 스크립트 작성 & AI 첨삭 연구소 이벤트 초기화 함수입니다.
 function initScriptBuilderEvents() {
-  const loadTemplateBtn = document.getElementById('btn-load-template-script'); // 템플릿 불러오기 버튼을 가져옵니다.
+  // 모의고사 탭 내 스크립트 첨삭 모드 진입 버튼
+  const examScriptBtn = document.getElementById('btn-start-script-from-exam');
+  if (examScriptBtn) {
+    examScriptBtn.addEventListener('click', () => {
+      startScriptBuilderSession(0);
+    });
+  }
+
+  // 에바 질문 오디오 청취 버튼
+  const playQBtn = document.getElementById('btn-script-play-question-audio');
+  if (playQBtn) {
+    playQBtn.addEventListener('click', playScriptQuestionAudio);
+  }
+
+  // 1타강사 템플릿 불러오기 버튼
+  const loadTemplateBtn = document.getElementById('btn-load-template-script');
   if (loadTemplateBtn) {
     loadTemplateBtn.addEventListener('click', loadScriptTemplate);
   }
 
-  const sttDraftBtn = document.getElementById('btn-stt-script-draft'); // 음성으로 말해서 넣기 버튼을 가져옵니다.
+  // 음성으로 말해서 넣기 버튼
+  const sttDraftBtn = document.getElementById('btn-stt-script-draft');
   if (sttDraftBtn) {
     sttDraftBtn.addEventListener('click', toggleScriptDraftRecording);
   }
 
-  const analyzeBtn = document.getElementById('btn-analyze-upgrade-script'); // AI 첨삭 및 AL 스크립트 생성 버튼입니다.
+  // AI 첨삭 및 AL 스크립트 생성 버튼
+  const analyzeBtn = document.getElementById('btn-analyze-upgrade-script');
   if (analyzeBtn) {
     analyzeBtn.addEventListener('click', analyzeAndUpgradeUserScript);
   }
 
-  const backBtn = document.getElementById('btn-back-from-script'); // 스피킹 메뉴로 돌아가기 버튼입니다.
+  // 모의고사 메뉴로 돌아가기 버튼
+  const backBtn = document.getElementById('btn-back-from-script');
   if (backBtn) {
     backBtn.addEventListener('click', () => {
       stopScriptAudio();
-      switchTab('practice');
+      stopAllEvaAudio();
+      switchExamSubView('survey');
     });
   }
 
-  const quickScriptBtnHome = document.getElementById('btn-quick-start-script'); // 홈 탭의 스크립트 첨삭 숏컷 버튼입니다.
+  // 홈 탭의 스크립트 첨삭 숏컷 버튼
+  const quickScriptBtnHome = document.getElementById('btn-quick-start-script');
   if (quickScriptBtnHome) {
-    quickScriptBtnHome.addEventListener('click', startScriptBuilderSession);
+    quickScriptBtnHome.addEventListener('click', () => {
+      startScriptBuilderSession(0);
+    });
   }
 
-  const goScriptBtnMypage = document.getElementById('btn-go-script-from-mypage'); // 마이페이지의 스크립트 보관함 열기 버튼입니다.
+  // 마이페이지의 스크립트 보관함 열기 버튼
+  const goScriptBtnMypage = document.getElementById('btn-go-script-from-mypage');
   if (goScriptBtnMypage) {
-    goScriptBtnMypage.addEventListener('click', startScriptBuilderSession);
+    goScriptBtnMypage.addEventListener('click', () => {
+      startScriptBuilderSession(0);
+    });
   }
 
   renderSavedScriptList(); // 보관함 목록을 초기에 렌더링합니다.
 }
 
 // 스크립트 작성 및 AI 첨삭 연구소 화면으로 전환하는 세션 시작 함수입니다.
-function startScriptBuilderSession() {
+function startScriptBuilderSession(initialQIndex = 0) {
   stopAllEvaAudio(); // 모든 오디오를 중단합니다.
   stopScriptAudio(); // 스크립트 오디오를 중단합니다.
   state.practiceMode = 'script'; // 모드를 스크립트로 지정합니다.
+
+  // 현재 서베이에 맞는 15개 문항 세트 로드
+  state.scriptQuestions = createSurveyBasedExamSet(state.officialSurvey);
+  state.scriptSelectedQIndex = initialQIndex >= 0 && initialQIndex < state.scriptQuestions.length ? initialQIndex : 0;
+
   switchTab('exam'); // exam 메인 탭을 활성화합니다.
   switchExamSubView('script'); // 스크립트 연구소 서브 뷰로 전환합니다.
+
+  renderScriptQuestionChips(); // 15문항 네비게이터 칩 렌더링
+  selectScriptQuestion(state.scriptSelectedQIndex); // 초기 문항 선택
   renderSavedScriptList(); // 보관함 목록을 최신화합니다.
+}
+
+// 15문항 가로 스크롤 칩 네비게이터를 렌더링하는 함수입니다.
+function renderScriptQuestionChips() {
+  const container = document.getElementById('script-q-chips-container');
+  const countBadge = document.getElementById('script-chip-saved-count');
+  if (!container) return;
+
+  const savedList = JSON.parse(localStorage.getItem('opic_saved_scripts') || '[]');
+  const savedQNumbers = new Set(savedList.map(s => s.q_number || s.topic));
+
+  let savedCount = 0;
+  container.innerHTML = state.scriptQuestions.map((q, idx) => {
+    const isSaved = savedQNumbers.has(q.question_number) || savedQNumbers.has(q.topic);
+    if (isSaved) savedCount++;
+    const isActive = idx === state.scriptSelectedQIndex;
+
+    return `
+      <button class="q-chip-btn ${isActive ? 'active' : ''} ${isSaved ? 'saved' : ''}" data-idx="${idx}">
+        <span>Q${q.question_number}. ${q.topic}</span>
+        ${isSaved ? '<span class="saved-check">✓</span>' : ''}
+      </button>
+    `;
+  }).join('');
+
+  if (countBadge) {
+    countBadge.innerText = `${savedCount}/${state.scriptQuestions.length} 작성완료`;
+  }
+
+  // 칩 클릭 이벤트 리스너 등록
+  container.querySelectorAll('.q-chip-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.dataset.idx, 10);
+      selectScriptQuestion(idx);
+    });
+  });
+}
+
+// 특정 문항(0~14)을 선택하고 화면 질문 텍스트 및 상태를 전환하는 함수입니다.
+function selectScriptQuestion(idx) {
+  stopScriptAudio();
+  stopAllEvaAudio();
+
+  state.scriptSelectedQIndex = idx;
+  const q = state.scriptQuestions[idx];
+  if (!q) return;
+
+  // 칩 활성화 스타일 업데이트
+  const container = document.getElementById('script-q-chips-container');
+  if (container) {
+    const buttons = container.querySelectorAll('.q-chip-btn');
+    buttons.forEach((b, i) => {
+      b.classList.toggle('active', i === idx);
+      if (i === idx) {
+        b.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+    });
+  }
+
+  // 문항 정보 표시 업데이트
+  const badgeEl = document.getElementById('script-active-q-badge');
+  const topicEl = document.getElementById('script-active-q-topic');
+  const typeEl = document.getElementById('script-active-q-type');
+  const qTextEl = document.getElementById('script-active-question-text');
+  const textarea = document.getElementById('script-draft-textarea');
+  const resultBox = document.getElementById('script-upgrade-result-box');
+
+  if (badgeEl) badgeEl.innerText = `Q${q.question_number}`;
+  if (topicEl) topicEl.innerText = `[${q.topic}]`;
+  if (typeEl) typeEl.innerText = `질문 유형: ${q.question_type}`;
+  if (qTextEl) qTextEl.innerText = `"${q.question_text}"`;
+
+  // 기존 저장된 스크립트가 있는지 확인
+  const savedList = JSON.parse(localStorage.getItem('opic_saved_scripts') || '[]');
+  const existing = savedList.find(s => s.q_number === q.question_number || s.topic === q.topic);
+
+  if (existing) {
+    if (textarea) textarea.value = existing.draft || '';
+    renderScriptUpgradeResultCard(existing.topic, existing.draft, existing.upgraded, existing.keyExpressions || [], existing.grammarFixes || [], q);
+  } else {
+    if (textarea) textarea.value = '';
+    if (resultBox) {
+      resultBox.style.display = 'none';
+      resultBox.innerHTML = '';
+    }
+  }
+}
+
+// 현재 선택된 문항의 에바 공식 음성을 재생하는 함수입니다.
+function playScriptQuestionAudio() {
+  const q = state.scriptQuestions[state.scriptSelectedQIndex];
+  if (!q) return;
+
+  const btn = document.getElementById('btn-script-play-question-audio');
+  if (state.isScriptAudioPlaying) {
+    stopScriptAudio();
+    stopAllEvaAudio();
+    return;
+  }
+
+  if (btn) {
+    btn.innerText = '⏹ 재생 중지';
+    btn.style.background = '#fee2e2';
+    btn.style.color = '#dc2626';
+  }
+
+  state.isScriptAudioPlaying = true;
+  const resetBtn = () => {
+    state.isScriptAudioPlaying = false;
+    state.currentEvaAudio = null;
+    if (btn) {
+      btn.innerText = '🔊 질문 듣기';
+      btn.style.background = '#eff6ff';
+      btn.style.color = 'var(--toss-blue)';
+    }
+  };
+
+  if (q.audio_file) {
+    const audio = new Audio(q.audio_file);
+    state.currentEvaAudio = audio;
+    audio.onended = resetBtn;
+    audio.onerror = () => playFallbackSpeech(q.question_text, null, resetBtn);
+    audio.play().catch(() => playFallbackSpeech(q.question_text, null, resetBtn));
+  } else {
+    playFallbackSpeech(q.question_text, null, resetBtn);
+  }
 }
 
 // 선택한 오픽 주제에 맞는 1타 강사 초안 템플릿을 입력창에 자동으로 불러오는 함수입니다.
 function loadScriptTemplate() {
-  const topicSelect = document.getElementById('select-script-topic'); // 주제 셀렉트 요소를 가져옵니다.
-  const textarea = document.getElementById('script-draft-textarea'); // 텍스트에어리어를 가져옵니다.
-  if (!topicSelect || !textarea) return;
+  const q = state.scriptQuestions[state.scriptSelectedQIndex];
+  const textarea = document.getElementById('script-draft-textarea');
+  if (!textarea) return;
 
-  const selectedTopic = topicSelect.value; // 선택된 주제명을 가져옵니다.
-  const kbItem = scriptUpgradeKnowledgeBase[selectedTopic]; // 지식 베이스에서 해당 주제 데이터를 조회합니다.
+  const topicKey = q ? q.topic : '영화관 장소 묘사';
+  const kbItem = scriptUpgradeKnowledgeBase[topicKey];
 
   if (kbItem && kbItem.template_draft) {
     textarea.value = kbItem.template_draft;
     textarea.focus();
-  } else {
-    textarea.value = `우리 집 근처에 있는 ${selectedTopic}에 자주 가는데 분위기가 좋고 편리해서 주말마다 방문합니다.`;
+  } else if (q) {
+    if (q.question_type === "자기소개") {
+      textarea.value = "안녕하세요 에바, 저는 서울에 사는 개발자 Alex입니다. 주말에는 영화관과 카페를 자주 가며 여가를 보냅니다.";
+    } else if (q.question_type.includes("롤플레이 (11번")) {
+      textarea.value = "친구에게 전화해서 약속 시간, 만날 장소, 준비물에 대해 3~4가지 질문을 문의합니다.";
+    } else if (q.question_type.includes("롤플레이 (12번")) {
+      textarea.value = "갑작스러운 사정이 생겨서 오늘 약속에 못 가게 되었습니다. 사과하고 내일 만나거나 주말에 식사를 대접하겠다고 대안을 제시합니다.";
+    } else {
+      textarea.value = `우리 집 근처에 있는 ${q.topic}을(를) 자주 방문하는데 시설이 쾌적하고 분위기가 좋아서 스트레스를 풀기 위해 주말마다 찾아갑니다.`;
+    }
+    textarea.focus();
   }
 }
 
 // 스크립트 작성을 위한 음성 인식(STT) 객체 초기화 함수입니다.
 function initScriptDraftSpeechRecognition() {
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition; // STT 생성자를 가져옵니다.
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (SpeechRecognition) {
     state.scriptDraftRecognition = new SpeechRecognition();
     state.scriptDraftRecognition.continuous = false;
@@ -620,10 +788,10 @@ function initScriptDraftSpeechRecognition() {
 
 // 스크립트 음성 녹음 시작/정지 토글 함수입니다.
 function toggleScriptDraftRecording() {
-  stopAllEvaAudio(); // 모든 오디오 재생을 정지합니다.
-  stopScriptAudio(); // 스크립트 오디오 재생을 정지합니다.
+  stopAllEvaAudio();
+  stopScriptAudio();
 
-  const btn = document.getElementById('btn-stt-script-draft'); // 음성 입력 버튼을 가져옵니다.
+  const btn = document.getElementById('btn-stt-script-draft');
   if (!state.isScriptDraftRecording) {
     if (!state.scriptDraftRecognition) {
       alert('음성 인식을 지원하지 않는 브라우저입니다. 키보드로 직접 입력해주세요.');
@@ -632,7 +800,7 @@ function toggleScriptDraftRecording() {
     try {
       state.isScriptDraftRecording = true;
       if (btn) {
-        btn.innerText = '⏹ 듣는 중... (말씀하세요)';
+        btn.innerText = '⏹ 듣고 있습니다... (말씀하세요)';
         btn.style.background = 'var(--toss-red)';
         btn.style.color = '#ffffff';
       }
@@ -656,26 +824,26 @@ function toggleScriptDraftRecording() {
 
 // 사용자가 작성한 초안을 AI로 분석하고 AL 만점 스크립트로 업그레이드 첨삭하는 함수입니다.
 function analyzeAndUpgradeUserScript() {
-  stopScriptAudio(); // 오디오를 정지합니다.
+  stopScriptAudio();
+  stopAllEvaAudio();
 
-  const topicSelect = document.getElementById('select-script-topic'); // 주제 셀렉트 요소를 가져옵니다.
-  const textarea = document.getElementById('script-draft-textarea'); // 텍스트에어리어 요소를 가져옵니다.
-  const resultBox = document.getElementById('script-upgrade-result-box'); // 결과 컨테이너 박스를 가져옵니다.
+  const q = state.scriptQuestions[state.scriptSelectedQIndex];
+  const textarea = document.getElementById('script-draft-textarea');
+  const resultBox = document.getElementById('script-upgrade-result-box');
 
-  if (!topicSelect || !textarea || !resultBox) return;
+  if (!q || !textarea || !resultBox) return;
 
-  const topic = topicSelect.value; // 선택된 주제를 가져옵니다.
-  let rawText = textarea.value.trim(); // 작성된 텍스트를 가져옵니다.
-
+  let rawText = textarea.value.trim();
   if (!rawText) {
     loadScriptTemplate();
     rawText = textarea.value.trim();
   }
 
-  const kbItem = scriptUpgradeKnowledgeBase[topic]; // 지식 베이스 항목을 조회합니다.
-  let upgradedScript = ""; // 업그레이드된 스크립트 문자열 변수입니다.
-  let keyExpressions = []; // 핵심 표현 목록 배열입니다.
-  let grammarFixes = []; // 교정 포인트 배열입니다.
+  const topic = q.topic;
+  const kbItem = scriptUpgradeKnowledgeBase[topic];
+  let upgradedScript = "";
+  let keyExpressions = [];
+  let grammarFixes = [];
 
   if (kbItem) {
     upgradedScript = kbItem.upgraded_script;
@@ -695,17 +863,24 @@ function analyzeAndUpgradeUserScript() {
     ];
   }
 
-  const wordCount = rawText.split(/\s+/).length; // 초안의 단어 수를 계산합니다.
-  let estimatedLevel = "IM2"; // 예상 등급 기본값입니다.
+  renderScriptUpgradeResultCard(topic, rawText, upgradedScript, keyExpressions, grammarFixes, q);
+}
+
+// 첨삭 결과 카드 렌더링 헬퍼 함수입니다.
+function renderScriptUpgradeResultCard(topic, rawText, upgradedScript, keyExpressions, grammarFixes, q) {
+  const resultBox = document.getElementById('script-upgrade-result-box');
+  if (!resultBox) return;
+
+  const wordCount = rawText ? rawText.split(/\s+/).length : 10;
+  let estimatedLevel = "IM2";
   if (wordCount >= 30) estimatedLevel = "IH";
   if (wordCount >= 50) estimatedLevel = "AL";
 
-  // UI 렌더링 HTML을 깨끗하게 조합합니다.
   resultBox.innerHTML = `
     <div class="toss-card" style="background: #ffffff; border: 2px solid #10b981; border-radius: 20px; padding: 18px; margin-top: 14px; box-shadow: 0 4px 20px rgba(16, 185, 129, 0.12);">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
         <span style="font-size: 15px; font-weight: 800; color: #065f46; display: flex; align-items: center; gap: 6px;">
-          <span>✨ AI 스크립트 첨삭 & AL 승격 리포트</span>
+          <span>✨ Q${q.question_number}. AI 스크립트 첨삭 & AL 승격 리포트</span>
         </span>
         <span style="font-size: 11px; background: #ecfdf5; color: #059669; padding: 4px 8px; border-radius: 8px; font-weight: 800; border: 1px solid #a7f3d0;">
           진단: ${estimatedLevel} ➔ 🏆 AL 만점 승격
@@ -733,11 +908,11 @@ function analyzeAndUpgradeUserScript() {
       <div style="background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 14px; padding: 14px; margin-bottom: 12px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
           <span style="font-size: 13px; font-weight: 800; color: #166534;">🌟 AI 추천 AL 만점 스크립트 (Model Script)</span>
-          <button id="btn-play-script-audio" style="background: #16a34a; color: #ffffff; border: none; border-radius: 8px; padding: 5px 12px; font-size: 11px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 4px; transition: all 0.2s ease;">
+          <button id="btn-play-script-audio" style="background: #16a34a; color: #ffffff; border: none; border-radius: 8px; padding: 5px 12px; font-size: 11px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 4px;">
             <span id="script-speaker-icon">🔊</span> <span id="script-audio-btn-label">Eva 음성으로 쉐도잉 듣기</span>
           </button>
         </div>
-        <div style="font-size: 14px; font-weight: 600; color: #14532d; line-height: 1.6; margin-bottom: 10px;" id="upgraded-script-text-container">
+        <div style="font-size: 14px; font-weight: 600; color: #14532d; line-height: 1.6; margin-bottom: 10px;">
           ${upgradedScript}
         </div>
 
@@ -750,7 +925,7 @@ function analyzeAndUpgradeUserScript() {
       </div>
 
       <div style="display: flex; gap: 8px;">
-        <button id="btn-save-to-script-library" style="flex: 1; background: #ffffff; border: 1.5px solid #059669; color: #059669; border-radius: 12px; padding: 12px; font-size: 13px; font-weight: 800; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 4px;">
+        <button id="btn-save-to-script-library" style="flex: 1; background: #ffffff; border: 1.5px solid #059669; color: #059669; border-radius: 12px; padding: 12px; font-size: 13px; font-weight: 800; cursor: pointer;">
           💾 보관함에 저장
         </button>
         <button id="btn-launch-speaking-from-script" class="toss-btn-primary" style="flex: 1.2; background: #059669; padding: 12px; font-size: 13px; border-radius: 12px;">
@@ -762,6 +937,7 @@ function analyzeAndUpgradeUserScript() {
 
   resultBox.style.display = 'block';
 
+  // 음성 듣기 버튼 이벤트 리스너
   const playScriptBtn = document.getElementById('btn-play-script-audio');
   if (playScriptBtn) {
     playScriptBtn.addEventListener('click', () => {
@@ -769,26 +945,31 @@ function analyzeAndUpgradeUserScript() {
     });
   }
 
+  // 보관함 저장 버튼 이벤트 리스너
   const saveBtn = document.getElementById('btn-save-to-script-library');
   if (saveBtn) {
     saveBtn.addEventListener('click', () => {
       const scriptData = {
         id: Date.now(),
+        q_number: q.question_number,
         topic: topic,
+        question_text: q.question_text,
         draft: rawText,
         upgraded: upgradedScript,
         keyExpressions: keyExpressions,
+        grammarFixes: grammarFixes,
         date: new Date().toLocaleDateString('ko-KR')
       };
       saveScriptToLibrary(scriptData);
     });
   }
 
+  // 바로 스피킹 연습 버튼 이벤트 리스너
   const launchSpeakingBtn = document.getElementById('btn-launch-speaking-from-script');
   if (launchSpeakingBtn) {
     launchSpeakingBtn.addEventListener('click', () => {
       stopScriptAudio();
-      launchSpeakingFromScript(upgradedScript, topic);
+      launchSpeakingFromScript(upgradedScript, topic, q);
     });
   }
 
@@ -807,88 +988,62 @@ function toggleScriptAudioPlay(scriptText) {
   }
 
   stopAllEvaAudio();
-  stopDailyAudio();
-
   state.isScriptAudioPlaying = true;
-  if (btn) {
-    btn.style.background = 'var(--toss-red)';
-    if (label) label.innerText = '⏹ 재생 멈추기';
-    if (icon) icon.innerText = '⏹';
-  }
+  if (btn) btn.style.background = '#dc2626';
+  if (icon) icon.innerText = '⏹';
+  if (label) label.innerText = '재생 멈추기';
 
-  const resetBtn = () => {
+  const resetAudioBtn = () => {
     state.isScriptAudioPlaying = false;
-    state.currentScriptAudio = null;
-    if (btn) {
-      btn.style.background = '#16a34a';
-      if (label) label.innerText = 'Eva 음성으로 쉐도잉 듣기';
-      if (icon) icon.innerText = '🔊';
-    }
+    state.currentEvaAudio = null;
+    if (btn) btn.style.background = '#16a34a';
+    if (icon) icon.innerText = '🔊';
+    if (label) label.innerText = 'Eva 음성으로 쉐도잉 듣기';
   };
 
-  if (state.isServerAvailable) {
-    const voice = state.selectedVoice || 'en-US-AriaNeural';
-    const ttsUrl = `${state.apiBaseUrl}/api/tts?text=${encodeURIComponent(scriptText)}&voice=${encodeURIComponent(voice)}`;
-    const audio = new Audio(ttsUrl);
-    state.currentScriptAudio = audio;
-    audio.onended = resetBtn;
-    audio.onerror = () => playBrowserSpeechFallback(scriptText, null, 0.95, resetBtn);
-    audio.play().catch(() => playBrowserSpeechFallback(scriptText, null, 0.95, resetBtn));
-  } else {
-    playBrowserSpeechFallback(scriptText, null, 0.95, resetBtn);
-  }
+  playBrowserSpeechFallback(scriptText, null, 0.95, resetAudioBtn);
 }
 
-// 스크립트 오디오 정지 헬퍼 함수입니다.
+// 스크립트 오디오 재생을 완전히 정지하는 헬퍼 함수입니다.
 function stopScriptAudio() {
   state.isScriptAudioPlaying = false;
-  if (state.currentScriptAudio) {
-    try {
-      state.currentScriptAudio.pause();
-      state.currentScriptAudio.currentTime = 0;
-    } catch (e) {}
-    state.currentScriptAudio = null;
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
+  if (state.currentEvaAudio) {
+    state.currentEvaAudio.pause();
+    state.currentEvaAudio = null;
   }
-  if (window.speechSynthesis) {
-    window.speechSynthesis.cancel();
-  }
-
   const btn = document.getElementById('btn-play-script-audio');
   const label = document.getElementById('script-audio-btn-label');
   const icon = document.getElementById('script-speaker-icon');
-  if (btn) {
-    btn.style.background = '#16a34a';
-    if (label) label.innerText = 'Eva 음성으로 쉐도잉 듣기';
-    if (icon) icon.innerText = '🔊';
-  }
+  if (btn) btn.style.background = '#16a34a';
+  if (icon) icon.innerText = '🔊';
+  if (label) label.innerText = 'Eva 음성으로 쉐도잉 듣기';
 }
 
-// 스크립트를 로컬 스토리지 보관함에 영구 저장하는 함수입니다.
+// 첨삭된 스크립트를 로컬 스토리지 보관함에 영구 저장하는 함수입니다.
 function saveScriptToLibrary(scriptData) {
   try {
-    const saved = JSON.parse(localStorage.getItem('opic_saved_scripts') || '[]');
+    let saved = JSON.parse(localStorage.getItem('opic_saved_scripts') || '[]');
+    saved = saved.filter(s => s.q_number !== scriptData.q_number && s.topic !== scriptData.topic);
     saved.unshift(scriptData);
-    if (saved.length > 50) saved.pop();
     localStorage.setItem('opic_saved_scripts', JSON.stringify(saved));
+
+    alert(`🎉 Q${scriptData.q_number || ''} [${scriptData.topic}] 스크립트가 보관함에 성공적으로 저장되었습니다!`);
+    renderScriptQuestionChips();
     renderSavedScriptList();
-    alert('💾 스크립트가 [내 스크립트 보관함]에 성공적으로 저장되었습니다!\n언제든지 다시 듣고 스피킹 연습을 하실 수 있습니다.');
   } catch (e) {
     console.warn('Script save error:', e);
-    alert('스크립트 저장 중 오류가 발생했습니다.');
   }
 }
 
-// 저장된 스크립트 보관함 목록을 렌더링하는 함수입니다.
+// 저장된 스크립트 보관함 목록을 화면에 렌더링하는 함수입니다.
 function renderSavedScriptList() {
   const container = document.getElementById('saved-script-list-container');
   const badge = document.getElementById('saved-script-count-badge');
-  const mypageText = document.getElementById('mypage-script-count-text');
-
   if (!container) return;
 
   const saved = JSON.parse(localStorage.getItem('opic_saved_scripts') || '[]');
   if (badge) badge.innerText = `${saved.length}개 저장됨`;
-  if (mypageText) mypageText.innerText = `저장된 스크립트: ${saved.length}개`;
 
   if (saved.length === 0) {
     container.innerHTML = `
@@ -899,63 +1054,79 @@ function renderSavedScriptList() {
     return;
   }
 
-  container.innerHTML = saved.map((item) => `
-    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 12px; margin-bottom: 10px;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-        <span style="font-size: 13px; font-weight: 800; color: #065f46;">🎯 [${item.topic}]</span>
-        <span style="font-size: 11px; color: #94a3b8;">${item.date}</span>
+  container.innerHTML = saved.map((item, idx) => `
+    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; margin-bottom: 8px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+        <span style="font-size: 13px; font-weight: 800; color: #065f46;">
+          ${item.q_number ? `Q${item.q_number}. ` : ''}${item.topic}
+        </span>
+        <div style="display: flex; gap: 4px;">
+          <button onclick="launchSpeakingFromScript('${encodeURIComponent(item.upgraded)}', '${encodeURIComponent(item.topic)}', ${item.q_number || 1})" style="background: #059669; color: #ffffff; border: none; border-radius: 8px; padding: 4px 10px; font-size: 11px; font-weight: 700; cursor: pointer;">
+            🎙️ 스피킹 연습
+          </button>
+          <button onclick="deleteSavedScript(${item.id})" style="background: #fee2e2; color: #dc2626; border: none; border-radius: 8px; padding: 4px 8px; font-size: 11px; font-weight: 700; cursor: pointer;">
+            삭제
+          </button>
+        </div>
       </div>
-      <div style="font-size: 13px; color: #1e293b; line-height: 1.5; margin-bottom: 8px; font-weight: 600;">
-        "${item.upgraded}"
-      </div>
-      <div style="display: flex; gap: 6px; justify-content: flex-end;">
-        <button onclick="playCustomSpeech('${encodeURIComponent(item.upgraded)}')" style="background: #dcfce7; color: #15803d; border: 1px solid #86efac; border-radius: 8px; padding: 4px 10px; font-size: 11px; font-weight: 700; cursor: pointer;">
-          🔊 쉐도잉 듣기
-        </button>
-        <button onclick="launchSpeakingFromScript('${encodeURIComponent(item.upgraded)}', '${encodeURIComponent(item.topic)}')" style="background: #059669; color: #ffffff; border: none; border-radius: 8px; padding: 4px 10px; font-size: 11px; font-weight: 700; cursor: pointer;">
-          🎙️ 실전 연습
-        </button>
-        <button onclick="deleteSavedScript(${item.id})" style="background: #fee2e2; color: #dc2626; border: none; border-radius: 8px; padding: 4px 8px; font-size: 11px; font-weight: 700; cursor: pointer;">
-          🗑️ 삭제
-        </button>
+      <div style="font-size: 12px; color: #166534; line-height: 1.4; font-weight: 600;">
+        ${item.upgraded}
       </div>
     </div>
   `).join('');
 }
 
-// 보관함에서 특정 스크립트를 삭제하는 함수입니다.
+// 스크립트 보관함에서 항목을 삭제하는 전역 헬퍼 함수입니다.
 window.deleteSavedScript = function (id) {
-  if (!confirm('이 스크립트를 보관함에서 삭제하시겠습니까?')) return;
   let saved = JSON.parse(localStorage.getItem('opic_saved_scripts') || '[]');
-  saved = saved.filter(item => item.id !== id);
+  saved = saved.filter(s => s.id !== id);
   localStorage.setItem('opic_saved_scripts', JSON.stringify(saved));
+  renderScriptQuestionChips();
   renderSavedScriptList();
 };
 
-// 첨삭된 스크립트로 즉시 1문항 실전 스피킹 세션을 시작하는 함수입니다.
-window.launchSpeakingFromScript = function (encodedScript, encodedTopic) {
+// 첨삭된 스크립트로 즉시 1문제 실전 스피킹 연습을 시작하는 전역 헬퍼 함수입니다.
+window.launchSpeakingFromScript = function (encodedScript, encodedTopic, qNum = 1) {
   const scriptText = decodeURIComponent(encodedScript);
-  const topic = encodedTopic ? decodeURIComponent(encodedTopic) : "나만의 스크립트 스피킹";
+  const topic = decodeURIComponent(encodedTopic);
+
+  stopAllEvaAudio();
+  stopScriptAudio();
+
+  const fullSet = createSurveyBasedExamSet(state.officialSurvey);
+  const matchedQ = fullSet.find(q => q.question_number === qNum || q.topic === topic) || fullSet[0];
 
   state.practiceMode = '1q';
   state.questions = [
     {
       question_number: 1,
-      topic: topic,
-      question_type: "나만의 스크립트 체화 훈련",
-      question_text: `[스크립트 낭독 & 발화 체화 훈련]\n"${scriptText}"`,
-      audio_file: null
+      topic: matchedQ.topic,
+      question_type: matchedQ.question_type,
+      question_text: matchedQ.question_text,
+      audio_file: matchedQ.audio_file || null
     }
   ];
+
   state.currentIndex = 0;
   state.evaluationResults = [];
-  state.totalTimeRemaining = 180;
+  state.totalTimeRemaining = 150;
   startGlobalTimer();
 
   switchTab('exam');
   switchExamSubView('testing');
   renderCurrentQuestion();
+
+  // 사용자 첨삭 스크립트를 답변 텍스트 입력창에 미리 세팅하여 쉐도잉 연습 지원
+  setTimeout(() => {
+    const textarea = document.getElementById('stt-input-textarea');
+    if (textarea) {
+      textarea.value = scriptText;
+      state.accumulatedText = scriptText;
+      updateSpeakingHUD(scriptText);
+    }
+  }, 400);
 };
+
 
 // 한국어 질문 청취 퀴즈 전용 이벤트 및 핸들러 초기화 함수입니다.
 function initListeningQuizEvents() {

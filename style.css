@@ -847,3 +847,77 @@ nav.bottom-tab-bar { /* 하단 고정 탭바 */
   background: #047857; /* 더 어두운 에메랄드입니다. */
   transform: scale(0.98); /* 살짝 눌리는 효과입니다. */
 }
+
+/* 카카오톡 공유 노란색 버튼 스타일입니다. */
+.btn-kakao-share {
+  background: #fee500; /* 카카오톡 시그니처 옐로우 배경입니다. */
+  color: #191919; /* 카카오톡 텍스트 다크 차콜 색상입니다. */
+  border: 1px solid #ebd300; /* 미세한 테두리입니다. */
+  border-radius: 8px; /* 둥근 모서리입니다. */
+  padding: 6px 12px; /* 내부 여백입니다. */
+  font-size: 11px; /* 글자 크기입니다. */
+  font-weight: 800; /* 굵은 글씨입니다. */
+  cursor: pointer; /* 마우스 커서 포인터입니다. */
+  display: inline-flex; /* 인라인 플렉스 배치입니다. */
+  align-items: center; /* 수직 중앙 정렬입니다. */
+  gap: 4px; /* 아이콘과 텍스트 간격입니다. */
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08); /* 부드러운 그림자입니다. */
+  transition: all 0.15s ease; /* 전환 애니메이션입니다. */
+}
+
+/* 카카오톡 버튼 호버 반응입니다. */
+.btn-kakao-share:hover {
+  background: #fada0a; /* 호버 시 진한 노랑입니다. */
+  transform: translateY(-1px); /* 살짝 올라오는 효과입니다. */
+}
+
+/* 텍스트 파일 다운로드 버튼 스타일입니다. */
+.btn-txt-download {
+  background: #f1f5f9; /* 연한 그레이 블루 배경입니다. */
+  color: #334155; /* 슬레이트 텍스트 색상입니다. */
+  border: 1px solid #cbd5e1; /* 테두리입니다. */
+  border-radius: 8px; /* 둥근 모서리입니다. */
+  padding: 6px 12px; /* 내부 여백입니다. */
+  font-size: 11px; /* 글자 크기입니다. */
+  font-weight: 700; /* 굵은 글씨입니다. */
+  cursor: pointer; /* 커서 포인터입니다. */
+  display: inline-flex; /* 인라인 플렉스입니다. */
+  align-items: center; /* 수직 정렬입니다. */
+  gap: 4px; /* 간격입니다. */
+  transition: all 0.15s ease; /* 전환 효과입니다. */
+}
+
+/* 텍스트 다운로드 버튼 호버 반응입니다. */
+.btn-txt-download:hover {
+  background: #e2e8f0; /* 호버 시 약간 짙은 그레이입니다. */
+}
+
+/* 보관함 액션 툴바 컨테이너입니다. */
+.library-action-toolbar {
+  display: flex; /* 플렉스 배치입니다. */
+  gap: 6px; /* 버튼 사이 간격입니다. */
+  flex-wrap: wrap; /* 반응형 줄바꿈입니다. */
+  align-items: center; /* 수직 정렬입니다. */
+  margin-top: 8px; /* 상단 여백입니다. */
+  padding: 8px 10px; /* 내부 여백입니다. */
+  background: #f8fafc; /* 연한 배경색입니다. */
+  border-radius: 10px; /* 둥근 테두리입니다. */
+  border: 1px solid #e2e8f0; /* 테두리선입니다. */
+}
+
+/* 내보내기 모달 텍스트 미리보기 상자입니다. */
+.export-preview-box {
+  width: 100%; /* 전체 가로 너비입니다. */
+  height: 220px; /* 고정 높이입니다. */
+  overflow-y: auto; /* 세로 스크롤 허용입니다. */
+  background: #fafbfc; /* 밝은 배경입니다. */
+  border: 1.5px solid #cbd5e1; /* 테두리입니다. */
+  border-radius: 12px; /* 둥근 모서리입니다. */
+  padding: 12px; /* 내부 여백입니다. */
+  font-size: 12px; /* 글자 크기입니다. */
+  line-height: 1.6; /* 줄 간격입니다. */
+  color: #1e293b; /* 글자 색상입니다. */
+  font-family: monospace, sans-serif; /* 모노스페이스 글꼴입니다. */
+  white-space: pre-wrap; /* 줄바꿈 유지입니다. */
+  word-break: break-word; /* 긴 단어 줄바꿈입니다. */
+}

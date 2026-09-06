@@ -3640,20 +3640,82 @@ function initMultiLevelScriptEvents() {
 
   // [신규] 12/15문항 전체 일괄 저장 버튼 이벤트 등록
   const bulkSaveBtn = document.getElementById('btn-save-all-scripts-to-library');
+  // 버튼 요소가 존재하는 경우 클릭 이벤트를 바인딩합니다.
   if (bulkSaveBtn) {
+    // 일괄 저장 함수를 연결합니다.
     bulkSaveBtn.addEventListener('click', saveAllScriptSetToLibrary);
   }
 
   // [신규] 보관함 전체 스크립트 복사 버튼 이벤트 등록
   const copyAllBtn = document.getElementById('btn-copy-all-saved-scripts');
+  // 버튼 요소가 존재하는 경우 클릭 이벤트를 바인딩합니다.
   if (copyAllBtn) {
+    // 클립보드 복사 함수를 연결합니다.
     copyAllBtn.addEventListener('click', copyAllSavedScriptsToClipboard);
   }
 
   // [신규] 보관함 전체 삭제 버튼 이벤트 등록
   const clearAllBtn = document.getElementById('btn-clear-all-saved-scripts');
+  // 버튼 요소가 존재하는 경우 클릭 이벤트를 바인딩합니다.
   if (clearAllBtn) {
+    // 전체 삭제 함수를 연결합니다.
     clearAllBtn.addEventListener('click', clearAllSavedScripts);
+  }
+
+  // [신규] 카카오톡 공유 모달 열기 버튼 이벤트 등록
+  const openKakaoBtn = document.getElementById('btn-open-kakao-modal');
+  // 요소 존재 여부를 확인합니다.
+  if (openKakaoBtn) {
+    // 모달 열기 함수를 연결합니다.
+    openKakaoBtn.addEventListener('click', openKakaoExportModal);
+  }
+
+  // [신규] .txt 파일 다운로드 툴바 버튼 이벤트 등록
+  const downloadTxtBtn = document.getElementById('btn-download-txt-file');
+  // 요소 존재 여부를 확인합니다.
+  if (downloadTxtBtn) {
+    // 텍스트 파일 다운로드 함수를 연결합니다.
+    downloadTxtBtn.addEventListener('click', downloadSavedScriptsAsTxt);
+  }
+
+  // [신규] 모달 닫기 버튼 이벤트 등록
+  const closeKakaoBtn = document.getElementById('btn-close-kakao-modal');
+  // 요소 존재 시 클릭 리스너를 등록합니다.
+  if (closeKakaoBtn) {
+    // 모달 닫기 함수를 연결합니다.
+    closeKakaoBtn.addEventListener('click', closeKakaoExportModal);
+  }
+
+  // [신규] 모달 상단 ✕ 닫기 버튼 이벤트 등록
+  const closeKakaoXBtn = document.getElementById('btn-close-kakao-modal-x');
+  // 요소 존재 시 클릭 리스너를 등록합니다.
+  if (closeKakaoXBtn) {
+    // 모달 닫기 함수를 연결합니다.
+    closeKakaoXBtn.addEventListener('click', closeKakaoExportModal);
+  }
+
+  // [신규] 모달 내 카카오톡 바로 공유 버튼 이벤트 등록
+  const modalWebShareBtn = document.getElementById('btn-modal-web-share');
+  // 요소 존재 시 클릭 리스너를 등록합니다.
+  if (modalWebShareBtn) {
+    // 웹 공유 함수를 연결합니다.
+    modalWebShareBtn.addEventListener('click', shareSavedScriptsViaWebShare);
+  }
+
+  // [신규] 모달 내 .txt 파일 다운로드 버튼 이벤트 등록
+  const modalDownloadTxtBtn = document.getElementById('btn-modal-download-txt');
+  // 요소 존재 시 클릭 리스너를 등록합니다.
+  if (modalDownloadTxtBtn) {
+    // 텍스트 다운로드 함수를 연결합니다.
+    modalDownloadTxtBtn.addEventListener('click', downloadSavedScriptsAsTxt);
+  }
+
+  // [신규] 모달 내 텍스트 복사 버튼 이벤트 등록
+  const modalCopyTxtBtn = document.getElementById('btn-modal-copy-text');
+  // 요소 존재 시 클릭 리스너를 등록합니다.
+  if (modalCopyTxtBtn) {
+    // 클립보드 복사 함수를 연결합니다.
+    modalCopyTxtBtn.addEventListener('click', copyAllSavedScriptsToClipboard);
   }
 
   // 초기 로딩 시 세부 난이도 서브 칩 렌더링
@@ -3845,7 +3907,9 @@ function saveAllScriptSetToLibrary() {
 
     // 보관함 카드 위치로 부드럽게 스크롤합니다.
     const libraryAnchor = document.getElementById('script-library-card-anchor');
-    if (libraryAnchor) {
+    // 스크롤 함수가 존재하는 브라우저 환경인지 검증합니다.
+    if (libraryAnchor && typeof libraryAnchor.scrollIntoView === 'function') {
+      // 보관함 영역으로 스크롤 이동합니다.
       libraryAnchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
@@ -3859,46 +3923,205 @@ function saveAllScriptSetToLibrary() {
   }
 }
 
-// 보관함의 전체 스크립트를 깔끔한 공부용 텍스트 문서로 클립보드에 일괄 복사하는 함수입니다.
-function copyAllSavedScriptsToClipboard() {
+// 보관함의 전체 스크립트를 카카오톡 대화 및 문서 저장에 최적화된 텍스트로 생성하는 함수입니다.
+function generateSavedScriptsExportText() {
+  // 로컬 스토리지에서 저장된 스크립트 목록을 조회합니다.
   const saved = JSON.parse(localStorage.getItem('opic_saved_scripts') || '[]');
-  if (saved.length === 0) {
-    alert('보관함에 저장된 스크립트가 없습니다. 먼저 [전체 일괄 저장하기]를 눌러보세요!');
-    return;
-  }
+  // 저장된 항목이 없는 경우 빈 문자열을 반환합니다.
+  if (saved.length === 0) return '';
 
   // 문항 번호 순서대로 정렬합니다.
   saved.sort((a, b) => (a.q_number || 0) - (b.q_number || 0));
 
-  let textDoc = `📖 [OPIc Master AI - 나만의 맞춤 스크립트 암기 모음집]
-`;
-  textDoc += `총 문항 수: ${saved.length}개 | 생성일자: ${new Date().toLocaleDateString('ko-KR')}
-`;
-  textDoc += `==================================================
+  // 현재 설정된 등급과 난이도 정보를 파악합니다.
+  const targetGrade = state.scriptTargetGrade || (saved[0] && saved[0].grade) || 'AL';
+  // 현재 설정된 난이도 단계 정보를 파악합니다.
+  const targetDiff = state.scriptTargetDifficulty || (saved[0] && saved[0].difficulty) || 5;
 
-`;
+  // 헤더 텍스트를 구성합니다.
+  let text = `📖 [OPIc Master AI - 나만의 맞춤 스크립트 암기집]\n`;
+  // 목표 등급과 난이도 및 총 문항 수 정보 라인입니다.
+  text += `🎯 목표 등급: ${targetGrade} (난이도 ${targetDiff}단계) | 총 ${saved.length}문항\n`;
+  // 문서 생성 일자 정보 라인입니다.
+  text += `📅 생성일자: ${new Date().toLocaleDateString('ko-KR')}\n`;
+  // 상단 구분선입니다.
+  text += `==================================================\n\n`;
 
-  saved.forEach((item) => {
-    textDoc += `Q${item.q_number || ''}. [${item.topic || '주제'}] ${item.grade ? `(${item.grade} 등급)` : ''}
-`;
-    textDoc += `🎧 질문: "${item.question_text || ''}"
-`;
-    textDoc += `🌟 영어 스크립트:
-${item.upgraded || ''}
-`;
+  // 각 문항을 순회하며 카카오톡 가독성에 최적화된 서식으로 추가합니다.
+  saved.forEach((item, idx) => {
+    // 문항 번호 및 주제 타이틀입니다.
+    text += `[Q${item.q_number || (idx + 1)}. ${item.topic || '주제'}] ${item.grade ? `(${item.grade} 등급)` : ''}\n`;
+    // 에바 질문 텍스트가 있을 때 추가합니다.
+    if (item.question_text) {
+      // 질문 텍스트 라인입니다.
+      text += `🎧 질문: "${item.question_text}"\n`;
+    }
+    // 영어 스크립트 라벨과 본문입니다.
+    text += `🌟 영어 스크립트:\n${item.upgraded || item.draft || ''}\n`;
+    // 한국어 해석이 있을 때 추가합니다.
     if (item.draft) {
-      textDoc += `📝 한국어 해석: ${item.draft}
-`;
+      // 한국어 해석 라인입니다.
+      text += `📝 한국어 해석: ${item.draft}\n`;
     }
+    // 1타 강사 공략 팁이 있을 때 추가합니다.
     if (item.strategy) {
-      textDoc += `💡 ${item.strategy}
-`;
+      // 공략 팁 라인입니다.
+      text += `💡 공략 팁: ${item.strategy}\n`;
     }
-    textDoc += `
---------------------------------------------------
-
-`;
+    // 문항 간 구분선입니다.
+    text += `\n--------------------------------------------------\n\n`;
   });
+
+  // 꼬리말 학습 권장 문구를 추가합니다.
+  text += `💡 OPIc Master AI (https://jgy4996-cell.github.io/opic/) 에서 실전 모의고사 및 스피킹 연습을 계속하세요!\n`;
+  // 완성된 전체 텍스트를 반환합니다.
+  return text;
+}
+
+// 보관함의 전체 스크립트를 한글 깨짐 없는 .txt 파일로 다운로드하는 함수입니다.
+function downloadSavedScriptsAsTxt() {
+  // 저장된 스크립트 목록을 조회합니다.
+  const saved = JSON.parse(localStorage.getItem('opic_saved_scripts') || '[]');
+  // 저장된 스크립트가 없는 경우 알림창을 표시하고 종료합니다.
+  if (saved.length === 0) {
+    // 빈 보관함 알림창을 띄웁니다.
+    alert('보관함에 저장된 스크립트가 없습니다. 먼저 [전체 일괄 저장하기]를 눌러보세요!');
+    // 함수를 종료합니다.
+    return;
+  }
+
+  // 내보내기용 포맷 텍스트를 생성합니다.
+  const content = generateSavedScriptsExportText();
+  // 현재 등급 정보를 가져옵니다.
+  const grade = state.scriptTargetGrade || (saved[0] && saved[0].grade) || 'AL';
+  // 현재 난이도 정보를 가져옵니다.
+  const diff = state.scriptTargetDifficulty || (saved[0] && saved[0].difficulty) || 5;
+
+  // UTF-8 BOM(\uFEFF)을 추가하여 윈도우 메모장 및 모바일에서 한글 깨짐을 완벽 방지합니다.
+  const blob = new Blob(['\uFEFF' + content], { type: 'text/plain;charset=utf-8' });
+  // 파일 다운로드를 위한 가상 앵커 요소를 생성합니다.
+  const link = document.createElement('a');
+  // Blob 객체의 Object URL을 생성합니다.
+  link.href = (typeof URL !== 'undefined' && URL.createObjectURL) ? URL.createObjectURL(blob) : '#';
+  // 저장될 파일명을 설정합니다.
+  link.download = `OPIc_맞춤스크립트_암기집_${grade}_난이도${diff}단계_${saved.length}문항.txt`;
+  // 문서 본문에 앵커를 추가합니다.
+  if (typeof document !== 'undefined' && document.body) {
+    // 바디에 요소를 붙입니다.
+    document.body.appendChild(link);
+    // 클릭 이벤트를 강제로 발생시켜 다운로드를 트리거합니다.
+    link.click();
+    // 가상 요소를 제거합니다.
+    document.body.removeChild(link);
+  }
+  // Object URL 메모리를 해제합니다.
+  if (typeof URL !== 'undefined' && URL.revokeObjectURL && link.href !== '#') {
+    // URL 객체를 해제합니다.
+    URL.revokeObjectURL(link.href);
+  }
+
+  // 다운로드 성공 알림을 표시합니다.
+  alert(`💾 [${link.download}] 텍스트 파일이 성공적으로 다운로드되었습니다!\n\n카카오톡 대화방에 파일로 전송하시거나 PC/스마트폰 메모장에서 편하게 공부하세요.`);
+}
+
+// 카카오톡 공유 및 내보내기 모달을 여는 함수입니다.
+function openKakaoExportModal() {
+  // 저장된 스크립트 목록을 조회합니다.
+  const saved = JSON.parse(localStorage.getItem('opic_saved_scripts') || '[]');
+  // 보관함이 비어있으면 안내 알림 후 종료합니다.
+  if (saved.length === 0) {
+    // 알림 메시지를 표시합니다.
+    alert('보관함에 저장된 스크립트가 없습니다. 먼저 [전체 일괄 저장하기]를 눌러보세요!');
+    // 함수를 종료합니다.
+    return;
+  }
+
+  // 미리보기 텍스트 상자 요소를 가져옵니다.
+  const previewBox = document.getElementById('kakao-export-preview-text');
+  // 미리보기 상자에 포맷팅된 전체 텍스트를 삽입합니다.
+  if (previewBox) {
+    // 텍스트 내용을 채웁니다.
+    previewBox.textContent = generateSavedScriptsExportText();
+  }
+
+  // 모달 요소를 가져옵니다.
+  const modal = document.getElementById('kakao-export-modal');
+  // 모달을 화면에 표시합니다.
+  if (modal) {
+    // 플렉스 레이아웃으로 표시합니다.
+    modal.style.display = 'flex';
+  }
+}
+
+// 카카오톡 공유 모달을 닫는 함수입니다.
+function closeKakaoExportModal() {
+  // 모달 요소를 가져옵니다.
+  const modal = document.getElementById('kakao-export-modal');
+  // 모달을 숨김 처리합니다.
+  if (modal) {
+    // 표시 안함으로 변경합니다.
+    modal.style.display = 'none';
+  }
+}
+
+// 카카오톡 및 모바일 설치 앱으로 전체 스크립트를 바로 공유하는 함수입니다.
+function shareSavedScriptsViaWebShare() {
+  // 저장된 스크립트 목록을 조회합니다.
+  const saved = JSON.parse(localStorage.getItem('opic_saved_scripts') || '[]');
+  // 보관함이 비어있으면 알림을 띄우고 종료합니다.
+  if (saved.length === 0) {
+    // 알림 메시지를 표시합니다.
+    alert('보관함에 저장된 스크립트가 없습니다. 먼저 [전체 일괄 저장하기]를 눌러보세요!');
+    // 함수를 종료합니다.
+    return;
+  }
+
+  // 공유할 전체 포맷 텍스트를 생성합니다.
+  const shareText = generateSavedScriptsExportText();
+  // 현재 등급 정보를 가져옵니다.
+  const grade = state.scriptTargetGrade || (saved[0] && saved[0].grade) || 'AL';
+
+  // 브라우저의 Web Share API 지원 여부를 확인합니다.
+  if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
+    // Web Share API를 호출하여 카카오톡, 메시지 등으로 바로 공유 창을 엽니다.
+    navigator.share({
+      // 공유 제목입니다.
+      title: `OPIc 맞춤 스크립트 암기 모음집 (${grade} 등급)`,
+      // 공유 본문 내용입니다.
+      text: shareText
+    // 공유 성공 시 처리입니다.
+    }).then(() => {
+      // 공유 성공 처리 콘솔 로그입니다.
+      console.log('Web share successful');
+    // 공유 취소 또는 오류 시의 예외 처리입니다.
+    }).catch((err) => {
+      // 사용자가 공유 창을 닫은 경우(AbortError)가 아니면 클립보드 복사로 폴백합니다.
+      if (err && err.name !== 'AbortError') {
+        // 클립보드 복사 함수를 실행합니다.
+        copyAllSavedScriptsToClipboard();
+      }
+    });
+  // Web Share API가 미지원되는 데스크톱/일반 브라우저인 경우 폴백 처리입니다.
+  } else {
+    // 클립보드에 바로 복사하고 카카오톡 붙여넣기 안내를 표시합니다.
+    copyAllSavedScriptsToClipboard();
+  }
+}
+
+// 보관함의 전체 스크립트를 깔끔한 공부용 텍스트 문서로 클립보드에 일괄 복사하는 함수입니다.
+function copyAllSavedScriptsToClipboard() {
+  // 저장된 스크립트 목록을 로컬 스토리지에서 조회합니다.
+  const saved = JSON.parse(localStorage.getItem('opic_saved_scripts') || '[]');
+  // 저장된 항목이 없으면 알림을 띄우고 종료합니다.
+  if (saved.length === 0) {
+    // 알림 메시지를 출력합니다.
+    alert('보관함에 저장된 스크립트가 없습니다. 먼저 [전체 일괄 저장하기]를 눌러보세요!');
+    // 함수를 종료합니다.
+    return;
+  }
+
+  // 전체 포맷 텍스트 문서를 생성합니다.
+  const textDoc = generateSavedScriptsExportText();
 
   // 클립보드 API 객체를 window 또는 navigator에서 안전하게 추출합니다.
   const clipApi = (typeof navigator !== 'undefined' && navigator.clipboard) ? navigator.clipboard : (typeof window !== 'undefined' && window.navigator && window.navigator.clipboard ? window.navigator.clipboard : null);
@@ -3907,7 +4130,7 @@ ${item.upgraded || ''}
     // 클립보드에 전체 텍스트 문서를 비동기로 복사합니다.
     clipApi.writeText(textDoc).then(() => {
       // 복사 성공 시 사용자에게 알림창을 표시합니다.
-      alert(`📋 보관함의 ${saved.length}개 전체 스크립트가 클립보드에 복사되었습니다!\n\n카카오톡, 노션(Notion), 메모장에 바로 붙여넣기(Ctrl+V)하여 출력하거나 공부하실 수 있습니다.`);
+      alert(`📋 보관함의 ${saved.length}개 전체 스크립트가 클립보드에 복사되었습니다!\n\n카카오톡(나와의 채팅방), 노션(Notion), 메모장에 바로 붙여넣기(Ctrl+V)하여 공유하거나 출력하실 수 있습니다.`);
     // 복사 중 에러 발생 시 예외 처리 알림을 표시합니다.
     }).catch(() => {
       // 실패 알림창을 표시합니다.
@@ -3922,10 +4145,15 @@ ${item.upgraded || ''}
 
 // 보관함의 모든 스크립트를 전체 삭제하는 함수입니다.
 function clearAllSavedScripts() {
+  // 사용자 확인창을 띄워 삭제 의사를 재확인합니다.
   if (confirm('정말 보관함에 저장된 모든 스크립트를 삭제하시겠습니까?')) {
+    // 로컬 스토리지에서 키를 삭제합니다.
     localStorage.removeItem('opic_saved_scripts');
+    // 문항 네비게이터 칩 UI를 새로고침합니다.
     renderScriptQuestionChips();
+    // 보관함 목록 UI를 새로고침합니다.
     renderSavedScriptList();
+    // 삭제 완료 알림을 띄웁니다.
     alert('🗑️ 보관함이 깨끗하게 비워졌습니다.');
   }
 }

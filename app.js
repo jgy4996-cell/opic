@@ -3000,3 +3000,158 @@ function copyReportToClipboard() {
     alert('클립보드 복사에 실패했습니다.');
   });
 }
+
+
+// ==============================================================================
+// [신규]: 오픽노잼(OPIc NoJam) AL 비법소, 원클릭 필러 인서터 및 전용 가이드 모달 제어 로직
+// ==============================================================================
+
+// 오픽노잼 관련 UI 이벤트 리스너들을 초기화하는 함수입니다.
+function initOpicNojamEvents() {
+  // 아코디언 헤더 토글 버튼 요소를 가져옵니다.
+  const accordionHeader = document.getElementById('btn-toggle-nojam-accordion');
+  // 아코디언 상세 내용 바디 요소를 가져옵니다.
+  const accordionBody = document.getElementById('nojam-accordion-content');
+  // 아코디언 화살표 아이콘 요소를 가져옵니다.
+  const accordionArrow = document.getElementById('nojam-accordion-arrow');
+
+  // 아코디언 헤더와 바디가 존재할 경우 토글 클릭 이벤트를 바인딩합니다.
+  if (accordionHeader && accordionBody) {
+    accordionHeader.addEventListener('click', () => {
+      // show 클래스의 토글 상태를 확인합니다.
+      const isShowing = accordionBody.classList.toggle('show');
+      // 화살표 아이콘의 회전 클래스를 토글합니다.
+      if (accordionArrow) accordionArrow.classList.toggle('expanded', isShowing);
+    });
+  }
+
+  // 홈 탭의 오픽노잼 꿀팁 퀵 버튼을 가져옵니다.
+  const homeNojamBtn = document.getElementById('btn-quick-open-nojam-guide');
+  // 홈 탭 버튼 클릭 시 가이드 모달을 엽니다.
+  if (homeNojamBtn) {
+    homeNojamBtn.addEventListener('click', openOpicNojamGuideModal);
+  }
+
+  // 스크립트 탭 상단의 오픽노잼 비법서 버튼을 가져옵니다.
+  const scriptNojamBtn = document.getElementById('btn-open-nojam-guide-from-script');
+  // 스크립트 탭 버튼 클릭 시 가이드 모달을 엽니다.
+  if (scriptNojamBtn) {
+    scriptNojamBtn.addEventListener('click', openOpicNojamGuideModal);
+  }
+
+  // 아코디언 내부의 모달 열기 버튼을 가져옵니다.
+  const accordionModalBtn = document.getElementById('btn-open-nojam-full-modal-btn');
+  // 버튼 클릭 시 가이드 모달을 엽니다.
+  if (accordionModalBtn) {
+    accordionModalBtn.addEventListener('click', openOpicNojamGuideModal);
+  }
+
+  // 모달 상단 닫기(X) 버튼을 가져옵니다.
+  const closeTopBtn = document.getElementById('btn-close-nojam-modal');
+  // X 버튼 클릭 시 가이드 모달을 닫습니다.
+  if (closeTopBtn) {
+    closeTopBtn.addEventListener('click', closeOpicNojamGuideModal);
+  }
+
+  // 모달 하단 닫기 버튼을 가져옵니다.
+  const closeBottomBtn = document.getElementById('btn-close-nojam-modal-bottom');
+  // 하단 버튼 클릭 시 가이드 모달을 닫습니다.
+  if (closeBottomBtn) {
+    closeBottomBtn.addEventListener('click', closeOpicNojamGuideModal);
+  }
+
+  // 모달 배경 영역 클릭 시 닫히도록 설정합니다.
+  const modalOverlay = document.getElementById('opic-nojam-guide-modal');
+  // 오버레이가 존재하면 클릭 이벤트를 등록합니다.
+  if (modalOverlay) {
+    modalOverlay.addEventListener('click', (e) => {
+      // 모달 바깥 배경을 클릭했을 때만 닫습니다.
+      if (e.target === modalOverlay) closeOpicNojamGuideModal();
+    });
+  }
+
+  // 모달 내부 탭 버튼들을 초기화합니다.
+  const modalTabBtns = document.querySelectorAll('.nojam-modal-tab-btn');
+  // 각 탭 버튼에 클릭 이벤트를 바인딩합니다.
+  modalTabBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      // 모든 탭 버튼에서 active 클래스를 제거합니다.
+      modalTabBtns.forEach(b => b.classList.remove('active'));
+      // 클릭된 버튼에 active 클래스를 부여합니다.
+      btn.classList.add('active');
+      // 대상 탭 이름을 가져옵니다.
+      const tabName = btn.dataset.nojamTab;
+      // 모든 하위 뷰를 숨깁니다.
+      document.querySelectorAll('.nojam-sub-view').forEach(view => view.style.display = 'none');
+      // 선택된 하위 뷰를 노출합니다.
+      const targetView = document.getElementById(`nojam-modal-view-${tabName}`);
+      if (targetView) targetView.style.display = 'block';
+    });
+  });
+
+  // 원클릭 필러(Filler) 버튼 이벤트들을 초기화합니다.
+  const fillerBtns = document.querySelectorAll('.filler-btn');
+  // 각 필러 버튼에 클릭 이벤트를 등록합니다.
+  fillerBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      // 버튼에 저장된 필러 텍스트를 가져옵니다.
+      const fillerText = btn.dataset.filler;
+      // 작성창에 필러 텍스트를 삽입합니다.
+      if (fillerText) insertFillerToScript(fillerText);
+    });
+  });
+}
+
+// 오픽노잼 가이드북 팝업 모달을 여는 전역 함수입니다.
+function openOpicNojamGuideModal() {
+  // 모달 요소를 가져옵니다.
+  const modal = document.getElementById('opic-nojam-guide-modal');
+  // 모달이 존재하면 flex로 노출합니다.
+  if (modal) {
+    modal.style.display = 'flex';
+  }
+}
+
+// 오픽노잼 가이드북 팝업 모달을 닫는 전역 함수입니다.
+function closeOpicNojamGuideModal() {
+  // 모달 요소를 가져옵니다.
+  const modal = document.getElementById('opic-nojam-guide-modal');
+  // 모달이 존재하면 숨김 처리합니다.
+  if (modal) {
+    modal.style.display = 'none';
+  }
+}
+
+// 스크립트 작성창의 커서 위치 또는 텍스트 끝에 원클릭으로 필러를 삽입하는 함수입니다.
+function insertFillerToScript(fillerText) {
+  // 스크립트 텍스트에어리어 요소를 가져옵니다.
+  const textarea = document.getElementById('script-draft-textarea');
+  // 텍스트에어리어가 없으면 종료합니다.
+  if (!textarea) return;
+
+  // 현재 커서의 시작 위치와 끝 위치를 구합니다.
+  const startPos = textarea.selectionStart !== undefined ? textarea.selectionStart : textarea.value.length;
+  // 끝 위치를 구합니다.
+  const endPos = textarea.selectionEnd !== undefined ? textarea.selectionEnd : textarea.value.length;
+  // 기존 텍스트 값을 가져옵니다.
+  const currentVal = textarea.value;
+
+  // 커서 앞부분과 뒷부분 사이에 필러 텍스트를 삽입합니다.
+  const newVal = currentVal.substring(0, startPos) + fillerText + currentVal.substring(endPos);
+  // 텍스트에어리어에 새 값을 반영합니다.
+  textarea.value = newVal;
+
+  // 삽입된 필러 바로 뒤로 커서 위치를 이동시킵니다.
+  const newCursorPos = startPos + fillerText.length;
+  // 텍스트에어리어에 포커스를 맞춥니다.
+  textarea.focus();
+  // 커서 위치를 재설정합니다.
+  if (typeof textarea.setSelectionRange === 'function') {
+    textarea.setSelectionRange(newCursorPos, newCursorPos);
+  }
+}
+
+// 전역 윈도우 객체에 오픽노잼 헬퍼 함수들을 바인딩합니다.
+window.openOpicNojamGuideModal = openOpicNojamGuideModal;
+window.closeOpicNojamGuideModal = closeOpicNojamGuideModal;
+window.insertFillerToScript = insertFillerToScript;

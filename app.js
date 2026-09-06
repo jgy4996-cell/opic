@@ -495,6 +495,7 @@ function initApp() {
   initSpeechRecognition(); // 영어 음성인식을 초기화합니다.
   initKoreanSpeechRecognition(); // 한국어 음성인식을 초기화합니다.
   initScriptDraftSpeechRecognition(); // [신규] 스크립트 작성 음성인식을 초기화합니다.
+  initOpicNojamEvents(); // [신규] 오픽노잼 비법소, 아코디언 및 필러 팔레트를 초기화합니다.
   checkServerConnection(); // 백엔드 서버 연결 상태를 확인합니다.
 
   // 브라우저 음성 목록 비동기 로딩 이벤트 리스너 등록입니다.
@@ -894,6 +895,18 @@ function renderScriptUpgradeResultCard(topic, rawText, upgradedScript, keyExpres
         </div>
         <div style="font-size: 13px; color: #334155; line-height: 1.5; font-style: italic;">
           "${rawText}"
+        </div>
+      </div>
+
+      <!-- [신규] 오픽노잼 3대 만점 체크포인트 진단 -->
+      <div style="background: #fffbeb; border: 1px solid #fde68a; border-radius: 12px; padding: 12px; margin-bottom: 12px;">
+        <div style="font-size: 12px; font-weight: 800; color: #92400e; margin-bottom: 6px; display: flex; align-items: center; gap: 4px;">
+          <span>💡 [오픽노잼] AL 3단 구조 진단 & 첨삭 포인트</span>
+        </div>
+        <div style="font-size: 11px; color: #78350f; line-height: 1.5; display: flex; flex-direction: column; gap: 4px;">
+          <div><strong>1. 메인포인트(MP) 감정 진단:</strong> 첫 문장에 본인의 솔직한 느낌(Feeling)과 결론을 두괄식으로 확실하게 제시</div>
+          <div><strong>2. Rule of 1 Thing:</strong> 이것저것 얕게 나열하지 않고 가장 매력적인 1가지 핵심 디테일에 깊이 있게 집중</div>
+          <div><strong>3. 원어민 필러 & 구어체:</strong> 실제 친구와 대화하듯 자연스러운 필러(You know, Speaking of which) 구사</div>
         </div>
       </div>
 

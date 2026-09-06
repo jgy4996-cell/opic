@@ -535,3 +535,153 @@ nav.bottom-tab-bar { /* 하단 고정 탭바 */
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
+
+
+/* ============================================================================== */
+/* [신규]: 오픽노잼(OPIc NoJam) AL 비법소, 아코디언, 필러 팔레트 및 가이드북 스타일 */
+/* ============================================================================== */
+
+/* 오픽노잼 꿀팁 아코디언 컨테이너 박스입니다. */
+.nojam-tip-card {
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); /* 따뜻한 옐로우 골드 그라데이션 배경입니다. */
+  border: 1.5px solid #fde68a; /* 눈에 띄는 골드 테두리입니다. */
+  border-radius: 16px; /* 둥근 모서리 반경입니다. */
+  padding: 14px 16px; /* 내부 여백입니다. */
+  margin-bottom: 12px; /* 하단 여백입니다. */
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.08); /* 부드러운 그림자입니다. */
+}
+
+/* 아코디언 토글 헤더 버튼 스타일입니다. */
+.nojam-accordion-header {
+  display: flex; /* 플렉스 박스 배치입니다. */
+  justify-content: space-between; /* 좌우 끝 정렬입니다. */
+  align-items: center; /* 수직 중앙 정렬입니다. */
+  cursor: pointer; /* 마우스 포인터 손모양입니다. */
+  user-select: none; /* 텍스트 선택 방지입니다. */
+}
+
+/* 아코디언 토글 화살표 아이콘입니다. */
+.nojam-toggle-icon {
+  font-size: 14px; /* 아이콘 크기입니다. */
+  font-weight: 800; /* 굵은 폰트입니다. */
+  color: #d97706; /* 앰버 색상입니다. */
+  transition: transform 0.25s ease; /* 부드러운 회전 전환입니다. */
+}
+
+/* 아코디언 펼침 상태일 때의 화살표 회전입니다. */
+.nojam-toggle-icon.expanded {
+  transform: rotate(180deg); /* 180도 회전합니다. */
+}
+
+/* 아코디언 내부 상세 내용 컨테이너입니다. */
+.nojam-accordion-body {
+  display: none; /* 초기에는 숨김 처리합니다. */
+  margin-top: 12px; /* 상단 여백입니다. */
+  padding-top: 12px; /* 상단 내부 여백입니다. */
+  border-top: 1px dashed #fcd34d; /* 구분 점선입니다. */
+}
+
+/* 아코디언이 열렸을 때의 표시 스타일입니다. */
+.nojam-accordion-body.show {
+  display: block; /* 블록으로 노출합니다. */
+  animation: fadeIn 0.3s ease; /* 서서히 나타나는 애니메이션입니다. */
+}
+
+/* 오픽노잼 5대 황금 법칙 아이템 리스트 박스입니다. */
+.nojam-rule-item {
+  background: #ffffff; /* 흰색 카드 배경입니다. */
+  border: 1px solid #fde68a; /* 골드 테두리입니다. */
+  border-radius: 12px; /* 모서리 둥글기입니다. */
+  padding: 10px 12px; /* 내부 여백입니다. */
+  margin-bottom: 8px; /* 하단 여백입니다. */
+}
+
+/* 필러 원클릭 팔레트 컨테이너입니다. */
+.filler-palette-container {
+  background: #f8fafc; /* 연한 그레이 배경입니다. */
+  border: 1px solid #e2e8f0; /* 테두리입니다. */
+  border-radius: 12px; /* 모서리 둥글기입니다. */
+  padding: 10px 12px; /* 내부 여백입니다. */
+  margin-bottom: 10px; /* 하단 여백입니다. */
+}
+
+/* 필러 칩 스크롤 래퍼입니다. */
+.filler-chip-scroll {
+  display: flex; /* 가로 플렉스 배치입니다. */
+  gap: 6px; /* 칩 사이 간격입니다. */
+  overflow-x: auto; /* 가로 스크롤 허용입니다. */
+  padding-bottom: 4px; /* 하단 스크롤 여백입니다. */
+  -webkit-overflow-scrolling: touch; /* 모바일 부드러운 스크롤입니다. */
+}
+
+/* 스크롤바 숨김 처리입니다. */
+.filler-chip-scroll::-webkit-scrollbar {
+  display: none; /* 웹킷 스크롤바를 숨깁니다. */
+}
+
+/* 원클릭 필러 버튼 기본 스타일입니다. */
+.filler-btn {
+  white-space: nowrap; /* 줄바꿈 방지입니다. */
+  padding: 5px 10px; /* 내부 여백입니다. */
+  border-radius: 8px; /* 둥근 모서리입니다. */
+  font-size: 11px; /* 글씨 크기입니다. */
+  font-weight: 700; /* 볼드체입니다. */
+  cursor: pointer; /* 마우스 포인터입니다. */
+  border: 1px solid transparent; /* 기본 투명 테두리입니다. */
+  transition: all 0.15s ease; /* 전환 효과입니다. */
+}
+
+/* 오프닝/도입 필러 버튼 색상입니다. */
+.filler-btn.opening {
+  background: #eff6ff; /* 블루 배경입니다. */
+  color: #1d4ed8; /* 블루 텍스트입니다. */
+  border-color: #bfdbfe; /* 블루 테두리입니다. */
+}
+
+/* 생각정리/시간벌기 필러 버튼 색상입니다. */
+.filler-btn.thinking {
+  background: #f5f3ff; /* 퍼플 배경입니다. */
+  color: #6d28d9; /* 퍼플 텍스트입니다. */
+  border-color: #ddd6fe; /* 퍼플 테두리입니다. */
+}
+
+/* 직접화법/감정 필러 버튼 색상입니다. */
+.filler-btn.dialogue {
+  background: #ecfdf5; /* 에메랄드 배경입니다. */
+  color: #047857; /* 에메랄드 텍스트입니다. */
+  border-color: #a7f3d0; /* 에메랄드 테두리입니다. */
+}
+
+/* 마무리/요약 필러 버튼 색상입니다. */
+.filler-btn.closing {
+  background: #fffbeb; /* 앰버 배경입니다. */
+  color: #b45309; /* 앰버 텍스트입니다. */
+  border-color: #fde68a; /* 앰버 테두리입니다. */
+}
+
+/* 필러 버튼 호버 및 터치 반응입니다. */
+.filler-btn:active, .filler-btn:hover {
+  transform: scale(0.96); /* 살짝 눌리는 애니메이션입니다. */
+  filter: brightness(0.95); /* 살짝 어둡게 강조합니다. */
+}
+
+/* 오픽노잼 가이드 모달 탭 버튼입니다. */
+.nojam-modal-tab-btn {
+  flex: 1; /* 너비 균등 분배입니다. */
+  padding: 8px 10px; /* 내부 여백입니다. */
+  border: 1.5px solid #e2e8f0; /* 테두리입니다. */
+  border-radius: 10px; /* 모서리 둥글기입니다. */
+  background: #ffffff; /* 흰색 배경입니다. */
+  font-size: 12px; /* 폰트 크기입니다. */
+  font-weight: 800; /* 굵은 폰트입니다. */
+  color: var(--toss-text-secondary); /* 보조 텍스트 색상입니다. */
+  cursor: pointer; /* 마우스 포인터입니다. */
+  transition: all 0.2s ease; /* 부드러운 전환입니다. */
+}
+
+/* 오픽노잼 가이드 모달 탭 버튼 활성화 스타일입니다. */
+.nojam-modal-tab-btn.active {
+  background: #fffbeb; /* 앰버 배경입니다. */
+  border-color: #f59e0b; /* 앰버 테두리입니다. */
+  color: #b45309; /* 앰버 텍스트입니다. */
+}

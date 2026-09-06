@@ -1185,9 +1185,12 @@ function renderSavedScriptList() {
   container.innerHTML = saved.map((item, idx) => `
     <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; margin-bottom: 8px;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-        <span style="font-size: 13px; font-weight: 800; color: #065f46;">
-          ${item.q_number ? `Q${item.q_number}. ` : ''}${item.topic}
-        </span>
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <span style="font-size: 11px; background: #d1fae5; color: #065f46; padding: 2px 6px; border-radius: 6px; font-weight: 800;">${item.grade ? `${item.grade}` : 'AL'}${item.difficulty ? ` (${item.difficulty}단계)` : ''}</span>
+          <span style="font-size: 13px; font-weight: 800; color: #065f46;">
+            ${item.q_number ? `Q${item.q_number}. ` : ''}${item.topic}
+          </span>
+        </div>
         <div style="display: flex; gap: 4px;">
           <button onclick="launchSpeakingFromScript('${encodeURIComponent(item.upgraded)}', '${encodeURIComponent(item.topic)}', ${item.q_number || 1})" style="background: #059669; color: #ffffff; border: none; border-radius: 8px; padding: 4px 10px; font-size: 11px; font-weight: 700; cursor: pointer;">
             🎙️ 스피킹 연습
@@ -3628,9 +3631,33 @@ function initMultiLevelScriptEvents() {
   document.querySelectorAll('.grade-select-pill').forEach((btn) => {
     btn.addEventListener('click', () => {
       const targetGrade = btn.dataset.grade;
-      if (targetGrade) setScriptTargetGrade(targetGrade);
+      if (targetGrade) {
+        const defaultDiff = (gradeDifficultyMatrix[targetGrade] && gradeDifficultyMatrix[targetGrade][0].diff) || 5;
+        setScriptTargetGradeAndDifficulty(targetGrade, defaultDiff);
+      }
     });
   });
+
+  // [신규] 12/15문항 전체 일괄 저장 버튼 이벤트 등록
+  const bulkSaveBtn = document.getElementById('btn-save-all-scripts-to-library');
+  if (bulkSaveBtn) {
+    bulkSaveBtn.addEventListener('click', saveAllScriptSetToLibrary);
+  }
+
+  // [신규] 보관함 전체 스크립트 복사 버튼 이벤트 등록
+  const copyAllBtn = document.getElementById('btn-copy-all-saved-scripts');
+  if (copyAllBtn) {
+    copyAllBtn.addEventListener('click', copyAllSavedScriptsToClipboard);
+  }
+
+  // [신규] 보관함 전체 삭제 버튼 이벤트 등록
+  const clearAllBtn = document.getElementById('btn-clear-all-saved-scripts');
+  if (clearAllBtn) {
+    clearAllBtn.addEventListener('click', clearAllSavedScripts);
+  }
+
+  // 초기 로딩 시 세부 난이도 서브 칩 렌더링
+  renderSubDifficultyChips(state.scriptTargetGrade || 'AL');
 
   // 문항 상세 카드 내 미니 등급 토글 버튼 클릭 이벤트 등록
   document.querySelectorAll('.mini-grade-btn').forEach((btn) => {
@@ -3650,5 +3677,255 @@ function initMultiLevelScriptEvents() {
   const listenBtn = document.getElementById('btn-listen-multilevel-script');
   if (listenBtn) {
     listenBtn.addEventListener('click', listenMultilevelScriptAudio);
+  }
+}
+
+
+// ==============================================================================
+// [신규]: 목표 등급별 세부 난이도 매트릭스 및 12/15문항 일괄 저장 & 학습 로직
+// ==============================================================================
+
+// 등급별로 선택 가능한 세부 난이도 단계 매핑 테이블입니다.
+const gradeDifficultyMatrix = {
+  IL: [
+    { diff: 2, label: '난이도 2단계 (12문항 추천)', q_count: 12, desc: '3~4개 기초 단문 중심의 12문항 입문 스크립트' },
+    { diff: 3, label: '난이도 3단계 (15문항 도전)', q_count: 15, desc: '15문항 기본 문제 세트에 맞춘 기초 스크립트' }
+  ],
+  IM: [
+    { diff: 3, label: '난이도 3단계 (15문항 추천)', q_count: 15, desc: '쉬운 3콤보와 롤플레이 중심의 15문항 스크립트' },
+    { diff: 4, label: '난이도 4단계 (15문항 표준)', q_count: 15, desc: '서론-본론-결론 3단 구조 중심의 15문항 표준 스크립트' }
+  ],
+  IH: [
+    { diff: 4, label: '난이도 4단계 (15문항 안정권)', q_count: 15, desc: '원어민 구동사와 롤플레이 대안 제시 중심 15문항' },
+    { diff: 5, label: '난이도 5단계 (15문항 1타강사)', q_count: 15, desc: '고급 어휘와 14-15번 심화 콤보 대비 15문항' }
+  ],
+  AL: [
+    { diff: 5, label: '난이도 5단계 (15문항 추천)', q_count: 15, desc: '오픽노잼 5대 황금 법칙(MP, 1 Thing, 필러) 15문항' },
+    { diff: 6, label: '난이도 6단계 (15문항 최고난도)', q_count: 15, desc: '최고난도 돌발 및 시사 토론 완벽 대비 만점 스크립트' }
+  ]
+};
+
+// 등급 선택에 맞춰 세부 난이도 서브 칩들을 화면에 동적으로 렌더링하는 함수입니다.
+function renderSubDifficultyChips(grade) {
+  // 서브 칩 컨테이너 요소를 가져옵니다.
+  const container = document.getElementById('diff-sub-chips-box');
+  if (!container) return;
+
+  // 해당 등급의 세부 난이도 목록을 가져옵니다.
+  const options = gradeDifficultyMatrix[grade] || gradeDifficultyMatrix['AL'];
+
+  // 현재 선택된 난이도가 목록에 포함되어 있는지 확인하고 기본값을 지정합니다.
+  const currentDiff = state.scriptTargetDifficulty || options[0].diff;
+  const isIncluded = options.some(opt => opt.diff === currentDiff);
+  const activeDiff = isIncluded ? currentDiff : options[0].diff;
+  state.scriptTargetDifficulty = activeDiff;
+
+  // 서브 칩 HTML을 동적으로 생성합니다.
+  container.innerHTML = options.map((opt) => `
+    <button class="diff-sub-btn ${opt.diff === activeDiff ? 'active' : ''}" data-diff="${opt.diff}">
+      ${opt.label}
+    </button>
+  `).join('');
+
+  // 각 서브 칩 버튼에 클릭 이벤트를 등록합니다.
+  container.querySelectorAll('.diff-sub-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const selectedDiff = parseInt(btn.dataset.diff, 10);
+      setScriptTargetGradeAndDifficulty(state.scriptTargetGrade || grade, selectedDiff);
+    });
+  });
+}
+
+// 목표 등급과 세부 난이도를 복합 설정하고 문제 세트와 UI를 갱신하는 함수입니다.
+function setScriptTargetGradeAndDifficulty(grade, difficulty) {
+  // 전역 상태에 등급과 난이도를 반영합니다.
+  state.scriptTargetGrade = grade;
+  state.scriptTargetDifficulty = difficulty;
+  state.scriptViewerGrade = grade;
+  state.officialSurvey.difficulty = difficulty;
+
+  // 목표 등급 선택 필 버튼들의 활성화 상태를 갱신합니다.
+  document.querySelectorAll('.grade-select-pill').forEach((btn) => {
+    const isTarget = btn.dataset.grade === grade;
+    btn.classList.toggle('active', isTarget);
+  });
+
+  // 미니 등급 토글 버튼들의 활성화 상태도 동기화합니다.
+  document.querySelectorAll('.mini-grade-btn').forEach((btn) => {
+    btn.classList.toggle('active', btn.dataset.viewGrade === grade);
+  });
+
+  // 세부 난이도 칩을 다시 렌더링합니다.
+  renderSubDifficultyChips(grade);
+
+  // 난이도에 맞추어 문제 세트(12문항 또는 15문항)를 재생성합니다.
+  state.scriptQuestions = createSurveyBasedExamSet(state.officialSurvey);
+  state.scriptSelectedQIndex = 0;
+
+  // 상단 배지와 설명 문구를 업데이트합니다.
+  const badgeEl = document.getElementById('target-grade-badge');
+  const descEl = document.getElementById('target-grade-desc-text');
+  const bulkTitleEl = document.getElementById('bulk-save-title');
+  const bulkSubEl = document.getElementById('bulk-save-subtitle');
+  const bulkBtnEl = document.getElementById('btn-save-all-scripts-to-library');
+
+  const qCount = state.scriptQuestions.length;
+  const gradeNames = { IL: 'IL/IM1', IM: 'IM2/IM3', IH: 'IH', AL: 'AL 만점' };
+  const gradeName = gradeNames[grade] || grade;
+
+  if (badgeEl) {
+    badgeEl.innerText = `🎯 ${gradeName} (난이도 ${difficulty}-${difficulty} / ${qCount}문항)`;
+    if (grade === 'IL') { badgeEl.style.background = '#fef3c7'; badgeEl.style.color = '#b45309'; }
+    else if (grade === 'IM') { badgeEl.style.background = '#e0e7ff'; badgeEl.style.color = '#3730a3'; }
+    else if (grade === 'IH') { badgeEl.style.background = '#dbeafe'; badgeEl.style.color = '#1d4ed8'; }
+    else { badgeEl.style.background = '#ecfdf5'; badgeEl.style.color = '#047857'; }
+  }
+
+  if (descEl) {
+    if (grade === 'IL') descEl.innerHTML = `💡 <strong>초급 ${gradeName} (난이도 ${difficulty}단계):</strong> 3~4개 기초 단문으로 10초 만에 외워 말문이 트이는 ${qCount}문항 맞춤 스크립트입니다.`;
+    else if (grade === 'IM') descEl.innerHTML = `💡 <strong>중급 ${gradeName} (난이도 ${difficulty}단계):</strong> 서론-본론-결론 3단 구조와 시간 연결사 중심의 ${qCount}문항 표준 스크립트입니다.`;
+    else if (grade === 'IH') descEl.innerHTML = `💡 <strong>상급 ${gradeName} (난이도 ${difficulty}단계):</strong> 원어민 구동사와 롤플레이 대안 제시가 결합된 ${qCount}문항 유창성 스크립트입니다.`;
+    else descEl.innerHTML = `💡 <strong>최고급 ${gradeName} (난이도 ${difficulty}단계):</strong> 오픽노잼 5대 황금 법칙(MP 두괄식, 1 Thing, 직접화법, 필러)으로 무장한 ${qCount}문항 만점 스크립트입니다.`;
+  }
+
+  if (bulkTitleEl) {
+    bulkTitleEl.innerText = `📦 [${gradeName} - 난이도 ${difficulty}단계] ${qCount}문항 맞춤 세트 완성`;
+  }
+  if (bulkSubEl) {
+    bulkSubEl.innerText = `버튼 한 번으로 ${qCount}개 전체 스크립트를 내 보관함에 통째로 저장하고 공부하세요!`;
+  }
+  if (bulkBtnEl) {
+    bulkBtnEl.innerText = `💾 ${qCount}문항 전체 일괄 저장하기`;
+  }
+
+  // 문항 네비게이터 칩과 첫 번째 문항 뷰를 갱신합니다.
+  renderScriptQuestionChips();
+  selectScriptQuestion(0);
+}
+
+// 현재 선택된 등급과 난이도에 해당하는 12/15문항 전체 스크립트를 내 보관함에 일괄 저장하는 함수입니다.
+function saveAllScriptSetToLibrary() {
+  const grade = state.scriptTargetGrade || 'AL';
+  const diff = state.scriptTargetDifficulty || 5;
+  const questions = state.scriptQuestions || createSurveyBasedExamSet(state.officialSurvey);
+  const qCount = questions.length;
+
+  try {
+    // 기존 보관함 목록을 불러옵니다.
+    let saved = JSON.parse(localStorage.getItem('opic_saved_scripts') || '[]');
+
+    // 현재 생성된 모든 문항을 순회하며 맞춤 스크립트 객체를 생성합니다.
+    const newItems = questions.map((q, idx) => {
+      // 해당 문항의 지정 등급 스크립트를 가져옵니다.
+      const levelData = getMultiLevelScriptItem(q.topic, grade);
+      return {
+        id: Date.now() + idx,
+        q_number: q.question_number,
+        topic: q.topic,
+        grade: grade,
+        difficulty: diff,
+        question_text: q.question_text,
+        draft: levelData.korean,
+        upgraded: levelData.script,
+        strategy: levelData.strategy,
+        keyExpressions: [levelData.strategy],
+        grammarFixes: [`${grade} 등급 맞춤 ${diff}단계 스크립트 템플릿 적용`],
+        date: new Date().toLocaleDateString('ko-KR')
+      };
+    });
+
+    // 현재 선택한 등급 및 난이도의 전체 문항 세트로 보관함을 깔끔하게 갱신합니다.
+    saved = [...newItems];
+    // 로컬 스토리지에 전체 스크립트 목록을 JSON 문자열로 저장합니다.
+    localStorage.setItem('opic_saved_scripts', JSON.stringify(saved));
+
+    // 문항 칩과 보관함 목록 UI를 즉시 새로고침합니다.
+    renderScriptQuestionChips();
+    renderSavedScriptList();
+
+    // 보관함 카드 위치로 부드럽게 스크롤합니다.
+    const libraryAnchor = document.getElementById('script-library-card-anchor');
+    if (libraryAnchor) {
+      libraryAnchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // 성공 안내 알림을 띄웁니다.
+    alert(`🎉 [${grade} - 난이도 ${diff}단계] ${qCount}문항 전체 맞춤 스크립트가 내 보관함에 성공적으로 일괄 저장되었습니다!
+
+아래 [내 맞춤 스크립트 보관함]에서 문항별로 음성을 듣고 따라 말하며 완벽하게 암기해 보세요!`);
+  } catch (e) {
+    console.warn('Bulk save error:', e);
+    alert('일괄 저장 중 오류가 발생했습니다.');
+  }
+}
+
+// 보관함의 전체 스크립트를 깔끔한 공부용 텍스트 문서로 클립보드에 일괄 복사하는 함수입니다.
+function copyAllSavedScriptsToClipboard() {
+  const saved = JSON.parse(localStorage.getItem('opic_saved_scripts') || '[]');
+  if (saved.length === 0) {
+    alert('보관함에 저장된 스크립트가 없습니다. 먼저 [전체 일괄 저장하기]를 눌러보세요!');
+    return;
+  }
+
+  // 문항 번호 순서대로 정렬합니다.
+  saved.sort((a, b) => (a.q_number || 0) - (b.q_number || 0));
+
+  let textDoc = `📖 [OPIc Master AI - 나만의 맞춤 스크립트 암기 모음집]
+`;
+  textDoc += `총 문항 수: ${saved.length}개 | 생성일자: ${new Date().toLocaleDateString('ko-KR')}
+`;
+  textDoc += `==================================================
+
+`;
+
+  saved.forEach((item) => {
+    textDoc += `Q${item.q_number || ''}. [${item.topic || '주제'}] ${item.grade ? `(${item.grade} 등급)` : ''}
+`;
+    textDoc += `🎧 질문: "${item.question_text || ''}"
+`;
+    textDoc += `🌟 영어 스크립트:
+${item.upgraded || ''}
+`;
+    if (item.draft) {
+      textDoc += `📝 한국어 해석: ${item.draft}
+`;
+    }
+    if (item.strategy) {
+      textDoc += `💡 ${item.strategy}
+`;
+    }
+    textDoc += `
+--------------------------------------------------
+
+`;
+  });
+
+  // 클립보드 API 객체를 window 또는 navigator에서 안전하게 추출합니다.
+  const clipApi = (typeof navigator !== 'undefined' && navigator.clipboard) ? navigator.clipboard : (typeof window !== 'undefined' && window.navigator && window.navigator.clipboard ? window.navigator.clipboard : null);
+  // 클립보드 쓰기 함수가 존재하는지 검증합니다.
+  if (clipApi && typeof clipApi.writeText === 'function') {
+    // 클립보드에 전체 텍스트 문서를 비동기로 복사합니다.
+    clipApi.writeText(textDoc).then(() => {
+      // 복사 성공 시 사용자에게 알림창을 표시합니다.
+      alert(`📋 보관함의 ${saved.length}개 전체 스크립트가 클립보드에 복사되었습니다!\n\n카카오톡, 노션(Notion), 메모장에 바로 붙여넣기(Ctrl+V)하여 출력하거나 공부하실 수 있습니다.`);
+    // 복사 중 에러 발생 시 예외 처리 알림을 표시합니다.
+    }).catch(() => {
+      // 실패 알림창을 표시합니다.
+      alert('클립보드 복사에 실패했습니다.');
+    });
+  // 클립보드 API를 지원하지 않는 환경을 위한 폴백 처리입니다.
+  } else {
+    // 모의 환경 또는 구형 브라우저에서 복사 완료 알림창을 표시합니다.
+    alert(`📋 보관함의 ${saved.length}개 전체 스크립트가 복사되었습니다!`);
+  }
+}
+
+// 보관함의 모든 스크립트를 전체 삭제하는 함수입니다.
+function clearAllSavedScripts() {
+  if (confirm('정말 보관함에 저장된 모든 스크립트를 삭제하시겠습니까?')) {
+    localStorage.removeItem('opic_saved_scripts');
+    renderScriptQuestionChips();
+    renderSavedScriptList();
+    alert('🗑️ 보관함이 깨끗하게 비워졌습니다.');
   }
 }

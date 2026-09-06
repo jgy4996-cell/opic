@@ -9,7 +9,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="theme-color" content="#ffffff" />
   <title>OPIc Master AI - 15문항 서베이 스크립트 & 실전 모의고사</title>
-  <link rel="stylesheet" href="style.css?v=20260906_multilevel_v16" />
+  <link rel="stylesheet" href="style.css?v=20260906_bulk_matrix_v17" />
 </head>
 <body>
 
@@ -182,20 +182,48 @@
         </div>
       </div>
 
-      <!-- [신규] 목표 등급 & 난이도(12문항/15문항) 선택 바 -->
-      <div class="toss-card" style="padding: 12px 14px; margin-bottom: 10px;">
+      <!-- [신규] 목표 등급 & 세부 난이도(2~6단계) 듀얼 매트릭스 선택 카드 -->
+      <div class="toss-card" style="padding: 14px; margin-bottom: 10px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-          <span style="font-size: 13px; font-weight: 800; color: var(--toss-text-primary);">🎯 목표 등급 & 최적 스크립트 모드</span>
-          <span id="target-grade-badge" style="font-size: 11px; background: #ecfdf5; color: #047857; padding: 2px 8px; border-radius: 8px; font-weight: 800;">🏆 AL 만점 (난이도 5-5)</span>
+          <span style="font-size: 13px; font-weight: 800; color: var(--toss-text-primary);">🎯 목표 등급 & 난이도 선택</span>
+          <span id="target-grade-badge" style="font-size: 11px; background: #ecfdf5; color: #047857; padding: 3px 8px; border-radius: 8px; font-weight: 800;">🏆 AL 만점 (난이도 5-5 / 15문항)</span>
         </div>
+
+        <!-- 1단계: 목표 등급 선택 바 -->
         <div class="target-grade-bar">
-          <button class="grade-select-pill level-il" data-grade="IL">🥉 IL/IM1<br/><span style="font-size:9px;font-weight:600;">(난이도 2 / 12문항)</span></button>
-          <button class="grade-select-pill level-im" data-grade="IM">🥈 IM2/IM3<br/><span style="font-size:9px;font-weight:600;">(난이도 3-4 / 15문항)</span></button>
-          <button class="grade-select-pill level-ih" data-grade="IH">🥇 IH<br/><span style="font-size:9px;font-weight:600;">(난이도 5 / 15문항)</span></button>
-          <button class="grade-select-pill active level-al" data-grade="AL">🏆 AL 만점<br/><span style="font-size:9px;font-weight:600;">(난이도 5-6 / 15문항)</span></button>
+          <button class="grade-select-pill level-il" data-grade="IL">🥉 IL / IM1</button>
+          <button class="grade-select-pill level-im" data-grade="IM">🥈 IM2 / IM3</button>
+          <button class="grade-select-pill level-ih" data-grade="IH">🥇 IH</button>
+          <button class="grade-select-pill active level-al" data-grade="AL">🏆 AL 만점</button>
         </div>
-        <div style="font-size: 11px; color: var(--toss-text-secondary); line-height: 1.4;" id="target-grade-desc-text">
-          💡 <strong>AL 만점 모드:</strong> 오픽노잼 5대 황금 법칙(MP 두괄식, 1 Thing, 직접화법, 원어민 필러)으로 무장한 최고급 스크립트입니다.
+
+        <!-- 2단계: 등급별 세부 난이도 단계 서브 선택 칩 -->
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 6px; flex-wrap: wrap; gap: 4px;">
+          <span style="font-size: 11px; font-weight: 800; color: #475569;">⚡ 세부 난이도 선택:</span>
+          <div class="diff-sub-chips-container" id="diff-sub-chips-box" style="margin: 0;">
+            <!-- 자바스크립트로 등급에 맞는 세부 난이도 칩 동적 렌더링 -->
+            <button class="diff-sub-btn active" data-diff="5">난이도 5단계 (15문항)</button>
+            <button class="diff-sub-btn" data-diff="6">난이도 6단계 (15문항)</button>
+          </div>
+        </div>
+
+        <div style="font-size: 11px; color: var(--toss-text-secondary); line-height: 1.4; margin-top: 6px;" id="target-grade-desc-text">
+          💡 <strong>AL 만점 모드 (난이도 5단계):</strong> 오픽노잼 5대 황금 법칙(MP 두괄식, 1 Thing, 직접화법, 원어민 필러)으로 무장한 15문항 최고급 스크립트입니다.
+        </div>
+
+        <!-- [핵심 신규] 12/15문항 전체 일괄 생성 & 보관함 일괄 저장 배너 -->
+        <div class="bulk-save-banner" id="bulk-save-banner-box">
+          <div style="flex: 1; min-width: 180px;">
+            <div style="font-size: 13px; font-weight: 800; color: #065f46;" id="bulk-save-title">
+              📦 [AL - 난이도 5단계] 15문항 맞춤 세트 완성
+            </div>
+            <div style="font-size: 11px; color: #047857; margin-top: 2px;" id="bulk-save-subtitle">
+              버튼 한 번으로 15개 전체 스크립트를 내 보관함에 통째로 저장하고 공부하세요!
+            </div>
+          </div>
+          <button class="btn-bulk-save-action" id="btn-save-all-scripts-to-library">
+            💾 15문항 전체 일괄 저장하기
+          </button>
         </div>
       </div>
 
@@ -322,10 +350,20 @@
       <div id="script-upgrade-result-box" style="display: none;"></div>
 
       <!-- 내 저장된 스크립트 보관함 카드 -->
-      <div class="toss-card" style="margin-top: 14px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-          <h3 style="margin-bottom: 0; color: #065f46;">📖 내 15문항 스크립트 보관함</h3>
-          <span id="saved-script-count-badge" style="font-size: 11px; background: #d1fae5; color: #047857; padding: 3px 8px; border-radius: 8px; font-weight: 700;">0개 저장됨</span>
+      <div class="toss-card" style="margin-top: 14px;" id="script-library-card-anchor">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 6px;">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <h3 style="margin-bottom: 0; color: #065f46;">📖 내 맞춤 스크립트 보관함</h3>
+            <span id="saved-script-count-badge" style="font-size: 11px; background: #d1fae5; color: #047857; padding: 3px 8px; border-radius: 8px; font-weight: 700;">0개 저장됨</span>
+          </div>
+          <div style="display: flex; gap: 6px;">
+            <button id="btn-copy-all-saved-scripts" style="background: #eff6ff; color: var(--toss-blue); border: 1px solid #bfdbfe; border-radius: 8px; padding: 4px 10px; font-size: 11px; font-weight: 700; cursor: pointer;">
+              📋 전체 스크립트 텍스트 복사
+            </button>
+            <button id="btn-clear-all-saved-scripts" style="background: #fee2e2; color: #dc2626; border: none; border-radius: 8px; padding: 4px 8px; font-size: 11px; font-weight: 700; cursor: pointer;">
+              전체 비우기
+            </button>
+          </div>
         </div>
         <div id="saved-script-list-container">
           <div style="font-size: 13px; color: var(--toss-text-muted); text-align: center; padding: 16px;">
@@ -973,6 +1011,6 @@
   </div>
 
   <!-- 메인 앱 컨트롤러 스크립트 연결 -->
-  <script src="app.js?v=20260906_multilevel_v16"></script>
+  <script src="app.js?v=20260906_bulk_matrix_v17"></script>
 </body>
 </html>

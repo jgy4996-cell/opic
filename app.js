@@ -582,6 +582,7 @@ function initScriptBuilderEvents() {
     });
   }
 
+  initMultiLevelScriptEvents(); // [신규] 4단계 등급별 맞춤 스크립트 이벤트를 초기화합니다.
   renderSavedScriptList(); // 보관함 목록을 초기에 렌더링합니다.
 }
 
@@ -642,6 +643,7 @@ function renderScriptQuestionChips() {
 
 // 특정 문항(0~14)을 선택하고 화면 질문 텍스트 및 상태를 전환하는 함수입니다.
 function selectScriptQuestion(idx) {
+  setTimeout(() => { if (typeof setScriptViewerGrade === 'function') setScriptViewerGrade(state.scriptViewerGrade || 'AL'); }, 0);
   stopScriptAudio();
   stopAllEvaAudio();
 
@@ -1792,46 +1794,68 @@ function startSpeakingSession(mode) {
   renderCurrentQuestion();
 }
 
-// 사용자 서베이 설정값 기반 15문항 모의고사 세트 생성 함수입니다.
+// 사용자 서베이 설정값 및 난이도 기반 모의고사/스크립트 문제 세트 생성 함수입니다 (난이도 2: 12문항, 3~6: 15문항).
 function createSurveyBasedExamSet(survey) {
+  // 사용자가 선택한 난이도(1~6)를 가져옵니다.
   const diff = survey.difficulty || 5;
-  if (diff >= 5) {
+
+  // 난이도 1~2단계 (초급 IL/IM1 목표): 총 12문항 (고난도 14-15번 제외)
+  if (diff <= 2) {
     return [
-      { question_number: 1, topic: "Self Introduction", question_type: "자기소개", question_text: "Let's start the interview now. Tell me a little bit about yourself.", audio_file: "audio/q1.mp3" },
-      { question_number: 2, topic: "Movie", question_type: "장소 묘사", question_text: "You indicated in the survey that you go to the movies. Tell me about the movie theater you usually go to and why you like going there.", audio_file: "audio/q2.mp3" },
-      { question_number: 3, topic: "Movie", question_type: "활동/루틴", question_text: "What do you usually do before and after watching a movie? Describe your whole routine on movie days.", audio_file: "audio/q3.mp3" },
-      { question_number: 4, topic: "Movie", question_type: "기억에 남는 경험", question_text: "Tell me about a memorable or unexpected incident you experienced while watching a movie at a cinema.", audio_file: "audio/q4.mp3" },
-      { question_number: 5, topic: "Housing", question_type: "장소 묘사", question_text: "You indicated that you live in an apartment. Please describe your home to me in as much detail as possible.", audio_file: "audio/q5.mp3" },
-      { question_number: 6, topic: "Housing", question_type: "활동/루틴", question_text: "What is your daily routine at home during the weekdays and weekends from morning until night?", audio_file: "audio/q6.mp3" },
-      { question_number: 7, topic: "Housing", question_type: "과거 경험", question_text: "Have you ever experienced an unexpected problem or issue at your home? What was the problem and how did you resolve it?", audio_file: "audio/q7.mp3" },
-      { question_number: 8, topic: "돌발: 호텔", question_type: "돌발: 호텔 묘사", question_text: "Tell me about a hotel you stayed at recently. What did the room and facilities look like?", audio_file: "audio/q15.mp3" },
-      { question_number: 9, topic: "돌발: 호텔", question_type: "돌발: 호텔 루틴", question_text: "What do you usually do when you check in and stay at a hotel from start to finish?" },
-      { question_number: 10, topic: "돌발: 호텔", question_type: "돌발: 호텔 문제 경험", question_text: "Have you ever had an unexpected issue or complaint at a hotel? What happened and how was it solved?" },
-      { question_number: 11, topic: "롤플레이", question_type: "롤플레이 (11번: 질문하기)", question_text: "You want to plan a party with your friend. Call your friend and ask 3 or 4 questions about planning the party.", audio_file: "audio/q8.mp3" },
-      { question_number: 12, topic: "롤플레이", question_type: "롤플레이 (12번: 대안 제시)", question_text: "An unexpected problem has come up and you cannot attend the party as planned. Call your friend, explain the situation, and offer 2 or 3 alternatives.", audio_file: "audio/q9.mp3" },
-      { question_number: 13, topic: "롤플레이", question_type: "롤플레이 (13번: 유사경험)", question_text: "Have you ever had a memorable plan cancelled unexpectedly? How did you resolve the situation?" },
-      { question_number: 14, topic: "심화이슈", question_type: "심화 (14번: 과거 현재 비교)", question_text: "Compare electronic devices and technology people used in the past with devices people use today. What are the key differences?", audio_file: "audio/q12.mp3" },
-      { question_number: 15, topic: "심화이슈", question_type: "심화 (15번: 이슈 토론)", question_text: "What are some current issues or challenges related to the hotel and accommodation industry today? What is your opinion?", audio_file: "audio/q15.mp3" },
-    ];
-  } else {
-    return [
-      { question_number: 1, topic: "Self Introduction", question_type: "자기소개", question_text: "Let's start the interview now. Tell me a little bit about yourself.", audio_file: "audio/q1.mp3" },
-      { question_number: 2, topic: "Park", question_type: "장소 묘사", question_text: "Tell me about the park you visit most often. What does it look like, and what facilities does it have?" },
-      { question_number: 3, topic: "Park", question_type: "활동/루틴", question_text: "What do you usually do when you go to the park from the moment you arrive until you leave?", audio_file: "audio/q3.mp3" },
-      { question_number: 4, topic: "Park", question_type: "기억에 남는 경험", question_text: "Tell me about a memorable day or experience you had at a park." },
-      { question_number: 5, topic: "Cafe", question_type: "장소 묘사", question_text: "Tell me about your favorite cafe or coffee shop. Where is it located, and what is the atmosphere like?" },
-      { question_number: 6, topic: "Cafe", question_type: "루틴 및 습관", question_text: "When do you usually visit cafes, and who do you go with? What do you usually order?" },
-      { question_number: 7, topic: "Cafe", question_type: "과거 경험", question_text: "Tell me about a memorable memory you have at a coffee shop." },
-      { question_number: 8, topic: "돌발: 날씨", question_type: "돌발: 날씨 묘사", question_text: "Tell me about the four seasons and the weather in your country. Which season do you like most?" },
-      { question_number: 9, topic: "돌발: 날씨", question_type: "돌발: 날씨 경험", question_text: "Tell me about a time when unexpected weather affected your plans. How did you deal with it?" },
-      { question_number: 10, topic: "돌발: 날씨", question_type: "돌발: 날씨 변화", question_text: "How has the weather in your country changed compared to when you were younger?" },
-      { question_number: 11, topic: "롤플레이", question_type: "롤플레이 (11번: 질문하기)", question_text: "You are planning a vacation trip. Call a travel agency and ask 3 or 4 questions about the trip packages." },
-      { question_number: 12, topic: "롤플레이", question_type: "롤플레이 (12번: 대안 제시)", question_text: "Due to an urgent issue, you cannot go on the trip. Call the travel agency and offer 2 or 3 alternatives." },
-      { question_number: 13, topic: "롤플레이", question_type: "롤플레이 (13번: 유사경험)", question_text: "Have you ever experienced a situation where a vacation plan was cancelled? How did you resolve it?" },
-      { question_number: 14, topic: "비교/선호", question_type: "비교 (14번: 취향 비교)", question_text: "Compare two different activities or hobbies you enjoy. Which one do you prefer and why?" },
-      { question_number: 15, topic: "최근 관심사", question_type: "경험 (15번: 최근 관심사)", question_text: "What is a recent topic or trend you became interested in? Tell me about it in detail." },
+      { question_number: 1, topic: "자기소개", question_type: "자기소개", question_text: "Let's start the interview now. Tell me a little bit about yourself.", audio_file: "audio/q1.mp3" },
+      { question_number: 2, topic: "공원 장소 묘사", question_type: "장소 묘사", question_text: "Tell me about the park you visit most often. What does it look like, and what facilities does it have?" },
+      { question_number: 3, topic: "공원 루틴", question_type: "활동/루틴", question_text: "What do you usually do when you go to the park from start to finish?", audio_file: "audio/q3.mp3" },
+      { question_number: 4, topic: "공원 과거 경험", question_type: "기억에 남는 경험", question_text: "Tell me about a memorable or fun experience you had at a park." },
+      { question_number: 5, topic: "카페 장소 묘사", question_type: "장소 묘사", question_text: "Tell me about your favorite cafe or coffee shop. Where is it located and what is it like?" },
+      { question_number: 6, topic: "카페 루틴", question_type: "활동/루틴", question_text: "When do you usually visit cafes, who do you go with, and what do you order?" },
+      { question_number: 7, topic: "카페 과거 경험", question_type: "기억에 남는 경험", question_text: "Tell me about a memorable memory you have at a coffee shop." },
+      { question_number: 8, topic: "집 묘사", question_type: "장소 묘사", question_text: "Please describe your home to me in detail. What does your favorite room look like?", audio_file: "audio/q5.mp3" },
+      { question_number: 9, topic: "집에서의 일상 루틴", question_type: "활동/루틴", question_text: "What do you usually do at home during weekdays and weekends?", audio_file: "audio/q6.mp3" },
+      { question_number: 10, topic: "집에서의 문제 해결 경험", question_type: "과거 경험", question_text: "Have you ever experienced a problem at your home? How did you fix it?", audio_file: "audio/q7.mp3" },
+      { question_number: 11, topic: "롤플레이 질문하기", question_type: "롤플레이 (11번: 질문하기)", question_text: "You want to invite a friend to your house. Call your friend and ask 3 or 4 questions about coming over.", audio_file: "audio/q8.mp3" },
+      { question_number: 12, topic: "롤플레이 대안제시", question_type: "롤플레이 (12번: 대안 제시)", question_text: "An unexpected problem came up. Call your friend, explain why you cannot meet today, and offer 2 alternatives.", audio_file: "audio/q9.mp3" }
     ];
   }
+
+  // 난이도 5~6단계 (상급 IH / AL 만점 목표): 총 15문항 (고급 콤보 + 심화 14-15번)
+  if (diff >= 5) {
+    return [
+      { question_number: 1, topic: "자기소개", question_type: "자기소개", question_text: "Let's start the interview now. Tell me a little bit about yourself.", audio_file: "audio/q1.mp3" },
+      { question_number: 2, topic: "영화관 장소 묘사", question_type: "장소 묘사", question_text: "You indicated in the survey that you go to the movies. Tell me about the movie theater you usually go to and why you like going there.", audio_file: "audio/q2.mp3" },
+      { question_number: 3, topic: "영화 보기 전후 루틴", question_type: "활동/루틴", question_text: "What do you usually do before and after watching a movie? Describe your whole routine on movie days.", audio_file: "audio/q3.mp3" },
+      { question_number: 4, topic: "영화관 과거 잊지 못할 경험", question_type: "기억에 남는 경험", question_text: "Tell me about a memorable or unexpected incident you experienced while watching a movie at a cinema.", audio_file: "audio/q4.mp3" },
+      { question_number: 5, topic: "집 묘사", question_type: "장소 묘사", question_text: "You indicated that you live in an apartment. Please describe your home to me in as much detail as possible.", audio_file: "audio/q5.mp3" },
+      { question_number: 6, topic: "집에서의 일상 루틴", question_type: "활동/루틴", question_text: "What is your daily routine at home during the weekdays and weekends from morning until night?", audio_file: "audio/q6.mp3" },
+      { question_number: 7, topic: "집에서의 문제 해결 경험", question_type: "과거 경험", question_text: "Have you ever experienced an unexpected problem or issue at your home? What was the problem and how did you resolve it?", audio_file: "audio/q7.mp3" },
+      { question_number: 8, topic: "호텔 묘사", question_type: "돌발: 호텔 묘사", question_text: "Tell me about a hotel you stayed at recently. What did the room and facilities look like?", audio_file: "audio/q15.mp3" },
+      { question_number: 9, topic: "호텔 루틴", question_type: "돌발: 호텔 루틴", question_text: "What do you usually do when you check in and stay at a hotel from start to finish?" },
+      { question_number: 10, topic: "호텔 문제 경험", question_type: "돌발: 호텔 문제 경험", question_text: "Have you ever had an unexpected issue or complaint at a hotel? What happened and how was it solved?" },
+      { question_number: 11, topic: "롤플레이 질문하기", question_type: "롤플레이 (11번: 질문하기)", question_text: "You want to plan a party with your friend. Call your friend and ask 3 or 4 questions about planning the party.", audio_file: "audio/q8.mp3" },
+      { question_number: 12, topic: "롤플레이 대안제시", question_type: "롤플레이 (12번: 대안 제시)", question_text: "An unexpected problem has come up and you cannot attend the party as planned. Call your friend, explain the situation, and offer 2 or 3 alternatives.", audio_file: "audio/q9.mp3" },
+      { question_number: 13, topic: "롤플레이 유사경험", question_type: "롤플레이 (13번: 유사경험)", question_text: "Have you ever had a memorable plan cancelled unexpectedly? How did you resolve the situation?" },
+      { question_number: 14, topic: "과거 현재 기술 비교", question_type: "심화 (14번: 과거 현재 비교)", question_text: "Compare electronic devices and technology people used in the past with devices people use today. What are the key differences?", audio_file: "audio/q12.mp3" },
+      { question_number: 15, topic: "최신 산업 시사 이슈", question_type: "심화 (15번: 이슈 토론)", question_text: "What are some current issues or challenges related to the hotel and accommodation industry today? What is your opinion?", audio_file: "audio/q15.mp3" }
+    ];
+  }
+
+  // 난이도 3~4단계 (중급 IM2 / IM3 목표): 총 15문항
+  return [
+    { question_number: 1, topic: "자기소개", question_type: "자기소개", question_text: "Let's start the interview now. Tell me a little bit about yourself.", audio_file: "audio/q1.mp3" },
+    { question_number: 2, topic: "공원 장소 묘사", question_type: "장소 묘사", question_text: "Tell me about the park you visit most often. What does it look like, and what facilities does it have?" },
+    { question_number: 3, topic: "공원 루틴", question_type: "활동/루틴", question_text: "What do you usually do when you go to the park from the moment you arrive until you leave?", audio_file: "audio/q3.mp3" },
+    { question_number: 4, topic: "공원 과거 경험", question_type: "기억에 남는 경험", question_text: "Tell me about a memorable day or experience you had at a park." },
+    { question_number: 5, topic: "카페 장소 묘사", question_type: "장소 묘사", question_text: "Tell me about your favorite cafe or coffee shop. Where is it located, and what is the atmosphere like?" },
+    { question_number: 6, topic: "카페 루틴", question_type: "활동/루틴", question_text: "When do you usually visit cafes, and who do you go with? What do you usually order?" },
+    { question_number: 7, topic: "카페 과거 경험", question_type: "과거 경험", question_text: "Tell me about a memorable memory you have at a coffee shop." },
+    { question_number: 8, topic: "집 묘사", question_type: "장소 묘사", question_text: "Please describe your home to me in as much detail as possible.", audio_file: "audio/q5.mp3" },
+    { question_number: 9, topic: "집에서의 일상 루틴", question_type: "활동/루틴", question_text: "What is your daily routine at home during the weekdays and weekends from morning until night?", audio_file: "audio/q6.mp3" },
+    { question_number: 10, topic: "집에서의 문제 해결 경험", question_type: "과거 경험", question_text: "Have you ever experienced an unexpected problem or issue at your home? How did you resolve it?", audio_file: "audio/q7.mp3" },
+    { question_number: 11, topic: "롤플레이 질문하기", question_type: "롤플레이 (11번: 질문하기)", question_text: "You are planning a vacation trip. Call a travel agency and ask 3 or 4 questions about the trip packages." },
+    { question_number: 12, topic: "롤플레이 대안제시", question_type: "롤플레이 (12번: 대안 제시)", question_text: "Due to an urgent issue, you cannot go on the trip. Call the travel agency and offer 2 or 3 alternatives." },
+    { question_number: 13, topic: "롤플레이 유사경험", question_type: "롤플레이 (13번: 유사경험)", question_text: "Have you ever experienced a situation where a vacation plan was cancelled? How did you resolve it?" },
+    { question_number: 14, topic: "과거 현재 기술 비교", question_type: "비교 (14번: 취향 비교)", question_text: "Compare two different activities or hobbies you enjoy. Which one do you prefer and why?" },
+    { question_number: 15, topic: "최신 산업 시사 이슈", question_type: "경험 (15번: 최근 관심사)", question_text: "What is a recent topic or trend you became interested in? Tell me about it in detail." }
+  ];
 }
 
 // 하단 고정 탭바 네비게이션 초기화 및 라우팅 함수입니다.
@@ -3267,3 +3291,364 @@ function insertFillerToScript(fillerText) {
 window.openOpicNojamGuideModal = openOpicNojamGuideModal;
 window.closeOpicNojamGuideModal = closeOpicNojamGuideModal;
 window.insertFillerToScript = insertFillerToScript;
+
+
+// ==============================================================================
+// [신규] 4단계 목표 등급별(IL / IM / IH / AL) 수준별 맞춤 스크립트 데이터베이스
+// ==============================================================================
+const scriptMultiLevelDatabase = {
+  "자기소개": {
+    topic: "자기소개",
+    IL: {
+      script: "Hello Eva. My name is Alex. I live in Seoul. I am an office worker. I like watching movies on weekends. Nice to meet you.",
+      korean: "안녕하세요 에바. 제 이름은 알렉스입니다. 서울에 살고 있습니다. 회사원입니다. 주말에는 영화 보는 것을 좋아합니다. 만나서 반갑습니다.",
+      strategy: "🥉 IL 공략: 이름, 거주지, 직업, 취미 4문장을 끊김 없이 자신감 있게 발화",
+      word_count: 24
+    },
+    IM: {
+      script: "Hello Eva, it is great to meet you. My name is Alex and I live in Seoul, Korea. I work for an IT company as a developer. In my free time, I really enjoy going to the cinema and visiting cozy cafes with my close friends. Thank you.",
+      korean: "안녕하세요 에바, 만나서 반갑습니다. 제 이름은 알렉스이고 한국 서울에 살고 있습니다. IT 회사에서 개발자로 일합니다. 여가 시간에는 친한 친구들과 영화관에 가거나 아늑한 카페를 방문하는 것을 정말 좋아합니다. 감사합니다.",
+      strategy: "🥈 IM 공략: 3단 문장 연결 및 자연스러운 일상 어휘 구사",
+      word_count: 45
+    },
+    IH: {
+      script: "Hello Eva, it is an absolute pleasure to meet you! My name is Alex and I am currently residing in Seoul. I work as a passionate software engineer. Whenever I have some free time, you know, I love to hang out at the cinema to watch the latest movies and grab some coffee to chill out. I am super excited to take this test today.",
+      korean: "안녕하세요 에바, 만나 뵙게 되어 정말 기쁩니다! 제 이름은 알렉스이고 현재 서울에 거주하고 있습니다. 열정적인 소프트웨어 엔지니어로 일하고 있습니다. 자유 시간이 생길 때마다, 아시다시피, 영화관에서 최신 영화를 보거나 커피를 마시며 여유를 즐기는 것을 정말 좋아합니다. 오늘 시험을 보게 되어 매우 설렙니다.",
+      strategy: "🥇 IH 공략: 원어민 구동사(hang out, chill out)와 필러(You know) 결합",
+      word_count: 67
+    },
+    AL: {
+      script: "Hello Eva, it is an absolute pleasure to finally speak with you! My name is Alex, and I am currently based in Seoul, working as a software developer. Right off the bat, if I had to describe myself, I would say I am a huge movie enthusiast. Whenever I feel drained after a hectic workweek, you know, immersing myself in blockbusters is my absolute go-to way to blow off some steam. I am truly thrilled to share my stories with you today!",
+      korean: "안녕하세요 에바, 드디어 대화하게 되어 정말 반갑습니다! 제 이름은 알렉스이고 현재 서울을 기반으로 소프트웨어 개발자로 일하고 있습니다. 질문을 받자마자 바로 저를 설명하자면, 저는 엄청난 영화 광입니다. 바쁜 한 주를 보내고 기운이 빠질 때마다, 아시겠지만, 블록버스터 영화에 몰입하는 것이 스트레스를 푸는 저만의 확실한 방법입니다. 오늘 제 이야기를 나눌 수 있어 정말 설렙니다!",
+      strategy: "🏆 AL 공략: 오픽노잼 MP(Right off the bat) + 생생한 감정 + 고급 관용구(blow off some steam)",
+      word_count: 88
+    }
+  },
+  "영화관 장소 묘사": {
+    topic: "영화관 장소 묘사",
+    IL: {
+      script: "I like watching movies. My favorite cinema is CGV. It is near my house. The theater is very big and clean. I go there on weekends with my friends.",
+      korean: "저는 영화 보는 것을 좋아합니다. 제가 가장 좋아하는 영화관은 CGV입니다. 우리 집 근처에 있습니다. 영화관은 매우 크고 깨끗합니다. 주말에 친구들과 함께 갑니다.",
+      strategy: "🥉 IL 공략: 장소 명칭, 위치(near my house), 분위기 형용사(big, clean) 3문장 완성",
+      word_count: 31
+    },
+    IM: {
+      script: "I usually go to the CGV movie theater near my apartment. The theater is very modern and spacious. It has comfortable seats and a large snack bar where they sell delicious popcorn. I love visiting this place because it is very convenient and relaxing.",
+      korean: "저는 보통 아파트 근처에 있는 CGV 영화관에 갑니다. 영화관은 매우 현대적이고 넓습니다. 편안한 좌석과 맛있는 팝콘을 파는 큰 스낵바가 있습니다. 매우 편리하고 편안해서 이곳을 방문하는 것을 좋아합니다.",
+      strategy: "🥈 IM 공략: 관계사(where they sell) 및 편의 시설(modern, spacious) 묘사",
+      word_count: 46
+    },
+    IH: {
+      script: "Well, whenever I want to catch a movie, I always head to the CGV cinema located just a stone's throw away from my home. The multiplex boasts huge digital screens, comfortable leather seats, and great sound systems. On top of that, there is a lovely cafe inside the lobby, which makes waiting for the movie really enjoyable.",
+      korean: "영화를 보고 싶을 때마다 저는 항상 집에서 엎어지면 코 닿을 거리에 있는 CGV 영화관으로 향합니다. 그 멀티플렉스는 거대한 디지털 스크린, 편안한 가죽 좌석, 훌륭한 음향 시설을 자랑합니다. 게다가 로비 안에 예쁜 카페가 있어서 영화를 기다리는 시간도 정말 즐겁습니다.",
+      strategy: "🥇 IH 공략: 근접성 구동사(a stone's throw away)와 시설 수식어(boasts, multiplex)",
+      word_count: 63
+    },
+    AL: {
+      script: "Well, to be honest, my absolute favorite cinema is a flagship CGV located just a stone's throw away from my apartment. The moment you step inside, you are blown away by their state-of-the-art IMAX screens and cozy premium recliners. Speaking of which, the sound quality is totally mind-blowing, which makes you feel like you are right in the middle of the action. It is without a shadow of a doubt the best place to chill out.",
+      korean: "솔직히 말씀드리면, 제가 가장 좋아하는 영화관은 아파트에서 엎어지면 코 닿을 거리에 있는 플래그십 CGV입니다. 안으로 들어서는 순간, 최첨단 IMAX 스크린과 아늑한 프리미엄 리클라이너 좌석에 압도당하게 됩니다. 그뿐만 아니라 음향 품질이 정말 머리가 띵할 정도로 훌륭해서 마치 액션 한가운데 있는 듯한 느낌을 줍니다. 단언컨대 휴식을 취하기에 최고의 장소입니다.",
+      strategy: "🏆 AL 공략: 오픽노잼 MP + 오감 묘사(blown away, mind-blowing) + AL 연결사",
+      word_count: 82
+    }
+  },
+  "영화 보기 전후 루틴": {
+    topic: "영화 보기 전후 루틴",
+    IL: {
+      script: "Before watching a movie, I buy a ticket online. Then, I buy popcorn and soda. During the movie, I focus on the screen. After the movie, I eat dinner with friends.",
+      korean: "영화 보기 전에 온라인으로 티켓을 예매합니다. 그런 다음 팝콘과 탄산음료를 삽니다. 영화를 보는 동안 스크린에 집중합니다. 영화가 끝난 후 친구들과 저녁을 먹습니다.",
+      strategy: "🥉 IL 공략: Before, Then, After 시간 순서 3단계 단순 현재형 발화",
+      word_count: 32
+    },
+    IM: {
+      script: "Whenever I watch a movie, I follow a simple routine. First, I reserve my seats using a mobile app. When I arrive at the theater, I pick up my tickets and buy some snacks. After the movie finishes, my friends and I usually go to a nearby restaurant to have dinner and talk about the movie.",
+      korean: "영화를 볼 때마다 저는 간단한 루틴을 따릅니다. 먼저 모바일 앱으로 좌석을 예매합니다. 영화관에 도착하면 티켓을 출력하고 간식을 삽니다. 영화가 끝나면 친구들과 근처 식당에 가서 저녁을 먹으며 영화에 대해 이야기합니다.",
+      strategy: "🥈 IM 공략: First, When I arrive, After the movie finishes 접속사 활용",
+      word_count: 57
+    },
+    IH: {
+      script: "I have a pretty consistent routine on movie days. First off, I make sure to book prime seats through my smartphone in advance. Once I get to the cinema, I grab an iced coffee and hot butter popcorn. Right after the movie ends, I love to head over to a nice pub with my friends to catch up and debate our favorite scenes.",
+      korean: "저는 영화를 보는 날에 꽤 일정한 루틴을 가지고 있습니다. 우선 첫째로 스마트폰으로 명당자리를 미리 예매합니다. 영화관에 도착하면 아이스 커피와 갓 튀긴 버터 팝콘을 삽니다. 영화가 끝나자마자 친구들과 근사한 펍으로 가서 밀린 대화를 나누며 가장 마음에 들었던 장면에 대해 토론합니다.",
+      strategy: "🥇 IH 공략: prime seats, catch up, debate 등 원어민식 구동사 배치",
+      word_count: 67
+    },
+    AL: {
+      script: "Whenever I plan a movie night, you know, I stick to a well-established routine. Right off the bat, I book the best center seats via a mobile app days before. On the day of the show, I arrive thirty minutes early to grab some gourmet nachos and a hot latte. Once the credits roll, my friends and I always head to a cozy bistro to catch up over dinner. We dissect every plot twist, which is honestly the highlight of the whole experience!",
+      korean: "영화 보러 갈 계획을 세울 때마다, 아시겠지만, 저는 아주 확실한 루틴을 따릅니다. 질문을 받자마자 바로 말씀드리면, 며칠 전에 모바일 앱으로 가장 좋은 중앙 좌석을 예매합니다. 영화 당일에는 30분 일찍 도착해서 고급 나초와 따뜻한 라떼를 삽니다. 엔딩 크레딧이 올라가면 친구들과 아늑한 비스트로로 가서 저녁을 먹으며 이야기를 나눕니다. 모든 반전 플롯을 분석하는데, 솔직히 그게 전체 경험의 하이라이트입니다!",
+      strategy: "🏆 AL 공략: Once the credits roll, dissect every plot twist 등 최고급 관용구 구사",
+      word_count: 86
+    }
+  },
+  "영화관 과거 잊지 못할 경험": {
+    topic: "영화관 과거 잊지 못할 경험",
+    IL: {
+      script: "Last month, I went to the cinema with my friend. Suddenly, the power went out! The screen turned black. We were surprised. But the staff gave us free tickets. It was memorable.",
+      korean: "지난달에 친구와 영화관에 갔습니다. 갑자기 정전이 되었습니다! 스크린이 검게 변했습니다. 우리는 놀랐습니다. 하지만 직원이 무료 티켓을 주었습니다. 기억에 남았습니다.",
+      strategy: "🥉 IL 공략: went, turned, gave 과거 시제 일치 4문장 완성",
+      word_count: 32
+    },
+    IM: {
+      script: "I remember an interesting incident that happened at a movie theater last year. In the middle of an exciting movie, the projector suddenly stopped working! Everyone in the room was very confused. The manager came in, apologized, and gave everyone a full refund and movie vouchers. It was an unusual experience.",
+      korean: "작년에 영화관에서 일어난 흥미로운 일이 기억납니다. 신나는 영화의 중간에 갑자기 프로젝터가 작동을 멈췄습니다! 방 안에 있는 모든 사람들이 매우 혼란스러워했습니다. 매니저가 들어와 사과하고 모든 사람에게 전액 환불과 영화 관람권을 주었습니다. 특이한 경험이었습니다.",
+      strategy: "🥈 IM 공략: In the middle of, stopped working, apologized 3단 스토리 전개",
+      word_count: 53
+    },
+    IH: {
+      script: "I clearly recall a memorable experience that took place at a cinema a few months ago. Out of nowhere, right during the climax of a thriller film, the fire alarm went off! We all had to evacuate the building immediately. Fortunately, it turned out to be a false alarm, and the theater management kindly compensated us with complimentary tickets. It definitely left a lasting impression on me.",
+      korean: "몇 달 전 영화관에서 일어났던 기억에 남는 경험이 생생하게 기억납니다. 난데없이 스릴러 영화의 클라이맥스 도중에 화재경보기가 울렸습니다! 우리 모두 즉시 건물 밖으로 대피해야 했습니다. 다행히 오작동으로 밝혀졌고, 영화관 측에서는 무료 티켓으로 친절하게 보상해 주었습니다. 분명히 저에게 깊은 인상을 남겼습니다.",
+      strategy: "🥇 IH 공략: Out of nowhere, evacuate, left a lasting impression 고급 표현 구사",
+      word_count: 70
+    },
+    AL: {
+      script: "I vividly remember a truly surreal experience that unfolded at a cinema last summer. Right in the middle of a blockbuster climax, out of nowhere, the entire theater suffered a total blackout! The screen went pitch-black, and my friend was like, 'What on earth just happened?' Everyone was bewildered. Fortunately, the staff handled the situation with remarkable poise, offering full refunds. It was alarming at first, but looking back, it turned into an unforgettable story!",
+      korean: "지난여름 영화관에서 펼쳐졌던 정말 비현실적인 경험이 생생하게 기억납니다. 블록버스터 영화의 클라이맥스 중간에 난데없이 영화관 전체에 정전이 일어났습니다! 스크린은 완전한 암흑이 되었고 제 친구는 '도대체 무슨 일이야?'라고 말했습니다. 모두가 당황했습니다. 다행히 직원들이 놀라운 침착함으로 상황을 처리하며 전액 환불을 제공했습니다. 처음엔 놀랐지만 돌아보면 잊지 못할 추억이 되었습니다!",
+      strategy: "🏆 AL 공략: Direct Quote(was like) + surreal, pitch-black, remarkable poise 만점 어휘",
+      word_count: 81
+    }
+  },
+  "집 묘사": {
+    topic: "집 묘사",
+    IL: {
+      script: "I live in an apartment in Seoul. My house has two rooms and one living room. It is very cozy and bright. I like my room because it has a big window.",
+      korean: "저는 서울의 아파트에 삽니다. 제 집은 방 2개와 거실 1개가 있습니다. 매우 아늑하고 밝습니다. 큰 창문이 있어서 제 방을 좋아합니다.",
+      strategy: "🥉 IL 공략: live in, has two rooms, cozy and bright 기본 구조",
+      word_count: 32
+    },
+    IM: {
+      script: "Currently, I live in a modern two-bedroom apartment. My favorite space in my home is the living room because it has a comfortable sofa and a large TV. Through the balcony, I can get a lot of natural sunlight, which makes the whole place feel warm and welcoming.",
+      korean: "현재 저는 현대적인 방 2개짜리 아파트에 살고 있습니다. 집에서 가장 좋아하는 공간은 편안한 소파와 큰 TV가 있는 거실입니다. 베란다를 통해 많은 자연 채광이 들어와 집 전체가 따뜻하고 아늑하게 느껴집니다.",
+      strategy: "🥈 IM 공략: natural sunlight, warm and welcoming 감성 표현 결합",
+      word_count: 48
+    },
+    IH: {
+      script: "I reside in a cozy yet modern apartment located in a quiet residential area. The centerpiece of my home is the spacious living room, which is flooded with natural sunlight. I especially love spending time on my balcony overlooking a lovely park. It provides the ultimate peaceful environment for me to unwind after work.",
+      korean: "저는 조용한 주거 지역에 위치한 아늑하면서도 현대적인 아파트에 거주하고 있습니다. 제 집의 중심은 자연 채광이 쏟아지는 넓은 거실입니다. 특히 아름다운 공원이 내려다보이는 발코니에서 시간을 보내는 것을 아주 좋아합니다. 퇴근 후 긴장을 풀기에 최고의 평화로운 환경을 제공합니다.",
+      strategy: "🥇 IH 공략: reside in, centerpiece, flooded with sunlight 고급 어휘",
+      word_count: 57
+    },
+    AL: {
+      script: "When it comes to my home, I currently reside in a charming, minimalist apartment situated in a tranquil neighborhood. The absolute highlight of my place is the expansive living room, which boasts floor-to-ceiling windows with a breathtaking panoramic city view. You know, whenever I sit on my couch sipping a hot espresso, I feel a tremendous sense of tranquility and peace of mind.",
+      korean: "제 집에 대해 말씀드리자면, 저는 현재 평화로운 동네에 위치한 매력적이고 미니멀한 아파트에 살고 있습니다. 제 공간의 가장 큰 하이라이트는 숨 막히는 파노라마 도시 전망을 자랑하는 통유리창이 있는 넓은 거실입니다. 아시겠지만, 따뜻한 에스프레소를 마시며 소파에 앉아 있을 때마다 엄청난 평온함과 마음의 안정을 느낍니다.",
+      strategy: "🏆 AL 공략: floor-to-ceiling windows, panoramic view, sense of tranquility 구사",
+      word_count: 67
+    }
+  },
+  "롤플레이 질문하기": {
+    topic: "롤플레이 질문하기",
+    IL: {
+      script: "Hi Sarah, it's Alex. I have some questions about our weekend party. What time does the party start? Where is the location? What should I bring? Please call me back. Bye.",
+      korean: "안녕 사라, 나 알렉스야. 주말 파티에 대해 몇 가지 질문이 있어. 파티 몇 시에 시작해? 장소는 어디야? 내가 뭐 챙겨갈까? 다시 전화 줘. 안녕.",
+      strategy: "🥉 IL 공략: 의문문 3개(What time, Where, What) 정확하게 질문하기",
+      word_count: 32
+    },
+    IM: {
+      script: "Hi Minho, this is Alex calling. I'm calling to ask a few questions about our upcoming trip this weekend. First, what time are we planning to leave? Also, which hotel did you book for us? Lastly, do I need to prepare any food? Let me know when you get this message.",
+      korean: "안녕 민호야, 나 알렉스야. 이번 주말 우리 여행에 대해 몇 가지 물어보려고 전화했어. 먼저 우리 몇 시에 출발할 계획이야? 그리고 우리 숙소 어느 호텔로 예약했어? 마지막으로 내가 준비해야 할 음식이 있을까? 메시지 보면 알려줘.",
+      strategy: "🥈 IM 공략: I'm calling to ask, First, Also, Lastly 순차 질문",
+      word_count: 54
+    },
+    IH: {
+      script: "Hi there, it's Alex calling! I'm so thrilled about our upcoming party this Saturday. I was just wondering if you could fill me in on a few quick details. First of all, what time are we planning to kick things off? Secondly, did you finalize the venue? And lastly, is there any specific beverage or dessert you'd like me to bring along?",
+      korean: "안녕, 나 알렉스야! 이번 주 토요일 우리 파티 생각에 너무 신나. 몇 가지 세부사항을 알려줄 수 있는지 궁금해서 전화했어. 우선 첫째로 몇 시에 시작할 계획이야? 둘째로 장소는 최종 확정했어? 그리고 마지막으로 내가 챙겨갔으면 하는 특별한 음료나 디저트가 있을까?",
+      strategy: "🥇 IH 공략: fill me in on, kick things off, bring along 원어민 관용구",
+      word_count: 66
+    },
+    AL: {
+      script: "Hey Sarah! It's Alex calling. I am so excited about our upcoming get-together this weekend! I was just hoping to touch base with you and clarify a few quick logistics. Right off the bat, what time are we planning to kick things off? Secondly, did you lock down that trendy rooftop venue? And lastly, is there any particular snack or wine you'd love me to pick up on my way? Give me a shout when you're free!",
+      korean: "안녕 사라! 나 알렉스야. 이번 주말 우리 모임 생각에 정말 너무 기대돼! 몇 가지 진행 사항을 체크하고 맞춰보려고 전화했어. 질문하자면 바로, 우리 몇 시에 시작할 예정이야? 둘째로 그 트렌디한 루프탑 장소로 확정 예약했어? 그리고 마지막으로 내가 가는 길에 사 갔으면 하는 특별한 스낵이나 와인이 있을까? 시간 날 때 연락 줘!",
+      strategy: "🏆 AL 공략: touch base, lock down, give me a shout 원어민 슬랭 및 자연스러운 억양",
+      word_count: 79
+    }
+  },
+  "롤플레이 대안제시": {
+    topic: "롤플레이 대안제시",
+    IL: {
+      script: "Hi Minho, I am so sorry. I have urgent work today, so I cannot come to our dinner. How about we meet tomorrow? Or, I will buy you lunch this weekend. I am sorry again.",
+      korean: "안녕 민호야, 정말 미안해. 오늘 급한 일이 생겨서 저녁 약속에 못 갈 것 같아. 내일 만나는 건 어때? 아니면 이번 주말에 내가 점심 살게. 다시 한번 미안해.",
+      strategy: "🥉 IL 공략: 정중한 사과 + 대안 1(tomorrow) + 대안 2(weekend lunch)",
+      word_count: 36
+    },
+    IM: {
+      script: "Hi Sarah, I am terribly sorry, but something urgent came up at my office and I won't be able to make it tonight. To make it up to you, how about we reschedule our dinner for tomorrow evening instead? If that doesn't work for you, I would love to treat you to a nice meal this Sunday. Let me know which option you prefer.",
+      korean: "안녕 사라, 정말 미안하지만 회사에 급한 일이 생겨서 오늘 밤에 못 갈 것 같아. 보답하는 의미로 대신 내일 저녁으로 약속을 변경하는 건 어떨까? 만약 내일이 안 된다면 이번 일요일에 맛있는 식사를 대접하고 싶어. 어떤 선택이 더 좋은지 알려줘.",
+      strategy: "🥈 IM 공략: came up, make it up to you, reschedule 정중한 비즈니스/캐주얼 톤",
+      word_count: 64
+    },
+    IH: {
+      script: "Hey Minho, I am terribly sorry to break the news, but an unexpected emergency cropped up at work and I won't be able to join you tonight. I feel terrible about this. To make it up to you, how about we push our dinner to tomorrow evening? Alternatively, if your weekend is open, I'd love to take you out to that fine Italian restaurant on me. Let me know what suits you best!",
+      korean: "안녕 민호야, 이런 소식을 전하게 되어 너무 미안하지만 회사에 예상치 못한 긴급 상황이 불쑥 생겨서 오늘 밤 함께하지 못할 것 같아. 정말 미안하게 생각해. 만회하기 위해 우리 저녁 식사를 내일 저녁으로 미루는 건 어때? 대안으로 주말에 시간이 괜찮다면 내가 그 고급 이탈리안 레스토랑에서 한턱낼게. 언제가 가장 편한지 알려줘!",
+      strategy: "🥇 IH 공략: cropped up, push to tomorrow, on me 자연스러운 대화체",
+      word_count: 72
+    },
+    AL: {
+      script: "Hey Minho, I am terribly sorry to drop this on you last minute, but a sudden crisis erupted at my office and I am stuck here until midnight. I feel awful about flaking on our dinner. To make it up to you, how about we reschedule for tomorrow evening? Or, if that's inconvenient, allow me to treat you to a lavish steak dinner this Saturday entirely on my tab. I am so sorry for the inconvenience, and let me know your thoughts!",
+      korean: "민호야, 마지막 순간에 이런 소식을 전해 정말 미안하지만 회사에 갑작스러운 위기 상황이 터져서 자정까지 꼼짝없이 묶이게 됐어. 약속을 펑크 내게 되어 마음이 너무 안 좋아. 만회하기 위해 내일 저녁으로 일정을 조정하는 건 어떨까? 만약 내일이 불편하다면 이번 주 토요일에 내 계산으로 근사한 스테이크 디너를 풀코스로 대접할게. 불편을 끼쳐 정말 미안하고 생각 알려줘!",
+      strategy: "🏆 AL 공략: crisis erupted, flaking on, on my tab 최고급 원어민 구어체",
+      word_count: 81
+    }
+  }
+};
+
+// 특정 토픽과 목표 등급에 해당하는 수준별 스크립트 데이터를 반환하는 헬퍼 함수입니다.
+function getMultiLevelScriptItem(topic, grade = 'AL') {
+  // 데이터베이스에서 해당 토픽을 검색합니다.
+  const matched = scriptMultiLevelDatabase[topic] || scriptMultiLevelDatabase["영화관 장소 묘사"];
+  // 요청된 등급(IL, IM, IH, AL)의 데이터를 반환하며, 없으면 AL을 기본값으로 반환합니다.
+  return matched[grade] || matched["AL"];
+}
+
+// 목표 등급(IL, IM, IH, AL)을 전환하고 문항 수 및 난이도를 자동 세팅하는 함수입니다.
+function setScriptTargetGrade(grade) {
+  // 전역 상태의 목표 등급을 업데이트합니다.
+  state.scriptTargetGrade = grade;
+  state.scriptViewerGrade = grade;
+
+  // 목표 등급 선택 필 버튼들의 활성화 상태를 업데이트합니다.
+  document.querySelectorAll('.grade-select-pill').forEach((btn) => {
+    const isTarget = btn.dataset.grade === grade;
+    btn.classList.toggle('active', isTarget);
+  });
+
+  // 미니 등급 토글 버튼들의 활성화 상태도 동기화합니다.
+  document.querySelectorAll('.mini-grade-btn').forEach((btn) => {
+    const isTarget = btn.dataset.viewGrade === grade;
+    btn.classList.toggle('active', isTarget);
+  });
+
+  // 목표 등급 배지 및 설명 문구를 업데이트합니다.
+  const badgeEl = document.getElementById('target-grade-badge');
+  const descEl = document.getElementById('target-grade-desc-text');
+
+  let targetDifficulty = 5;
+  if (grade === 'IL') {
+    targetDifficulty = 2;
+    if (badgeEl) {
+      badgeEl.innerText = '🥉 IL/IM1 (난이도 2-2 / 12문항)';
+      badgeEl.style.background = '#fef3c7';
+      badgeEl.style.color = '#b45309';
+    }
+    if (descEl) {
+      descEl.innerHTML = '💡 <strong>초급 IL 모드:</strong> 3~4개 기초 단문으로 끊김 없이 10초 만에 외워서 말문이 터지는 입문용 스크립트입니다.';
+    }
+  } else if (grade === 'IM') {
+    targetDifficulty = 4;
+    if (badgeEl) {
+      badgeEl.innerText = '🥈 IM2/IM3 (난이도 4-4 / 15문항)';
+      badgeEl.style.background = '#e0e7ff';
+      badgeEl.style.color = '#3730a3';
+    }
+    if (descEl) {
+      descEl.innerHTML = '💡 <strong>중급 IM 모드:</strong> 서론-본론-결론 3단 구조와 시간 연결사(First, After that) 중심의 탄탄한 기본 스크립트입니다.';
+    }
+  } else if (grade === 'IH') {
+    targetDifficulty = 5;
+    if (badgeEl) {
+      badgeEl.innerText = '🥇 IH (난이도 5-5 / 15문항)';
+      badgeEl.style.background = '#dbeafe';
+      badgeEl.style.color = '#1d4ed8';
+    }
+    if (descEl) {
+      descEl.innerHTML = '💡 <strong>상급 IH 모드:</strong> 원어민 구동사(hang out, chill out), 풍부한 감정 표현, 롤플레이 대안 제시가 결합된 유창한 스크립트입니다.';
+    }
+  } else {
+    targetDifficulty = 5;
+    if (badgeEl) {
+      badgeEl.innerText = '🏆 AL 만점 (난이도 5-5 / 15문항)';
+      badgeEl.style.background = '#ecfdf5';
+      badgeEl.style.color = '#047857';
+    }
+    if (descEl) {
+      descEl.innerHTML = '💡 <strong>AL 만점 모드:</strong> 오픽노잼 5대 황금 법칙(MP 두괄식, 1 Thing, 직접화법, 원어민 필러)으로 무장한 최고급 스크립트입니다.';
+    }
+  }
+
+  // 서베이 난이도 설정을 업데이트합니다.
+  state.officialSurvey.difficulty = targetDifficulty;
+  // 변경된 난이도에 맞추어 문제 세트를 다시 생성합니다.
+  state.scriptQuestions = createSurveyBasedExamSet(state.officialSurvey);
+  state.scriptSelectedQIndex = 0;
+
+  // 문항 칩과 첫 번째 문항 상세 뷰를 갱신합니다.
+  renderScriptQuestionChips();
+  selectScriptQuestion(0);
+}
+
+// 문항 상세 카드 내 4단계 등급 뷰어의 등급(IL/IM/IH/AL)을 전환하는 함수입니다.
+function setScriptViewerGrade(grade) {
+  // 전역 상태의 뷰어 등급을 업데이트합니다.
+  state.scriptViewerGrade = grade;
+
+  // 미니 등급 버튼 활성화 스타일을 업데이트합니다.
+  document.querySelectorAll('.mini-grade-btn').forEach((btn) => {
+    btn.classList.toggle('active', btn.dataset.viewGrade === grade);
+  });
+
+  // 현재 선택된 문항을 가져옵니다.
+  const q = state.scriptQuestions[state.scriptSelectedQIndex];
+  if (!q) return;
+
+  // 해당 문항의 지정 등급 스크립트 데이터를 가져옵니다.
+  const levelData = getMultiLevelScriptItem(q.topic, grade);
+
+  // 뷰어 텍스트 및 번역, 공략 포인트를 화면에 반영합니다.
+  const textEl = document.getElementById('multilevel-script-text');
+  const korEl = document.getElementById('multilevel-script-korean');
+  const strategyEl = document.getElementById('multilevel-script-strategy');
+
+  if (textEl) textEl.innerText = `"${levelData.script}"`;
+  if (korEl) korEl.innerText = levelData.korean;
+  if (strategyEl) strategyEl.innerText = levelData.strategy;
+}
+
+// 4단계 뷰어에 표시된 스크립트를 내 작성창(textarea)으로 원터치 복사하는 함수입니다.
+function copyMultilevelScriptToDraft() {
+  const textEl = document.getElementById('multilevel-script-text');
+  const textarea = document.getElementById('script-draft-textarea');
+  if (!textEl || !textarea) return;
+
+  // 따옴표를 제거한 순수 텍스트를 작성창에 반영합니다.
+  const cleanScript = textEl.innerText.replace(/^"|"$/g, '').trim();
+  textarea.value = cleanScript;
+  textarea.focus();
+
+  // 사용자에게 알림 피드백을 제공합니다.
+  alert(`📋 [${state.scriptViewerGrade || 'AL'}] 등급 모범 스크립트가 작성창으로 복사되었습니다!`);
+}
+
+// 4단계 뷰어에 표시된 스크립트를 원어민 음성으로 재생하는 함수입니다.
+function listenMultilevelScriptAudio() {
+  const textEl = document.getElementById('multilevel-script-text');
+  if (!textEl) return;
+  const cleanScript = textEl.innerText.replace(/^"|"$/g, '').trim();
+  playCustomSpeech(encodeURIComponent(cleanScript));
+}
+
+// initScriptBuilderEvents에 등급별 스크립트 이벤트 리스너들을 등록합니다.
+function initMultiLevelScriptEvents() {
+  // 상단 목표 등급 바 버튼 클릭 이벤트 등록
+  document.querySelectorAll('.grade-select-pill').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const targetGrade = btn.dataset.grade;
+      if (targetGrade) setScriptTargetGrade(targetGrade);
+    });
+  });
+
+  // 문항 상세 카드 내 미니 등급 토글 버튼 클릭 이벤트 등록
+  document.querySelectorAll('.mini-grade-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const viewGrade = btn.dataset.viewGrade;
+      if (viewGrade) setScriptViewerGrade(viewGrade);
+    });
+  });
+
+  // 작성창으로 가져오기 버튼 클릭 이벤트 등록
+  const copyBtn = document.getElementById('btn-copy-multilevel-to-draft');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', copyMultilevelScriptToDraft);
+  }
+
+  // 등급별 스크립트 음성 듣기 버튼 클릭 이벤트 등록
+  const listenBtn = document.getElementById('btn-listen-multilevel-script');
+  if (listenBtn) {
+    listenBtn.addEventListener('click', listenMultilevelScriptAudio);
+  }
+}

@@ -9,7 +9,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="theme-color" content="#ffffff" />
   <title>OPIc Master AI - 15문항 서베이 스크립트 & 실전 모의고사</title>
-  <link rel="stylesheet" href="style.css?v=20260906_stt_lang_v15" />
+  <link rel="stylesheet" href="style.css?v=20260906_multilevel_v16" />
 </head>
 <body>
 
@@ -182,7 +182,24 @@
         </div>
       </div>
 
-      <!-- 15문항 가로 스크롤 칩 네비게이터 바 -->
+      <!-- [신규] 목표 등급 & 난이도(12문항/15문항) 선택 바 -->
+      <div class="toss-card" style="padding: 12px 14px; margin-bottom: 10px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <span style="font-size: 13px; font-weight: 800; color: var(--toss-text-primary);">🎯 목표 등급 & 최적 스크립트 모드</span>
+          <span id="target-grade-badge" style="font-size: 11px; background: #ecfdf5; color: #047857; padding: 2px 8px; border-radius: 8px; font-weight: 800;">🏆 AL 만점 (난이도 5-5)</span>
+        </div>
+        <div class="target-grade-bar">
+          <button class="grade-select-pill level-il" data-grade="IL">🥉 IL/IM1<br/><span style="font-size:9px;font-weight:600;">(난이도 2 / 12문항)</span></button>
+          <button class="grade-select-pill level-im" data-grade="IM">🥈 IM2/IM3<br/><span style="font-size:9px;font-weight:600;">(난이도 3-4 / 15문항)</span></button>
+          <button class="grade-select-pill level-ih" data-grade="IH">🥇 IH<br/><span style="font-size:9px;font-weight:600;">(난이도 5 / 15문항)</span></button>
+          <button class="grade-select-pill active level-al" data-grade="AL">🏆 AL 만점<br/><span style="font-size:9px;font-weight:600;">(난이도 5-6 / 15문항)</span></button>
+        </div>
+        <div style="font-size: 11px; color: var(--toss-text-secondary); line-height: 1.4;" id="target-grade-desc-text">
+          💡 <strong>AL 만점 모드:</strong> 오픽노잼 5대 황금 법칙(MP 두괄식, 1 Thing, 직접화법, 원어민 필러)으로 무장한 최고급 스크립트입니다.
+        </div>
+      </div>
+
+      <!-- 15문항/12문항 가로 스크롤 칩 네비게이터 바 -->
       <div class="toss-card" style="padding: 12px 14px; margin-bottom: 12px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
           <span style="font-size: 13px; font-weight: 800; color: #065f46;">🎯 서베이 15문항 목록 (클릭하여 이동)</span>
@@ -216,6 +233,45 @@
           <div style="font-size: 11px; font-weight: 700; color: #64748b; margin-bottom: 2px;" id="script-active-q-type">질문 유형: 자기소개</div>
           <div style="font-size: 13px; font-weight: 700; color: #1e293b; line-height: 1.4;" id="script-active-question-text">
             "Let's start the interview now. Tell me a little bit about yourself."
+          </div>
+        </div>
+
+        <!-- [신규] 4단계 등급별 맞춤 모범 스크립트 뷰어 카드 -->
+        <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 14px; padding: 12px; margin-bottom: 12px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 6px;">
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span style="font-size: 12px; font-weight: 800; color: #1e293b;">🌟 등급별 모범 스크립트 보기</span>
+            </div>
+            <!-- 미니 4단계 등급 선택 토글 -->
+            <div class="mini-grade-toggle-group">
+              <button class="mini-grade-btn" data-view-grade="IL" id="btn-mini-grade-il">🥉 IL</button>
+              <button class="mini-grade-btn" data-view-grade="IM" id="btn-mini-grade-im">🥈 IM</button>
+              <button class="mini-grade-btn" data-view-grade="IH" id="btn-mini-grade-ih">🥇 IH</button>
+              <button class="mini-grade-btn active" data-view-grade="AL" id="btn-mini-grade-al">🏆 AL</button>
+            </div>
+          </div>
+
+          <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 10px; padding: 10px 12px; margin-bottom: 8px;">
+            <div style="font-size: 13px; font-weight: 600; color: #1e293b; line-height: 1.5; margin-bottom: 6px;" id="multilevel-script-text">
+              "Well, to be honest, my absolute favorite cinema is located just a stone's throw away from my apartment..."
+            </div>
+            <div style="font-size: 11px; color: #64748b; line-height: 1.4;" id="multilevel-script-korean">
+              솔직히 말씀드리면, 제가 가장 좋아하는 영화관은 아파트에서 엎어지면 코 닿을 거리에 위치해 있습니다...
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px;">
+            <div style="font-size: 11px; color: #047857; font-weight: 700;" id="multilevel-script-strategy">
+              💡 AL 공략: 오픽노잼 MP(두괄식 감정) + 근접성 구동사 + IMAX 디테일
+            </div>
+            <div style="display: flex; gap: 6px;">
+              <button id="btn-listen-multilevel-script" style="background: #eff6ff; color: var(--toss-blue); border: 1px solid #bfdbfe; border-radius: 8px; padding: 4px 10px; font-size: 11px; font-weight: 700; cursor: pointer;">
+                🔊 음성 듣기
+              </button>
+              <button id="btn-copy-multilevel-to-draft" style="background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; border-radius: 8px; padding: 4px 10px; font-size: 11px; font-weight: 800; cursor: pointer;">
+                📋 작성창으로 가져오기
+              </button>
+            </div>
           </div>
         </div>
 
@@ -917,6 +973,6 @@
   </div>
 
   <!-- 메인 앱 컨트롤러 스크립트 연결 -->
-  <script src="app.js?v=20260906_stt_lang_v15"></script>
+  <script src="app.js?v=20260906_multilevel_v16"></script>
 </body>
 </html>

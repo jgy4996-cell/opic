@@ -432,7 +432,8 @@ const state = {
   isDailyShadowingRecording: false, // 1일 1문장 따라 말하기 녹음 중 여부입니다.
   isQuizKoreanRecording: false, // 퀴즈 한국어 녹음 중 여부입니다.
   quizRecognition: null, // 퀴즈 한국어 음성인식 객체입니다.
-  isScriptDraftRecording: false, // 스크립트 작성 음성 녹음 중 여부입니다.
+  isScriptDraftRecording: false,
+  scriptDraftLang: 'ko-KR', // 스크립트 작성 음성인식 언어 설정('ko-KR' 또는 'en-US')입니다. // 스크립트 작성 음성 녹음 중 여부입니다.
   scriptDraftRecognition: null, // 스크립트 작성 음성인식 객체입니다.
   isScriptAudioPlaying: false, // 스크립트 AL 음성 재생 중 여부입니다.
   currentScriptAudio: null, // 스크립트 재생 Audio 인스턴스입니다.
@@ -531,6 +532,16 @@ function initScriptBuilderEvents() {
   const loadTemplateBtn = document.getElementById('btn-load-template-script');
   if (loadTemplateBtn) {
     loadTemplateBtn.addEventListener('click', loadScriptTemplate);
+  }
+
+  // 한글/영어 음성인식 언어 토글 버튼 이벤트 등록
+  const sttLangKoBtn = document.getElementById('btn-stt-lang-ko');
+  const sttLangEnBtn = document.getElementById('btn-stt-lang-en');
+  if (sttLangKoBtn) {
+    sttLangKoBtn.addEventListener('click', () => setScriptDraftLanguage('ko-KR'));
+  }
+  if (sttLangEnBtn) {
+    sttLangEnBtn.addEventListener('click', () => setScriptDraftLanguage('en-US'));
   }
 
   // 음성으로 말해서 넣기 버튼
@@ -747,40 +758,61 @@ function loadScriptTemplate() {
 
 // 스크립트 작성을 위한 음성 인식(STT) 객체 초기화 함수입니다.
 function initScriptDraftSpeechRecognition() {
+  // 브라우저 내장 음성인식 객체를 가져옵니다.
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  // 음성인식을 지원하는 브라우저인 경우 인스턴스를 생성합니다.
   if (SpeechRecognition) {
+    // 음성인식 인스턴스를 생성하여 전역 상태에 보관합니다.
     state.scriptDraftRecognition = new SpeechRecognition();
+    // 연속 인식을 비활성화하여 한 문장 단위로 종료되게 합니다.
     state.scriptDraftRecognition.continuous = false;
+    // 중간 인식 결과를 실시간으로 받아옵니다.
     state.scriptDraftRecognition.interimResults = true;
-    state.scriptDraftRecognition.lang = 'ko-KR';
+    // 현재 선택된 언어(한글 또는 영어)를 바인딩합니다.
+    state.scriptDraftRecognition.lang = state.scriptDraftLang || 'ko-KR';
 
+    // 음성인식 중간/최종 결과 수신 이벤트 핸들러입니다.
     state.scriptDraftRecognition.onresult = (event) => {
+      // 누적 변환 텍스트 변수입니다.
       let fullText = '';
+      // 전달받은 모든 음성 청크 결과를 순회하며 합산합니다.
       for (let i = 0; i < event.results.length; ++i) {
         fullText += event.results[i][0].transcript;
       }
+      // 스크립트 작성 텍스트에어리어 요소를 가져옵니다.
       const textarea = document.getElementById('script-draft-textarea');
+      // 텍스트에어리어에 실시간으로 인식된 문장을 반영합니다.
       if (textarea && fullText) {
         textarea.value = fullText;
       }
     };
 
+    // 음성인식 종료 이벤트 핸들러입니다.
     state.scriptDraftRecognition.onend = () => {
+      // 녹음 진행 플래그를 거짓으로 변경합니다.
       state.isScriptDraftRecording = false;
+      // 음성인식 버튼 요소를 가져옵니다.
       const btn = document.getElementById('btn-stt-script-draft');
+      // 버튼 텍스트와 배경색을 복원합니다.
       if (btn) {
-        btn.innerText = '🎙️ 음성으로 말해서 넣기';
+        const langLabel = state.scriptDraftLang === 'en-US' ? 'English' : '한글';
+        btn.innerText = `🎙️ 음성으로 넣기 (${langLabel})`;
         btn.style.background = '#eff6ff';
         btn.style.color = 'var(--toss-blue)';
       }
     };
 
+    // 음성인식 에러 발생 이벤트 핸들러입니다.
     state.scriptDraftRecognition.onerror = (e) => {
+      // 콘솔에 에러 내용을 기록합니다.
       console.warn('Script Draft STT error:', e);
+      // 녹음 플래그를 초기화합니다.
       state.isScriptDraftRecording = false;
+      // 버튼 스타일을 복원합니다.
       const btn = document.getElementById('btn-stt-script-draft');
       if (btn) {
-        btn.innerText = '🎙️ 음성으로 말해서 넣기';
+        const langLabel = state.scriptDraftLang === 'en-US' ? 'English' : '한글';
+        btn.innerText = `🎙️ 음성으로 넣기 (${langLabel})`;
         btn.style.background = '#eff6ff';
         btn.style.color = 'var(--toss-blue)';
       }
@@ -790,39 +822,119 @@ function initScriptDraftSpeechRecognition() {
 
 // 스크립트 음성 녹음 시작/정지 토글 함수입니다.
 function toggleScriptDraftRecording() {
+  // 기존 재생 중인 에바 음성을 정지합니다.
   stopAllEvaAudio();
+  // 스크립트 오디오 재생을 정지합니다.
   stopScriptAudio();
 
+  // 음성인식 버튼 요소를 가져옵니다.
   const btn = document.getElementById('btn-stt-script-draft');
+  // 녹음 중이 아닌 경우 녹음을 시작합니다.
   if (!state.isScriptDraftRecording) {
+    // 음성인식을 지원하지 않으면 경고창을 띄웁니다.
     if (!state.scriptDraftRecognition) {
       alert('음성 인식을 지원하지 않는 브라우저입니다. 키보드로 직접 입력해주세요.');
       return;
     }
     try {
+      // 녹음 진행 플래그를 참으로 설정합니다.
       state.isScriptDraftRecording = true;
+      // 선택된 언어(ko-KR / en-US)를 다시 명시적으로 할당합니다.
+      state.scriptDraftRecognition.lang = state.scriptDraftLang || 'ko-KR';
+      const langName = state.scriptDraftLang === 'en-US' ? 'English' : '한국어';
+      // 버튼을 빨간색 청취 중 상태로 변경합니다.
       if (btn) {
-        btn.innerText = '⏹ 듣고 있습니다... (말씀하세요)';
+        btn.innerText = `⏹ ${langName} 듣는 중...`;
         btn.style.background = 'var(--toss-red)';
         btn.style.color = '#ffffff';
       }
+      // 음성 인식을 시작합니다.
       state.scriptDraftRecognition.start();
     } catch (e) {
+      // 오류 발생 시 상태를 초기화하고 마이크 가이드 모달을 엽니다.
       state.isScriptDraftRecording = false;
       showMicHelpModal();
     }
   } else {
+    // 이미 녹음 중인 경우 정지합니다.
     state.isScriptDraftRecording = false;
+    // 음성 인식 객체를 정지합니다.
     if (state.scriptDraftRecognition) {
       try { state.scriptDraftRecognition.stop(); } catch (e) {}
     }
+    // 버튼 스타일을 대기 상태로 복원합니다.
     if (btn) {
-      btn.innerText = '🎙️ 음성으로 말해서 넣기';
+      const langLabel = state.scriptDraftLang === 'en-US' ? 'English' : '한글';
+      btn.innerText = `🎙️ 음성으로 넣기 (${langLabel})`;
       btn.style.background = '#eff6ff';
       btn.style.color = 'var(--toss-blue)';
     }
   }
 }
+
+// 스크립트 작성 음성인식 언어를 한글 또는 영어로 전환하는 함수입니다.
+function setScriptDraftLanguage(lang) {
+  // 전역 상태의 음성인식 언어 설정을 업데이트합니다.
+  state.scriptDraftLang = lang;
+
+  // 한글 버튼과 영어 버튼 요소를 가져옵니다.
+  const koBtn = document.getElementById('btn-stt-lang-ko');
+  const enBtn = document.getElementById('btn-stt-lang-en');
+  const textarea = document.getElementById('script-draft-textarea');
+  const sttBtn = document.getElementById('btn-stt-script-draft');
+
+  // 한글 선택 시의 UI 스타일을 적용합니다.
+  if (lang === 'ko-KR') {
+    if (koBtn) {
+      koBtn.classList.add('active');
+      koBtn.style.background = '#ffffff';
+      koBtn.style.color = '#1e293b';
+      koBtn.style.fontWeight = '800';
+      koBtn.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
+    }
+    if (enBtn) {
+      enBtn.classList.remove('active');
+      enBtn.style.background = 'transparent';
+      enBtn.style.color = '#64748b';
+      enBtn.style.fontWeight = '700';
+      enBtn.style.boxShadow = 'none';
+    }
+    if (textarea && !textarea.value) {
+      textarea.placeholder = '예) 우리 집 근처에 있는 영화관을 자주 가는데 시설이 깨끗하고 팝콘이 맛있어서 주말마다 방문합니다.';
+    }
+    if (sttBtn && !state.isScriptDraftRecording) {
+      sttBtn.innerText = '🎙️ 음성으로 넣기 (한글)';
+    }
+  } else {
+    // 영어 선택 시의 UI 스타일을 적용합니다.
+    if (enBtn) {
+      enBtn.classList.add('active');
+      enBtn.style.background = '#ffffff';
+      enBtn.style.color = '#1e293b';
+      enBtn.style.fontWeight = '800';
+      enBtn.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
+    }
+    if (koBtn) {
+      koBtn.classList.remove('active');
+      koBtn.style.background = 'transparent';
+      koBtn.style.color = '#64748b';
+      koBtn.style.fontWeight = '700';
+      koBtn.style.boxShadow = 'none';
+    }
+    if (textarea && !textarea.value) {
+      textarea.placeholder = 'e.g., I usually visit the CGV cinema near my house on weekends because it has clean facilities and great popcorn.';
+    }
+    if (sttBtn && !state.isScriptDraftRecording) {
+      sttBtn.innerText = '🎙️ 음성으로 넣기 (English)';
+    }
+  }
+
+  // 현재 인식 객체가 생성되어 있다면 언어를 동적으로 교체합니다.
+  if (state.scriptDraftRecognition) {
+    state.scriptDraftRecognition.lang = lang;
+  }
+}
+
 
 // 사용자가 작성한 초안을 AI로 분석하고 AL 만점 스크립트로 업그레이드 첨삭하는 함수입니다.
 function analyzeAndUpgradeUserScript() {

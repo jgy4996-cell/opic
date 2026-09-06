@@ -9,7 +9,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="theme-color" content="#ffffff" />
   <title>OPIc Master AI - 15문항 서베이 스크립트 & 실전 모의고사</title>
-  <link rel="stylesheet" href="style.css?v=20260906_nojam_fix_v14" />
+  <link rel="stylesheet" href="style.css?v=20260906_stt_lang_v15" />
 </head>
 <body>
 
@@ -239,12 +239,19 @@
           </div>
         </div>
 
-        <!-- 스크립트 작성 텍스트에어리어 -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+        <!-- 스크립트 작성 텍스트에어리어 헤더 및 음성인식 언어 선택 토글 -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 6px;">
           <span style="font-size: 12px; font-weight: 700; color: var(--toss-text-secondary);">내 생각 작성 (한글 또는 영어로 자유롭게 작성)</span>
-          <button id="btn-stt-script-draft" style="background: #eff6ff; color: var(--toss-blue); border: 1px solid #bfdbfe; border-radius: 8px; padding: 4px 8px; font-size: 11px; font-weight: 700; cursor: pointer;">
-            🎙️ 음성으로 말해서 넣기
-          </button>
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <!-- [신규] 한글 / 영어 STT 언어 전환 토글 버튼 그룹 -->
+            <div style="display: flex; background: #e2e8f0; border-radius: 8px; padding: 2px; border: 1px solid #cbd5e1;">
+              <button id="btn-stt-lang-ko" class="stt-lang-btn active" style="border: none; background: #ffffff; color: #1e293b; border-radius: 6px; padding: 3px 8px; font-size: 11px; font-weight: 800; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">🇰🇷 한글</button>
+              <button id="btn-stt-lang-en" class="stt-lang-btn" style="border: none; background: transparent; color: #64748b; border-radius: 6px; padding: 3px 8px; font-size: 11px; font-weight: 700; cursor: pointer;">🇺🇸 English</button>
+            </div>
+            <button id="btn-stt-script-draft" style="background: #eff6ff; color: var(--toss-blue); border: 1px solid #bfdbfe; border-radius: 8px; padding: 4px 10px; font-size: 11px; font-weight: 700; cursor: pointer;">
+              🎙️ 음성으로 말해서 넣기
+            </button>
+          </div>
         </div>
         <textarea id="script-draft-textarea" rows="4" style="width: 100%; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 12px; font-size: 14px; line-height: 1.5; background: #fafbfc; color: var(--toss-text-primary); resize: vertical;" placeholder="예) 우리 집 근처에 있는 영화관을 자주 가는데 시설이 깨끗하고 팝콘이 맛있어서 주말마다 방문합니다."></textarea>
 
@@ -910,6 +917,6 @@
   </div>
 
   <!-- 메인 앱 컨트롤러 스크립트 연결 -->
-  <script src="app.js?v=20260906_nojam_fix_v14"></script>
+  <script src="app.js?v=20260906_stt_lang_v15"></script>
 </body>
 </html>

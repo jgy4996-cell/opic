@@ -9,7 +9,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="theme-color" content="#ffffff" />
   <title>OPIc Master AI - 15문항 서베이 스크립트 & 실전 모의고사</title>
-  <link rel="stylesheet" href="style.css?v=20260907_greenopic_v19" />
+  <link rel="stylesheet" href="style.css?v=20260907_diff4_listening_v20" />
 </head>
 <body>
 
@@ -40,8 +40,8 @@
           <button id="btn-quick-start-1q" style="flex: 1; min-width: 100px; background: #ffffff; color: var(--toss-blue); border: none; border-radius: 12px; padding: 10px 12px; font-size: 13px; font-weight: 800; cursor: pointer;">
             ⚡ 1문제 스피킹
           </button>
-          <button id="btn-quick-start-quiz" style="flex: 1; min-width: 100px; background: #e0e7ff; color: #3730a3; border: none; border-radius: 12px; padding: 10px 12px; font-size: 13px; font-weight: 800; cursor: pointer;">
-            👂 한국어 퀴즈
+          <button id="btn-quick-start-quiz" style="flex: 1; min-width: 100px; background: #f3e8ff; color: #7e22ce; border: 1px solid #d8b4fe; border-radius: 12px; padding: 10px 12px; font-size: 13px; font-weight: 800; cursor: pointer;">
+            🎧 난이도4 청취 퀴즈
           </button>
           <button id="btn-quick-start-script" style="flex: 1; min-width: 100px; background: #d1fae5; color: #047857; border: none; border-radius: 12px; padding: 10px 12px; font-size: 13px; font-weight: 800; cursor: pointer;">
             ✍️ 스크립트 첨삭
@@ -512,9 +512,9 @@
 
         <div class="mode-selector-grid">
           <div class="mode-card-btn" data-mode="listening" id="prac-mode-listening" style="border: 1.5px solid #a855f7;">
-            <div class="mode-icon">👂</div>
-            <div class="mode-title" style="color: #7e22ce;">한국어 질문 퀴즈 ★</div>
-            <div class="mode-desc">영어 질문 듣고 한국말로 무슨 뜻인지 맞히기</div>
+            <div class="mode-icon">🎧</div>
+            <div class="mode-title" style="color: #7e22ce;">난이도 4 질문 청취 퀴즈 ★</div>
+            <div class="mode-desc">영어 질문 청취 ➔ 핵심 의도 객관식 맞히기 (매번 랜덤 출제)</div>
           </div>
           <div class="mode-card-btn" data-mode="3combo" id="prac-mode-3combo">
             <div class="mode-icon">🎯</div>
@@ -710,40 +710,90 @@
         </div>
       </div>
 
-      <!-- 한국어 질문 퀴즈 서브 뷰 -->
+      <!-- ========================================================================== -->
+      <!-- [신규]: 🎧 난이도 4(Difficulty 4) 전용 질문 청취 & 실전 객관식 퀴즈 훈련소           -->
+      <!-- ========================================================================== -->
       <div id="exam-view-quiz" style="display: none;">
-        <div class="quiz-hero-card">
-          <div style="font-size: 13px; opacity: 0.9; margin-bottom: 4px;">👂 에바 질문 청취 & 한국어 뜻 맞히기</div>
-          <h2 style="font-size: 18px; font-weight: 800; line-height: 1.3;">
-            질문을 귀로 잘 듣고<br />무슨 뜻인지 한국말로 말해보세요!
+        <!-- 퀴즈 상단 헤어로 배너입니다. -->
+        <div class="diff4-hero-card">
+          <!-- 상단 소제목입니다. -->
+          <div style="font-size: 13px; opacity: 0.95; margin-bottom: 4px;">🎧 난이도 4 (Difficulty 4) 질문 청취 훈련소</div>
+          <!-- 메인 타이틀입니다. -->
+          <h2 style="font-size: 18px; font-weight: 800; line-height: 1.3; margin-bottom: 6px;">
+            에바의 질문을 귀로 듣고<br />질문의 핵심 의도를 객관식으로 맞혀보세요!
           </h2>
-        </div>
-
-        <div class="eva-mini-card">
-          <div class="eva-avatar-circle" id="quiz-eva-avatar-box">👩‍💼</div>
-          <div style="flex: 1;">
-            <div style="font-size: 15px; font-weight: 700; color: var(--toss-text-primary);">Eva (OPIc 시험관)</div>
-            <button class="btn-listen-mini" id="btn-quiz-replay-audio">🔊 질문 다시듣기</button>
+          <!-- 서브 안내 텍스트입니다. -->
+          <div style="font-size: 11px; opacity: 0.9;">
+            💡 매번 새로운 난이도 4 실전 문제가 랜덤 출제되며, 청취 키워드와 AL 첫 문장 해설을 제공합니다.
           </div>
         </div>
 
-        <div class="toss-card">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-            <span style="font-size: 12px; font-weight: 700; color: var(--toss-text-secondary);">한국어로 무슨 질문인지 말씀하시거나 입력하세요</span>
-            <button id="btn-quiz-record-korean" style="background: #f3e8ff; color: #7e22ce; border: none; border-radius: 8px; padding: 4px 8px; font-size: 11px; font-weight: 700; cursor: pointer;">
-              🎙️ 한국어 음성으로 정답 말하기
-            </button>
+        <!-- 퀴즈 실시간 현황 배너입니다 (진도, 점수, 스트릭). -->
+        <div class="diff4-status-banner">
+          <!-- 출제 문제 수 카운터입니다. -->
+          <span style="font-size: 12px; font-weight: 800; color: #7e22ce;" id="diff4-quiz-progress-text">문제 1 / 10</span>
+          <!-- 실시간 점수 배지입니다. -->
+          <span style="font-size: 11px; background: #e9d5ff; color: #6b21a8; padding: 2px 8px; border-radius: 8px; font-weight: 700;" id="diff4-quiz-score-badge">정답 0개 (0%)</span>
+          <!-- 연속 정답 스트릭 배지입니다. -->
+          <span style="font-size: 11px; background: #fef3c7; color: #b45309; padding: 2px 8px; border-radius: 8px; font-weight: 800;" id="diff4-quiz-streak-badge">🔥 0연속 정답</span>
+        </div>
+
+        <!-- 오디오 청취 및 배속 제어 상자입니다. -->
+        <div class="diff4-audio-box">
+          <!-- 에바 아바타 및 시험관 라벨입니다. -->
+          <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 8px;">
+            <!-- 에바 아바타 원형 아이콘입니다. -->
+            <div class="eva-avatar-circle" id="quiz-eva-avatar-box" style="width: 42px; height: 42px; font-size: 22px;">👩‍💼</div>
+            <!-- 라벨 및 주제 태그입니다. -->
+            <div style="text-align: left;">
+              <!-- 시험관 이름입니다. -->
+              <div style="font-size: 14px; font-weight: 800; color: var(--toss-text-primary);">Eva (OPIc 면접관)</div>
+              <!-- 현재 문제 주제 배지입니다. -->
+              <span id="diff4-current-topic-badge" style="font-size: 10px; background: #f3e8ff; color: #7e22ce; padding: 1px 6px; border-radius: 6px; font-weight: 700;">난이도 4 질문</span>
+            </div>
           </div>
-          <input type="text" id="quiz-korean-input" style="width: 100%; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 12px; font-size: 14px; background: #fafbfc; color: var(--toss-text-primary);" placeholder="예) 자주 가는 영화관과 위치를 묻는 질문" />
-          <button class="toss-btn-primary" id="btn-quiz-check-answer" style="margin-top: 10px; background: #7e22ce;">
-            🎯 정답 확인 & 해설
+
+          <!-- 음성 다시듣기 메인 버튼입니다. -->
+          <button class="btn-listen-mini" id="btn-quiz-replay-audio" style="width: 100%; max-width: 240px; padding: 10px; font-size: 13px; font-weight: 800; background: #7e22ce; color: #ffffff; margin: 0 auto; display: block; border-radius: 12px;">
+            🔊 질문 다시듣기
           </button>
+
+          <!-- 청취 배속 선택 칩 그룹입니다. -->
+          <div class="diff4-speed-group">
+            <!-- 0.8배속 느리게 듣기 버튼입니다. -->
+            <button class="diff4-speed-btn" data-speed="0.8" id="btn-diff4-speed-slow">🐢 0.8x 느리게</button>
+            <!-- 1.0배속 표준 속도 듣기 버튼입니다. -->
+            <button class="diff4-speed-btn active" data-speed="1.0" id="btn-diff4-speed-normal">⚡ 1.0x 원속도</button>
+          </div>
         </div>
 
-        <div id="quiz-result-box" style="display: none; margin-top: 12px;"></div>
+        <!-- 객관식 4지선다 퀴즈 카드입니다. -->
+        <div class="toss-card" style="margin-bottom: 12px;">
+          <!-- 퀴즈 문제 발문입니다. -->
+          <div style="font-size: 14px; font-weight: 800; color: #1e293b; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
+            <!-- 물음표 아이콘입니다. -->
+            <span>❓</span>
+            <!-- 문제 텍스트입니다. -->
+            <span>방금 들은 질문의 [핵심 의도 및 요구사항]으로 알맞은 것은?</span>
+          </div>
 
-        <button class="toss-btn-primary" id="btn-quiz-next-question" style="display: none; margin-top: 10px; background: var(--toss-blue);">
-          다음 문제로 넘어가기 ➔
+          <!-- 4개 선택지 버튼이 동적으로 렌더링될 컨테이너입니다. -->
+          <div class="diff4-options-list" id="diff4-quiz-options-container">
+            <!-- 자바스크립트로 선택지 A, B, C, D가 동적으로 렌더링됩니다. -->
+          </div>
+        </div>
+
+        <!-- 퀴즈 정답 피드백 및 영문/해석/1타 해설 상자입니다. -->
+        <div id="diff4-quiz-feedback-box" style="display: none;"></div>
+
+        <!-- 다음 랜덤 문제 풀기 액션 버튼입니다. -->
+        <button class="toss-btn-primary" id="btn-diff4-next-question" style="display: none; margin-top: 10px; background: #7e22ce; padding: 14px; font-size: 14px; border-radius: 14px;">
+          다음 난이도 4 문제 풀기 (랜덤 출제) ➔
+        </button>
+
+        <!-- 퀴즈 종료 및 스피킹/모의고사 돌아가기 보조 버튼입니다. -->
+        <button id="btn-diff4-exit-quiz" style="width: 100%; background: #f1f5f9; color: #64748b; border: none; border-radius: 12px; padding: 10px; font-size: 12px; font-weight: 700; cursor: pointer; margin-top: 8px;">
+          ✕ 퀴즈 종료하고 연습 메뉴로 돌아가기
         </button>
       </div>
     </section>
@@ -1372,6 +1422,6 @@
   </div>
 
   <!-- 메인 앱 컨트롤러 스크립트 연결 -->
-  <script src="app.js?v=20260907_greenopic_v19"></script>
+  <script src="app.js?v=20260907_diff4_listening_v20"></script>
 </body>
 </html>

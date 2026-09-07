@@ -1267,287 +1267,753 @@ window.launchSpeakingFromScript = function (encodedScript, encodedTopic, qNum = 
 
 
 // 한국어 질문 청취 퀴즈 전용 이벤트 및 핸들러 초기화 함수입니다.
-function initListeningQuizEvents() {
-  const replayBtn = document.getElementById('btn-quiz-replay-audio');
-  if (replayBtn) {
-    replayBtn.addEventListener('click', playQuizQuestionAudio);
-  }
-
-  const recKoreanBtn = document.getElementById('btn-quiz-record-korean');
-  if (recKoreanBtn) {
-    recKoreanBtn.addEventListener('click', toggleQuizKoreanRecording);
-  }
-
-  const checkAnswerBtn = document.getElementById('btn-quiz-check-answer');
-  if (checkAnswerBtn) {
-    checkAnswerBtn.addEventListener('click', () => {
-      const inputEl = document.getElementById('quiz-korean-input');
-      const text = inputEl ? inputEl.value.trim() : '';
-      if (!text) {
-        alert('한국어로 무슨 질문인지 말씀하시거나 입력해주세요!');
-        return;
-      }
-      evaluateQuizAnswer(text);
-    });
-  }
-
-  const nextQuizBtn = document.getElementById('btn-quiz-next-question');
-  if (nextQuizBtn) {
-    nextQuizBtn.addEventListener('click', () => {
-      if (state.currentIndex < state.questions.length - 1) {
-        state.currentIndex++;
-        renderCurrentQuizQuestion();
-      } else {
-        alert('🎉 모든 질문 청취 퀴즈를 완료하셨습니다!');
-        switchExamSubView('survey');
-      }
-    });
-  }
-
-  const quickQuizBtn = document.getElementById('btn-quick-start-quiz');
-  if (quickQuizBtn) {
-    quickQuizBtn.addEventListener('click', () => {
-      startListeningQuizSession();
-    });
-  }
-}
-
 // 한국어 음성 인식(STT) 객체 초기화 함수입니다.
 function initKoreanSpeechRecognition() {
+  // 브라우저 내장 음성인식 객체를 참조합니다.
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  // 음성인식을 지원하는 브라우저인 경우의 처리입니다.
   if (SpeechRecognition) {
+    // 한국어 음성인식 인스턴스를 생성합니다.
     state.quizRecognition = new SpeechRecognition();
+    // 단일 발화 모드로 설정합니다.
     state.quizRecognition.continuous = false;
+    // 중간 결과를 수신합니다.
     state.quizRecognition.interimResults = true;
+    // 한국어 언어 코드를 지정합니다.
     state.quizRecognition.lang = 'ko-KR';
 
+    // 음성 인식 결과 처리 리스너입니다.
     state.quizRecognition.onresult = (event) => {
+      // 텍스트 변수를 초기화합니다.
       let korText = '';
+      // 결과 배열을 순회합니다.
       for (let i = 0; i < event.results.length; ++i) {
+        // 음성 텍스트를 누적합니다.
         korText += event.results[i][0].transcript;
       }
+      // 한국어 입력창 요소를 조회합니다.
       const inputEl = document.getElementById('quiz-korean-input');
+      // 입력창이 존재하면 텍스트를 반영합니다.
       if (inputEl) {
+        // 값을 할당합니다.
         inputEl.value = korText;
       }
     };
 
+    // 음성 인식 종료 처리 리스너입니다.
     state.quizRecognition.onend = () => {
+      // 녹음 상태를 거짓으로 변경합니다.
       state.isQuizKoreanRecording = false;
+      // 버튼 요소를 가져옵니다.
       const recBtn = document.getElementById('btn-quiz-record-korean');
+      // 버튼 텍스트를 복원합니다.
       if (recBtn) {
+        // 대기 상태 텍스트를 설정합니다.
         recBtn.innerText = '🎙️ 한국어 음성으로 정답 말하기';
-        recBtn.style.background = '#f3e8ff';
-        recBtn.style.color = '#7e22ce';
-      }
-      const inputEl = document.getElementById('quiz-korean-input');
-      if (inputEl && inputEl.value.trim()) {
-        evaluateQuizAnswer(inputEl.value.trim());
       }
     };
 
+    // 음성 인식 에러 처리 리스너입니다.
     state.quizRecognition.onerror = (e) => {
+      // 콘솔에 경고를 출력합니다.
       console.warn('Quiz STT error:', e);
+      // 녹음 상태를 해제합니다.
       state.isQuizKoreanRecording = false;
-      const recBtn = document.getElementById('btn-quiz-record-korean');
-      if (recBtn) {
-        recBtn.innerText = '🎙️ 한국어 음성으로 정답 말하기';
-        recBtn.style.background = '#f3e8ff';
-        recBtn.style.color = '#7e22ce';
-      }
     };
   }
 }
+// ==============================================================================
+// [신규]: 🎧 난이도 4(Difficulty 4) 전용 질문 청취 연습 & 랜덤 객관식 퀴즈 데이터베이스 및 제어 엔진
+// ==============================================================================
 
-// 한국어 마이크 녹음 토글 함수입니다.
-function toggleQuizKoreanRecording() {
-  stopAllEvaAudio();
-
-  const recBtn = document.getElementById('btn-quiz-record-korean');
-  if (!state.isQuizKoreanRecording) {
-    if (!state.quizRecognition) {
-      alert('음성 인식을 지원하지 않는 브라우저입니다. 키보드로 입력해주세요.');
-      return;
-    }
-    try {
-      state.isQuizKoreanRecording = true;
-      if (recBtn) {
-        recBtn.innerText = '⏹ 듣고 있습니다... (말씀하세요)';
-        recBtn.style.background = 'var(--toss-red)';
-        recBtn.style.color = '#ffffff';
-      }
-      state.quizRecognition.start();
-    } catch (e) {
-      state.isQuizKoreanRecording = false;
-      showMicHelpModal();
-    }
-  } else {
-    state.isQuizKoreanRecording = false;
-    if (state.quizRecognition) {
-      try { state.quizRecognition.stop(); } catch (e) {}
-    }
-    if (recBtn) {
-      recBtn.innerText = '🎙️ 한국어 음성으로 정답 말하기';
-      recBtn.style.background = '#f3e8ff';
-      recBtn.style.color = '#7e22ce';
-    }
+// 난이도 4 출제 질문 32종 풀 (장소 묘사, 일상 루틴, 과거 경험, 롤플레이 11~13번, 비교/트렌드)
+const difficulty4ListeningQuestionsPool = [
+  {
+    id: 1, // 문항 고유 ID입니다.
+    topic: "영화관 장소 묘사", // 출제 주제입니다.
+    category: "1콤보 장소묘사", // 콤보 유형입니다.
+    question_text: "You indicated in the survey that you go to the movies. Tell me about the movie theater you usually go to and why you like going there.", // 영문 질문입니다.
+    audio_file: "audio/q2.mp3", // 오디오 파일 경로입니다.
+    correct_intent: "자주 가는 영화관의 위치, 시설 특징 및 그곳을 좋아하는 이유 묘사하기", // 정답 의도입니다.
+    distractors: [
+      "과거 영화관에서 겪은 정전 및 환불 사건 설명하기", // 오답 1입니다.
+      "영화 보기 전후의 시간별 식사 및 이동 루틴 순서 설명하기", // 오답 2입니다.
+      "영화 티켓 단체 할인 예매에 대해 매표소에 문의하기" // 오답 3입니다.
+    ],
+    korean_translation: "당신은 영화를 본다고 응답했습니다. 주로 가는 영화관과 왜 그곳을 좋아하는지 말씀해주세요.", // 번역입니다.
+    catchphrases: ["movie theater you usually go to", "why you like going there"], // 청취 키워드입니다.
+    al_opening: "Well, to be honest, my favorite cinema is located just a stone's throw away from my apartment." // 추천 첫 문장입니다.
+  },
+  {
+    id: 2, // 문항 고유 ID입니다.
+    topic: "영화 보기 전후 루틴", // 출제 주제입니다.
+    category: "2콤보 루틴순서", // 콤보 유형입니다.
+    question_text: "What do you usually do before and after watching a movie? Describe your whole routine on movie days from start to finish.", // 영문 질문입니다.
+    audio_file: "audio/q3.mp3", // 오디오 파일 경로입니다.
+    correct_intent: "영화 관람 전후에 하는 활동 순서(예매, 카페, 식사 등) 루틴 설명하기", // 정답 의도입니다.
+    distractors: [
+      "가장 최근에 본 영화의 줄거리와 감상평 요약하기", // 오답 1입니다.
+      "상영관 내부의 좌석과 IMAX 스크린 시설 묘사하기", // 오답 2입니다.
+      "영화관에서 친구와 만나기로 했는데 늦어서 대안 제시하기" // 오답 3입니다.
+    ],
+    korean_translation: "영화를 보기 전과 후에 주로 무엇을 하시나요? 영화 보는 날의 전체 일과를 처음부터 끝까지 설명해주세요.", // 번역입니다.
+    catchphrases: ["before and after watching a movie", "whole routine", "from start to finish"], // 청취 키워드입니다.
+    al_opening: "Whenever I plan to watch a movie, you know, I follow a pretty consistent routine." // 추천 첫 문장입니다.
+  },
+  {
+    id: 3, // 문항 고유 ID입니다.
+    topic: "영화관 잊지 못할 사건", // 출제 주제입니다.
+    category: "3콤보 과거경험", // 콤보 유형입니다.
+    question_text: "Tell me about a memorable or unexpected incident you experienced while watching a movie at a cinema. What happened and how did you resolve it?", // 영문 질문입니다.
+    audio_file: "audio/q4.mp3", // 오디오 파일 경로입니다.
+    correct_intent: "영화관에서 겪었던 뜻밖의 사건(정전, 소란, 실수 등)과 해결 과정 설명하기", // 정답 의도입니다.
+    distractors: [
+      "가장 좋아하는 영화 장르와 배우를 소개하기", // 오답 1입니다.
+      "집에서 넷플릭스로 영화를 볼 때의 루틴 묘사하기", // 오답 2입니다.
+      "영화관 예매 시스템의 문제점에 대한 개선 방안 제안하기" // 오답 3입니다.
+    ],
+    korean_translation: "영화관에서 영화를 보다가 겪은 기억에 남거나 예상치 못한 사건에 대해 말씀해주세요. 무슨 일이 있었고 어떻게 해결되었나요?", // 번역입니다.
+    catchphrases: ["memorable or unexpected incident", "while watching a movie", "how did you resolve it"], // 청취 키워드입니다.
+    al_opening: "I vividly remember a truly unexpected incident that took place at a cinema a few months ago." // 추천 첫 문장입니다.
+  },
+  {
+    id: 4, // 문항 고유 ID입니다.
+    topic: "공원 장소 묘사", // 출제 주제입니다.
+    category: "1콤보 장소묘사", // 콤보 유형입니다.
+    question_text: "Tell me about the park you visit most often. Where is it located, what does it look like, and what facilities does it have?", // 영문 질문입니다.
+    audio_file: null, // 오디오 파일 경로입니다.
+    correct_intent: "가장 자주 찾는 공원의 위치, 풍경 및 편의 시설(산책로, 벤치 등) 묘사하기", // 정답 의도입니다.
+    distractors: [
+      "공원에서 조깅할 때 착용하는 스포츠 웨어와 신발 소개하기", // 오답 1입니다.
+      "어린 시절 가족과 함께 공원에서 캠핑했던 옛 추억 말하기", // 오답 2입니다.
+      "공원 내 시설 고장으로 관리사무소에 항의 전화 걸기" // 오답 3입니다.
+    ],
+    korean_translation: "가장 자주 가는 공원에 대해 말씀해주세요. 어디에 있고, 어떻게 생겼으며, 어떤 시설들이 있나요?", // 번역입니다.
+    catchphrases: ["park you visit most often", "where is it located", "what facilities does it have"], // 청취 키워드입니다.
+    al_opening: "Right off the bat, the park I visit most frequently is Central Lake Park near my neighborhood." // 추천 첫 문장입니다.
+  },
+  {
+    id: 5, // 문항 고유 ID입니다.
+    topic: "공원 일상 활동 루틴", // 출제 주제입니다.
+    category: "2콤보 루틴순서", // 콤보 유형입니다.
+    question_text: "What do you usually do when you go to the park from the moment you arrive until you leave?", // 영문 질문입니다.
+    audio_file: "audio/q3.mp3", // 오디오 파일 경로입니다.
+    correct_intent: "공원에 도착해서 떠날 때까지 하는 산책, 스트레칭, 음악 듣기 등 활동 순서 설명하기", // 정답 의도입니다.
+    distractors: [
+      "공원에서 비를 만나 옷이 흠뻑 젖었던 과거 사건 이야기하기", // 오답 1입니다.
+      "도시의 대형 공원과 동네 소공원의 차이점을 비교 대조하기", // 오답 2입니다.
+      "공원 자전거 대여소에 전화하여 이용 요금 문의하기" // 오답 3입니다.
+    ],
+    korean_translation: "공원에 도착한 순간부터 떠날 때까지 주로 무엇을 하시나요?", // 번역입니다.
+    catchphrases: ["when you go to the park", "from the moment you arrive until you leave"], // 청취 키워드입니다.
+    al_opening: "When I head over to the park, you know, I always start by doing light stretching." // 추천 첫 문장입니다.
+  },
+  {
+    id: 6, // 문항 고유 ID입니다.
+    topic: "공원 과거 특별 경험", // 출제 주제입니다.
+    category: "3콤보 과거경험", // 콤보 유형입니다.
+    question_text: "Tell me about a memorable or fun experience you had at a park with your family or friends.", // 영문 질문입니다.
+    audio_file: null, // 오디오 파일 경로입니다.
+    correct_intent: "가족 또는 친구와 공원에서 보낸 잊지 못할 특별한 하루/이벤트 이야기하기", // 정답 의도입니다.
+    distractors: [
+      "공원을 깨끗하게 유지하기 위한 시민들의 분리수거 습관 설명하기", // 오답 1입니다.
+      "매일 아침 공원으로 운동하러 가는 규칙적인 일정 설명하기", // 오답 2입니다.
+      "공원 내 야외 공연장 예약 문의하기" // 오답 3입니다.
+    ],
+    korean_translation: "가족이나 친구들과 공원에서 겪었던 기억에 남거나 재미있었던 경험에 대해 이야기해주세요.", // 번역입니다.
+    catchphrases: ["memorable or fun experience", "at a park with your family or friends"], // 청취 키워드입니다.
+    al_opening: "I remember a wonderful day last spring when I had an impromptu picnic at the park with my close friends." // 추천 첫 문장입니다.
+  },
+  {
+    id: 7, // 문항 고유 ID입니다.
+    topic: "카페 장소 묘사", // 출제 주제입니다.
+    category: "1콤보 장소묘사", // 콤보 유형입니다.
+    question_text: "Tell me about your favorite cafe or coffee shop. Where is it located, and what is the atmosphere like?", // 영문 질문입니다.
+    audio_file: null, // 오디오 파일 경로입니다.
+    correct_intent: "자주 가는 단골 카페의 위치, 인테리어 분위기 및 특징 묘사하기", // 정답 의도입니다.
+    distractors: [
+      "카페에서 커피를 쏟아서 옷을 버렸던 당황스러운 경험 말하기", // 오답 1입니다.
+      "한국인들이 커피를 많이 마시는 사회적 이유 분석하기", // 오답 2입니다.
+      "카페 케이크 단체 주문을 위해 매장에 전화 문의하기" // 오답 3입니다.
+    ],
+    korean_translation: "가장 좋아하는 카페나 커피숍에 대해 말씀해주세요. 어디에 있고 분위기는 어떤가요?", // 번역입니다.
+    catchphrases: ["favorite cafe or coffee shop", "where is it located", "what is the atmosphere like"], // 청취 키워드입니다.
+    al_opening: "To be completely honest, my go-to coffee shop is a cozy boutique cafe located right across from my building." // 추천 첫 문장입니다.
+  },
+  {
+    id: 8, // 문항 고유 ID입니다.
+    topic: "카페 방문 루틴 및 주문", // 출제 주제입니다.
+    category: "2콤보 루틴순서", // 콤보 유형입니다.
+    question_text: "When do you usually visit cafes, who do you go with, and what drinks or desserts do you usually order?", // 영문 질문입니다.
+    audio_file: null, // 오디오 파일 경로입니다.
+    correct_intent: "카페 방문 시간대, 동행자, 주로 주문하는 음료(아메리카노 등) 및 디저트 루틴 설명하기", // 정답 의도입니다.
+    distractors: [
+      "대형 프랜차이즈 카페와 개인 로스터리 카페의 가격 차이 비교하기", // 오답 1입니다.
+      "카페에서 노트북으로 작업하다가 와이파이가 끊겼던 사건 이야기하기", // 오답 2입니다.
+      "카페 마감 시간 연장을 요청하는 전화 걸기" // 오답 3입니다.
+    ],
+    korean_translation: "주로 언제 카페에 가고, 누구와 가며, 어떤 음료나 디저트를 주문하시나요?", // 번역입니다.
+    catchphrases: ["when do you usually visit", "who do you go with", "what drinks or desserts do you order"], // 청취 키워드입니다.
+    al_opening: "I usually drop by the cafe on weekend afternoons, mostly with my best friend to catch up over iced coffee." // 추천 첫 문장입니다.
+  },
+  {
+    id: 9, // 문항 고유 ID입니다.
+    topic: "집 묘사 및 최애 공간", // 출제 주제입니다.
+    category: "1콤보 장소묘사", // 콤보 유형입니다.
+    question_text: "You indicated that you live in an apartment. Please describe your home to me in as much detail as possible. What is your favorite room?", // 영문 질문입니다.
+    audio_file: "audio/q5.mp3", // 오디오 파일 경로입니다.
+    correct_intent: "현재 거주하는 아파트/집의 구조, 방 배치 및 가장 좋아하는 방(내 방/거실) 묘사하기", // 정답 의도입니다.
+    distractors: [
+      "지난 주말 집안 대청소를 하면서 가구를 재배치한 경험 말하기", // 오답 1입니다.
+      "과거 어릴 때 살았던 옛날 집과 지금 집의 차이점 비교하기", // 오답 2입니다.
+      "집 계약 갱신을 위해 부동산 중개업소에 전화 문의하기" // 오답 3입니다.
+    ],
+    korean_translation: "당신은 아파트에 산다고 응답했습니다. 집의 구조와 가장 좋아하는 방에 대해 가능한 한 자세히 설명해주세요.", // 번역입니다.
+    catchphrases: ["describe your home", "in as much detail as possible", "favorite room"], // 청취 키워드입니다.
+    al_opening: "I currently live in a cozy 2-bedroom apartment, and my absolute favorite spot is definitely my bedroom." // 추천 첫 문장입니다.
+  },
+  {
+    id: 10, // 문항 고유 ID입니다.
+    topic: "집에서의 주말 일상 루틴", // 출제 주제입니다.
+    category: "2콤보 루틴순서", // 콤보 유형입니다.
+    question_text: "What is your daily routine at home during the weekends from morning until you go to bed?", // 영문 질문입니다.
+    audio_file: "audio/q6.mp3", // 오디오 파일 경로입니다.
+    correct_intent: "주말에 집에서 일어난 후 밤에 잘 때까지 하는 청소, 요리, 휴식 등 하루 일과 설명하기", // 정답 의도입니다.
+    distractors: [
+      "집에 배수구가 막혀서 수리 기사를 불렀던 과거 문제 해결담 말하기", // 오답 1입니다.
+      "새 집으로 이사 올 때 구입했던 거실 소파와 침대 가구 묘사하기", // 오답 2입니다.
+      "친구들을 집으로 초대하기 위해 집들이 초대 전화 걸기" // 오답 3입니다.
+    ],
+    korean_translation: "주말 동안 아침부터 잠들 때까지 집에서 보내는 하루 일과 루틴을 설명해주세요.", // 번역입니다.
+    catchphrases: ["daily routine at home", "during the weekends", "from morning until you go to bed"], // 청취 키워드입니다.
+    al_opening: "On weekends, I love to take things slow. I usually start my morning with a freshly brewed cup of coffee." // 추천 첫 문장입니다.
+  },
+  {
+    id: 11, // 문항 고유 ID입니다.
+    topic: "집 수리/문제 발생 경험", // 출제 주제입니다.
+    category: "3콤보 과거경험", // 콤보 유형입니다.
+    question_text: "Have you ever experienced an unexpected problem or maintenance issue at your home? What was the problem and how did you resolve it?", // 영문 질문입니다.
+    audio_file: "audio/q7.mp3", // 오디오 파일 경로입니다.
+    correct_intent: "집에서 발생한 고장/문제(누수, 정전, 문고리 고장 등)와 이를 고친 경험 설명하기", // 정답 의도입니다.
+    distractors: [
+      "인테리어 소품으로 거실 분위기를 아늑하게 꾸민 방법 소개하기", // 오답 1입니다.
+      "주말마다 빨래와 설거지를 분담해서 처리하는 규칙 설명하기", // 오답 2입니다.
+      "이사 갈 새 아파트 매물을 알아보기 위해 부동산에 방문하기" // 오답 3입니다.
+    ],
+    korean_translation: "집에서 예상치 못한 문제나 시설 고장을 겪은 적이 있나요? 무슨 문제였고 어떻게 해결했나요?", // 번역입니다.
+    catchphrases: ["unexpected problem or maintenance issue", "at your home", "how did you resolve it"], // 청취 키워드입니다.
+    al_opening: "A few months ago, I had a sudden plumbing issue where the kitchen sink completely backed up out of nowhere." // 추천 첫 문장입니다.
+  },
+  {
+    id: 12, // 문항 고유 ID입니다.
+    topic: "음악 감상 취향 및 기기", // 출제 주제입니다.
+    category: "1콤보 장소묘사", // 콤보 유형입니다.
+    question_text: "You indicated in the survey that you listen to music. What kinds of music do you like, and what devices or apps do you use to listen to music?", // 영문 질문입니다.
+    audio_file: null, // 오디오 파일 경로입니다.
+    correct_intent: "좋아하는 음악 장르(K-pop, 팝송, 재즈 등)와 사용하는 스트리밍 앱/무선 이어폰 기기 묘사하기", // 정답 의도입니다.
+    distractors: [
+      "직접 기타나 피아노 악기를 연주했던 어릴 적 경험 이야기하기", // 오답 1입니다.
+      "처음으로 대형 라이브 콘서트에 가서 환호했던 특별한 날 회상하기", // 오답 2입니다.
+      "콘서트 티켓 예매를 위해 티켓 예매처 고객센터에 전화하기" // 오답 3입니다.
+    ],
+    korean_translation: "당신은 음악을 듣는다고 응답했습니다. 어떤 장르의 음악을 좋아하며 어떤 기기나 앱을 사용하나요?", // 번역입니다.
+    catchphrases: ["what kinds of music do you like", "what devices or apps do you use"], // 청취 키워드입니다.
+    al_opening: "When it comes to music, I'm a massive fan of upbeat pop and acoustic melodies, mostly using Spotify with my AirPods." // 추천 첫 문장입니다.
+  },
+  {
+    id: 13, // 문항 고유 ID입니다.
+    topic: "조깅/걷기 운동 루틴", // 출제 주제입니다.
+    category: "2콤보 루틴순서", // 콤보 유형입니다.
+    question_text: "Tell me about your regular jogging or walking routine. Where do you go, when do you jog, and how long do you usually exercise?", // 영문 질문입니다.
+    audio_file: null, // 오디오 파일 경로입니다.
+    correct_intent: "조깅이나 걷기 운동을 하는 장소, 시간대, 운동 시간 및 코스 루틴 설명하기", // 정답 의도입니다.
+    distractors: [
+      "조깅 도중 갑작스러운 비를 만나 운동을 중단했던 에피소드 말하기", // 오답 1입니다.
+      "야외 러닝과 실내 헬스장 러닝머신의 장단점을 비교하기", // 오답 2입니다.
+      "러닝화 구매를 위해 매장 직원에게 사이즈와 쿠션감 문의하기" // 오답 3입니다.
+    ],
+    korean_translation: "규칙적인 조깅이나 걷기 루틴에 대해 말씀해주세요. 어디로 가고, 언제 뛰며, 얼마나 오래 운동하시나요?", // 번역입니다.
+    catchphrases: ["jogging or walking routine", "where do you go", "how long do you usually exercise"], // 청취 키워드입니다.
+    al_opening: "I make it a point to go jogging around the riverside track at least three times a week for about 40 minutes." // 추천 첫 문장입니다.
+  },
+  {
+    id: 14, // 문항 고유 ID입니다.
+    topic: "국내 여행 준비 및 루틴", // 출제 주제입니다.
+    category: "2콤보 루틴순서", // 콤보 유형입니다.
+    question_text: "What preparations do you normally make before going on a domestic trip? Describe your planning and packing process.", // 영문 질문입니다.
+    audio_file: null, // 오디오 파일 경로입니다.
+    correct_intent: "국내 여행 전 숙소 예약, 교통편 예매 및 짐 싸기 준비 과정 루틴 설명하기", // 정답 의도입니다.
+    distractors: [
+      "여행지에서 스마트폰이나 지갑을 잃어버렸던 아찔한 경험 이야기하기", // 오답 1입니다.
+      "가장 추천하는 국내 관광지 도시의 명소와 먹거리 묘사하기", // 오답 2입니다.
+      "예약한 호텔 일정을 태풍 때문에 변경하기 위해 전화 걸기" // 오답 3입니다.
+    ],
+    korean_translation: "국내 여행을 가기 전에 보통 어떤 준비를 하시나요? 계획을 세우고 짐을 싸는 과정을 설명해주세요.", // 번역입니다.
+    catchphrases: ["preparations before going on a domestic trip", "planning and packing process"], // 청취 키워드입니다.
+    al_opening: "Before heading out on a trip, I always follow a meticulous checklist, starting with booking train tickets and packing essentials." // 추천 첫 문장입니다.
+  },
+  {
+    id: 15, // 문항 고유 ID입니다.
+    topic: "여행 중 잊지 못할 사건", // 출제 주제입니다.
+    category: "3콤보 과거경험", // 콤보 유형입니다.
+    question_text: "Tell me about a memorable or unexpected experience you had during a vacation or trip. What happened and why was it unforgettable?", // 영문 질문입니다.
+    audio_file: null, // 오디오 파일 경로입니다.
+    correct_intent: "여행 중 겪은 뜻밖의 에피소드(길 잃음, 맛집 발견, 돌발 날씨 등)와 그 기억이 특별한 이유 설명하기", // 정답 의도입니다.
+    distractors: [
+      "해외여행 시 환전과 로밍 신청을 미리 해두는 루틴 소개하기", // 오답 1입니다.
+      "휴가지에서 묵었던 5성급 리조트의 수영장과 조식 뷔페 묘사하기", // 오답 2입니다.
+      "항공권 취소 수수료에 대해 항공사 상담원에게 문의하기" // 오답 3입니다.
+    ],
+    korean_translation: "휴가나 여행 중에 겪었던 기억에 남거나 예상치 못한 경험에 대해 말씀해주세요. 무슨 일이 있었나요?", // 번역입니다.
+    catchphrases: ["memorable or unexpected experience", "during a vacation or trip", "why was it unforgettable"], // 청취 키워드입니다.
+    al_opening: "I'll never forget a trip to Jeju Island last summer where our rental car got a flat tire in the middle of nowhere." // 추천 첫 문장입니다.
+  },
+  {
+    id: 16, // 문항 고유 ID입니다.
+    topic: "롤플레이 11번: 여행사 패키지 문의", // 출제 주제입니다.
+    category: "롤플레이 11번 질문", // 콤보 유형입니다.
+    question_text: "You are planning a vacation trip. Call a travel agency and ask 3 or 4 questions about the tour packages and pricing.", // 영문 질문입니다.
+    audio_file: "audio/q8.mp3", // 오디오 파일 경로입니다.
+    correct_intent: "여행사에 전화하여 여행 상품 일정, 숙소 등급, 1인당 요금 및 할인 혜택에 대해 3~4가지 질문하기", // 정답 의도입니다.
+    distractors: [
+      "급한 사정으로 예약한 여행을 갈 수 없다고 사과하고 환불 대안 제시하기", // 오답 1입니다.
+      "과거 패키지 여행에서 가이드와 함께 즐거웠던 추억 회상하기", // 오답 2입니다.
+      "자유 여행과 패키지 여행의 장단점을 논리적으로 비교 대조하기" // 오답 3입니다.
+    ],
+    korean_translation: "휴가 여행을 계획 중입니다. 여행사에 전화하여 투어 패키지와 가격에 대해 3~4가지 질문을 하세요.", // 번역입니다.
+    catchphrases: ["call a travel agency", "ask 3 or 4 questions", "tour packages and pricing"], // 청취 키워드입니다.
+    al_opening: "Hi there, I'm calling to inquire about the upcoming vacation packages to Da Nang. Could I ask a few quick questions?" // 추천 첫 문장입니다.
+  },
+  {
+    id: 17, // 문항 고유 ID입니다.
+    topic: "롤플레이 12번: 여행 취소 및 대안 제시", // 출제 주제입니다.
+    category: "롤플레이 12번 대안", // 콤보 유형입니다.
+    question_text: "Due to an urgent issue, you cannot go on the trip you booked. Call the travel agency, explain your situation, and offer 2 or 3 alternatives.", // 영문 질문입니다.
+    audio_file: "audio/q9.mp3", // 오디오 파일 경로입니다.
+    correct_intent: "여행사에 전화해 긴급 사유(야근/부상)를 사과하고, 날짜 변경 또는 전액 환불 등 대안 2~3가지 제시하기", // 정답 의도입니다.
+    distractors: [
+      "여행지에서 먹을 맛집 리스트를 상담원에게 추천해 달라고 요청하기", // 오답 1입니다.
+      "다음 달 출발하는 유럽 배낭여행 패키지에 대해 상세히 문의하기", // 오답 2입니다.
+      "작년에 친구와 함께 여행 계획이 취소되었던 옛날 경험 이야기하기" // 오답 3입니다.
+    ],
+    korean_translation: "급한 사정으로 예약한 여행을 갈 수 없게 되었습니다. 여행사에 전화하여 상황을 설명하고 2~3가지 대안을 제시하세요.", // 번역입니다.
+    catchphrases: ["cannot go on the trip", "explain your situation", "offer 2 or 3 alternatives"], // 청취 키워드입니다.
+    al_opening: "Hi, I'm terribly sorry, but an urgent family matter came up and I won't be able to make it on this Friday's trip." // 추천 첫 문장입니다.
+  },
+  {
+    id: 18, // 문항 고유 ID입니다.
+    topic: "롤플레이 13번: 취소 유사 경험", // 출제 주제입니다.
+    category: "3콤보 과거경험", // 콤보 유형입니다.
+    question_text: "Have you ever experienced a situation where your vacation or travel plan was unexpectedly cancelled? How did you resolve it?", // 영문 질문입니다.
+    audio_file: null, // 오디오 파일 경로입니다.
+    correct_intent: "과거에 여행이나 약속이 갑자기 취소되었던 실제 경험과 이를 해결했던 일화 설명하기", // 정답 의도입니다.
+    distractors: [
+      "친구에게 이번 주말 캠핑을 함께 가자고 전화로 3가지 질문하기", // 오답 1입니다.
+      "온라인으로 항공권과 호텔을 저렴하게 예매하는 본인만의 꿀팁 소개하기", // 오답 2입니다.
+      "친환경 에코 여행 트렌드에 대한 본인의 견해 토론하기" // 오답 3입니다.
+    ],
+    korean_translation: "휴가나 여행 계획이 뜻밖에 취소되었던 경험이 있나요? 그 상황을 어떻게 해결했나요?", // 번역입니다.
+    catchphrases: ["travel plan was unexpectedly cancelled", "how did you resolve it"], // 청취 키워드입니다.
+    al_opening: "Speaking of which, this reminds me of an incident last summer when a sudden typhoon grounded all flights to Jeju." // 추천 첫 문장입니다.
+  },
+  {
+    id: 19, // 문항 고유 ID입니다.
+    topic: "롤플레이 11번: 영화관 예매 문의", // 출제 주제입니다.
+    category: "롤플레이 11번 질문", // 콤보 유형입니다.
+    question_text: "You want to watch a movie with your friend. Call the movie theater box office and ask 3 or 4 questions about showtimes and seating.", // 영문 질문입니다.
+    audio_file: "audio/q8.mp3", // 오디오 파일 경로입니다.
+    correct_intent: "영화관 매표소에 전화하여 상영 시간, 잔여 좌석, 주차 요금 등에 대해 3~4가지 질문하기", // 정답 의도입니다.
+    distractors: [
+      "예매한 영화 시간을 잘못 알아서 표를 취소하고 환불 요청하기", // 오답 1입니다.
+      "극장에서 팝콘을 사 먹으며 최신 블록버스터를 관람했던 후기 말하기", // 오답 2입니다.
+      "스마트폰 OTT 스트리밍과 영화관의 장단점 비교하기" // 오답 3입니다.
+    ],
+    korean_translation: "친구와 영화를 보려고 합니다. 영화관 매표소에 전화하여 상영 시간과 좌석에 대해 3~4가지 질문을 하세요.", // 번역입니다.
+    catchphrases: ["call the movie theater", "ask 3 or 4 questions", "showtimes and seating"], // 청취 키워드입니다.
+    al_opening: "Hello, I'm calling to check the showtimes for the new Avatar movie tonight. Could I ask a few quick questions?" // 추천 첫 문장입니다.
+  },
+  {
+    id: 20, // 문항 고유 ID입니다.
+    topic: "롤플레이 12번: 친구 약속 지각 & 대안", // 출제 주제입니다.
+    category: "롤플레이 12번 대안", // 콤보 유형입니다.
+    question_text: "You are stuck in heavy traffic and will be late for a dinner with your friend. Call your friend, explain why you are late, and suggest 2 alternatives.", // 영문 질문입니다.
+    audio_file: "audio/q9.mp3", // 오디오 파일 경로입니다.
+    correct_intent: "교통 체증으로 늦는 상황을 친구에게 전화로 사과하고, 먼저 주문해 먹기나 약속 시간 연기 등 대안 2가지 제시하기", // 정답 의도입니다.
+    distractors: [
+      "친구에게 오늘 저녁 약속 장소와 메뉴를 정하자고 전화로 질문하기", // 오답 1입니다.
+      "친구가 추천해 준 파스타 맛집의 음식 맛과 분위기 칭찬하기", // 오답 2입니다.
+      "대중교통을 이용할 때 지하철과 버스 중 어느 것이 편리한지 비교하기" // 오답 3입니다.
+    ],
+    korean_translation: "심한 교통 체증으로 친구와의 저녁 약속에 늦게 되었습니다. 친구에게 전화하여 이유를 설명하고 2가지 대안을 제시하세요.", // 번역입니다.
+    catchphrases: ["stuck in heavy traffic", "will be late for a dinner", "suggest 2 alternatives"], // 청취 키워드입니다.
+    al_opening: "Hey Alex, I am terribly sorry! There is a huge accident on the highway and I am completely stuck in traffic." // 추천 첫 문장입니다.
   }
-}
+];
 
-// 질문 청취 퀴즈 세션 시작 함수입니다.
-function startListeningQuizSession() {
+// 난이도 4 청취 퀴즈 세션 전역 상태 객체입니다.
+state.diff4Quiz = {
+  pool: difficulty4ListeningQuestionsPool, // 질문 풀 배열입니다.
+  history: [], // 이미 출제된 문제 ID 목록입니다.
+  currentQuestion: null, // 현재 활성화된 질문 객체입니다.
+  currentChoices: [], // 현재 셔플된 선택지 배열입니다.
+  correctIndex: 0, // 정답 선택지 인덱스 (0~3)입니다.
+  score: 0, // 누적 정답 수입니다.
+  totalAnswered: 0, // 누적 풀이 문제 수입니다.
+  streak: 0, // 현재 연속 정답 수입니다.
+  isAnswered: false, // 현재 문제 풀이 완료 여부입니다.
+  playbackRate: 1.0 // 청취 재생 속도입니다.
+};
+
+// 난이도 4 질문 청취 퀴즈 세션을 시작하는 함수입니다.
+function startDifficulty4ListeningQuiz() {
+  // 모의고사/스피킹 오디오를 모두 멈춥니다.
+  stopAllEvaAudio();
+  // 연습 모드를 청취 퀴즈로 설정합니다.
   state.practiceMode = 'listening';
-  const fullSet = createSurveyBasedExamSet(state.officialSurvey);
-  state.questions = fullSet;
-  state.currentIndex = 0;
+  // 퀴즈 통계 및 히스토리를 초기화합니다.
+  state.diff4Quiz.history = [];
+  state.diff4Quiz.score = 0;
+  state.diff4Quiz.totalAnswered = 0;
+  state.diff4Quiz.streak = 0;
+  state.diff4Quiz.playbackRate = 1.0;
+  state.diff4Quiz.isAnswered = false;
 
+  // 모의고사 탭으로 전환합니다.
   switchTab('exam');
+  // 퀴즈 서브 뷰를 노출합니다.
   switchExamSubView('quiz');
-  renderCurrentQuizQuestion();
+  // 첫 번째 랜덤 문제를 로드합니다.
+  loadNextRandomDiff4Question();
 }
 
-// 현재 퀴즈 문제 렌더링 및 에바 질문 자동 재생 함수입니다.
-function renderCurrentQuizQuestion() {
+// 미출제 풀에서 랜덤 1문제를 추출하고 4지선다 보기를 셔플하는 함수입니다.
+function loadNextRandomDiff4Question() {
+  // 진행 중인 오디오를 중단합니다.
   stopAllEvaAudio();
 
-  const q = state.questions[state.currentIndex];
-  const inputEl = document.getElementById('quiz-korean-input');
-  if (inputEl) inputEl.value = '';
-
-  const resultCard = document.getElementById('quiz-result-card');
-  if (resultCard) {
-    resultCard.style.display = 'none';
-    resultCard.innerHTML = '';
+  // 아직 출제되지 않은 질문 후보들을 필터링합니다.
+  let available = state.diff4Quiz.pool.filter(q => !state.diff4Quiz.history.includes(q.id));
+  // 모든 문제를 다 풀었으면 히스토리를 리셋하여 무한 반복 연습을 지원합니다.
+  if (available.length === 0) {
+    state.diff4Quiz.history = [];
+    available = state.diff4Quiz.pool;
   }
 
-  const maskedTitle = document.getElementById('quiz-masked-title');
-  if (maskedTitle) {
-    maskedTitle.innerText = `Q${q.question_number}. 🎧 에바의 질문을 귀로 잘 들어보세요...`;
+  // 랜덤 인덱스를 추출합니다.
+  const randIdx = Math.floor(Math.random() * available.length);
+  // 선택된 질문 객체입니다.
+  const selectedQ = available[randIdx];
+  // 출제 히스토리에 ID를 기록합니다.
+  state.diff4Quiz.history.push(selectedQ.id);
+  // 현재 질문으로 설정합니다.
+  state.diff4Quiz.currentQuestion = selectedQ;
+  // 답변 완료 상태를 리셋합니다.
+  state.diff4Quiz.isAnswered = false;
+
+  // 1개 정답과 3개 오답 선지를 묶습니다.
+  const allOptions = [
+    { text: selectedQ.correct_intent, isCorrect: true },
+    { text: selectedQ.distractors[0], isCorrect: false },
+    { text: selectedQ.distractors[1], isCorrect: false },
+    { text: selectedQ.distractors[2], isCorrect: false }
+  ];
+
+  // 선지들을 무작위로 셔플합니다 (Fisher-Yates 알고리즘).
+  for (let i = allOptions.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [allOptions[i], allOptions[j]] = [allOptions[j], allOptions[i]];
   }
 
-  playQuizQuestionAudio();
+  // 셔플된 선지 목록을 저장합니다.
+  state.diff4Quiz.currentChoices = allOptions;
+  // 정답 인덱스를 찾아 기록합니다.
+  state.diff4Quiz.correctIndex = allOptions.findIndex(opt => opt.isCorrect);
+
+  // 화면에 문제를 렌더링하고 질문 음성을 재생합니다.
+  renderDiff4QuizQuestion();
+}
+
+// 퀴즈 문제 화면을 DOM에 렌더링하고 에바 질문 음성을 재생하는 함수입니다.
+function renderDiff4QuizQuestion() {
+  const q = state.diff4Quiz.currentQuestion;
+  if (!q) return;
+
+  // 진도율 텍스트를 업데이트합니다.
+  const progressEl = document.getElementById('diff4-quiz-progress-text');
+  if (progressEl) {
+    progressEl.innerText = `문제 ${state.diff4Quiz.totalAnswered + 1} (난이도 4 실전)`;
+  }
+
+  // 실시간 점수 배지를 업데이트합니다.
+  const scoreBadge = document.getElementById('diff4-quiz-score-badge');
+  if (scoreBadge) {
+    const pct = state.diff4Quiz.totalAnswered > 0 ? Math.round((state.diff4Quiz.score / state.diff4Quiz.totalAnswered) * 100) : 0;
+    scoreBadge.innerText = `정답 ${state.diff4Quiz.score}/${state.diff4Quiz.totalAnswered}개 (${pct}%)`;
+  }
+
+  // 연속 정답 스트릭 배지를 업데이트합니다.
+  const streakBadge = document.getElementById('diff4-quiz-streak-badge');
+  if (streakBadge) {
+    streakBadge.innerText = `🔥 ${state.diff4Quiz.streak}연속 정답`;
+  }
+
+  // 주제 배지를 업데이트합니다.
+  const topicBadge = document.getElementById('diff4-current-topic-badge');
+  if (topicBadge) {
+    topicBadge.innerText = `[${q.category}] ${q.topic}`;
+  }
+
+  // 피드백 해설 상자를 숨깁니다.
+  const feedbackBox = document.getElementById('diff4-quiz-feedback-box');
+  if (feedbackBox) {
+    feedbackBox.style.display = 'none';
+    feedbackBox.innerHTML = '';
+  }
+
+  // [다음 문제] 버튼을 숨깁니다.
+  const nextBtn = document.getElementById('btn-diff4-next-question');
+  if (nextBtn) {
+    nextBtn.style.display = 'none';
+  }
+
+  // 4개 객관식 선택지 버튼들을 동적으로 생성합니다.
+  const optionsContainer = document.getElementById('diff4-quiz-options-container');
+  if (optionsContainer) {
+    const letters = ['A', 'B', 'C', 'D'];
+    optionsContainer.innerHTML = state.diff4Quiz.currentChoices.map((choice, idx) => `
+      <button class="diff4-option-item" data-opt-idx="${idx}" onclick="handleDiff4QuizAnswer(${idx})">
+        <span class="diff4-option-num">${letters[idx]}</span>
+        <span style="flex: 1;">${choice.text}</span>
+      </button>
+    `).join('');
+  }
+
+  // 에바 질문 오디오를 재생합니다.
+  playDiff4QuizAudio();
 }
 
 // 퀴즈용 에바 질문 오디오 재생 함수입니다.
-function playQuizQuestionAudio() {
+function playDiff4QuizAudio(customRate = null) {
+  // 기존 재생 중인 오디오를 중단합니다.
   stopAllEvaAudio();
 
-  const q = state.questions[state.currentIndex];
+  const q = state.diff4Quiz.currentQuestion;
+  if (!q) return;
+
+  // 적용할 배속을 결정합니다.
+  const rate = customRate !== null ? customRate : (state.diff4Quiz.playbackRate || 1.0);
   const avatarEl = document.getElementById('quiz-eva-avatar-box');
 
+  // 오디오 파일이 있는 경우와 없는 경우를 분기 처리합니다.
   if (q.audio_file) {
     const audio = new Audio(q.audio_file);
+    audio.playbackRate = rate;
     state.currentEvaAudio = audio;
-    audio.onplay = () => { if (avatarEl) avatarEl.style.transform = 'scale(1.1)'; };
+    if (avatarEl) avatarEl.style.transform = 'scale(1.1)';
     audio.onended = () => {
       if (avatarEl) avatarEl.style.transform = 'scale(1)';
       state.currentEvaAudio = null;
-      setTimeout(() => {
-        if (!state.isQuizKoreanRecording) toggleQuizKoreanRecording();
-      }, 1200);
     };
-    audio.onerror = () => playFallbackSpeech(q.question_text, avatarEl, () => {
-      setTimeout(() => {
-        if (!state.isQuizKoreanRecording) toggleQuizKoreanRecording();
-      }, 1200);
+    audio.onerror = () => playFallbackSpeech(q.question_text, avatarEl, rate, () => {
+      if (avatarEl) avatarEl.style.transform = 'scale(1)';
     });
-    audio.play().catch(() => playFallbackSpeech(q.question_text, avatarEl, () => {
-      setTimeout(() => {
-        if (!state.isQuizKoreanRecording) toggleQuizKoreanRecording();
-      }, 1200);
+    audio.play().catch(() => playFallbackSpeech(q.question_text, avatarEl, rate, () => {
+      if (avatarEl) avatarEl.style.transform = 'scale(1)';
     }));
   } else {
-    playFallbackSpeech(q.question_text, avatarEl, () => {
-      setTimeout(() => {
-        if (!state.isQuizKoreanRecording) toggleQuizKoreanRecording();
-      }, 1200);
+    playFallbackSpeech(q.question_text, avatarEl, rate, () => {
+      if (avatarEl) avatarEl.style.transform = 'scale(1)';
     });
   }
 }
 
-// 사용자가 입력/말한 한국어 정답을 AI 의도 분석 엔진으로 채점하는 함수입니다.
-function evaluateQuizAnswer(userKorean) {
-  stopAllEvaAudio();
+// 청취 배속을 변경하는 함수입니다 (0.8x vs 1.0x).
+function setDiff4QuizPlaybackSpeed(rate) {
+  state.diff4Quiz.playbackRate = rate;
+  const slowBtn = document.getElementById('btn-diff4-speed-slow');
+  const normalBtn = document.getElementById('btn-diff4-speed-normal');
 
-  const q = state.questions[state.currentIndex];
-  const info = quizIntentKnowledgeBase[q.question_type] || {
-    intentName: `${q.topic} 관련 질문`,
-    keywords: [q.topic, "질문", "묘사", "루틴", "경험"],
-    englishCatchWords: q.question_text,
-    explanation: "해당 주제에 대한 세부 사항을 묻는 질문입니다.",
-    tacticTip: "핵심 키워드를 중심으로 답변을 구성하세요."
-  };
+  if (rate === 0.8) {
+    if (slowBtn) slowBtn.classList.add('active');
+    if (normalBtn) normalBtn.classList.remove('active');
+  } else {
+    if (normalBtn) normalBtn.classList.add('active');
+    if (slowBtn) slowBtn.classList.remove('active');
+  }
 
-  const cleanInput = userKorean.replace(/[^\w\s가-힣]/g, '');
-  let matchedKeywords = [];
-  info.keywords.forEach((kw) => {
-    if (cleanInput.includes(kw)) {
-      matchedKeywords.push(kw);
+  // 변경된 속도로 다시 질문을 들려줍니다.
+  playDiff4QuizAudio(rate);
+}
+
+// 사용자가 4지선다 중 하나를 클릭했을 때 정답/오답을 채점하고 상세 해설을 노출하는 함수입니다.
+function handleDiff4QuizAnswer(selectedIdx) {
+  // 이미 답변한 상태라면 중복 실행을 방지합니다.
+  if (state.diff4Quiz.isAnswered) return;
+  state.diff4Quiz.isAnswered = true;
+
+  const q = state.diff4Quiz.currentQuestion;
+  const correctIdx = state.diff4Quiz.correctIndex;
+  const isCorrect = (selectedIdx === correctIdx);
+
+  // 총 답변 수를 증가시킵니다.
+  state.diff4Quiz.totalAnswered++;
+
+  // 정답 및 오답에 따른 점수와 스트릭을 업데이트합니다.
+  if (isCorrect) {
+    state.diff4Quiz.score++;
+    state.diff4Quiz.streak++;
+  } else {
+    state.diff4Quiz.streak = 0;
+  }
+
+  // 상단 점수 및 스트릭 배지를 실시간 갱신합니다.
+  const scoreBadge = document.getElementById('diff4-quiz-score-badge');
+  if (scoreBadge) {
+    const pct = Math.round((state.diff4Quiz.score / state.diff4Quiz.totalAnswered) * 100);
+    scoreBadge.innerText = `정답 ${state.diff4Quiz.score}/${state.diff4Quiz.totalAnswered}개 (${pct}%)`;
+  }
+  const streakBadge = document.getElementById('diff4-quiz-streak-badge');
+  if (streakBadge) {
+    streakBadge.innerText = `🔥 ${state.diff4Quiz.streak}연속 정답`;
+  }
+
+  // 선택지 버튼들에 정답(초록)/오답(빨강) 스타일을 적용합니다.
+  const optionButtons = document.querySelectorAll('.diff4-option-item');
+  optionButtons.forEach((btn, idx) => {
+    btn.style.cursor = 'default';
+    if (idx === correctIdx) {
+      btn.classList.add('correct');
+    }
+    if (idx === selectedIdx && !isCorrect) {
+      btn.classList.add('wrong');
     }
   });
 
-  let score = 0;
-  let isCorrect = false;
-  if (matchedKeywords.length >= 2) {
-    score = 100;
-    isCorrect = true;
-  } else if (matchedKeywords.length === 1) {
-    score = 80;
-    isCorrect = true;
-  } else {
-    const generalTypes = ["소개", "묘사", "루틴", "경험", "사건", "롤플레이", "질문", "대안", "비교", "이슈"];
-    const foundGeneral = generalTypes.filter(gt => cleanInput.includes(gt));
-    if (foundGeneral.length > 0) {
-      score = 70;
-      isCorrect = true;
-      matchedKeywords = foundGeneral;
-    } else {
-      score = 40;
-      isCorrect = false;
-    }
+  // 해설 및 영문 원문 피드백 카드를 렌더링합니다.
+  const feedbackBox = document.getElementById('diff4-quiz-feedback-box');
+  if (feedbackBox) {
+    const resultHeader = isCorrect
+      ? `<div style="font-size: 16px; font-weight: 800; color: #15803d; margin-bottom: 6px;">🎉 완벽한 정답입니다! (핵심 의도 파악 성공 ⭕)</div>`
+      : `<div style="font-size: 16px; font-weight: 800; color: #b91c1c; margin-bottom: 6px;">💡 아쉽습니다! 에바의 실제 질문 의도를 확인해보세요 ❌</div>`;
+
+    feedbackBox.innerHTML = `
+      <div class="diff4-feedback-card">
+        ${resultHeader}
+
+        <div style="background: #faf5ff; border: 1px solid #e9d5ff; border-radius: 12px; padding: 12px; margin-bottom: 10px;">
+          <div style="font-size: 12px; font-weight: 800; color: #7e22ce; margin-bottom: 4px;">
+            🎯 정확한 출제 의도: [${q.category}]
+          </div>
+          <div style="font-size: 13px; font-weight: 700; color: #1e293b;">
+            "${q.correct_intent}"
+          </div>
+        </div>
+
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; margin-bottom: 10px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+            <span style="font-size: 12px; font-weight: 700; color: var(--toss-blue);">🎧 에바 영어 질문 원문:</span>
+            <button onclick="playDiff4QuizAudio()" style="background: #eff6ff; color: var(--toss-blue); border: 1px solid #bfdbfe; border-radius: 6px; padding: 2px 8px; font-size: 11px; font-weight: 700; cursor: pointer;">🔊 다시듣기</button>
+          </div>
+          <div style="font-size: 13px; font-weight: 700; color: #1e293b; line-height: 1.4; margin-bottom: 4px;">
+            "${q.question_text}"
+          </div>
+          <div style="font-size: 12px; color: #64748b; line-height: 1.4;">
+            📝 <strong>한국어 해석:</strong> ${q.korean_translation}
+          </div>
+        </div>
+
+        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px 12px; margin-bottom: 10px;">
+          <div style="font-size: 11px; font-weight: 800; color: #6b21a8; margin-bottom: 4px;">🔑 꼭 귀로 잡았어야 할 청취 키워드:</div>
+          <div style="display: flex; flex-wrap: wrap; gap: 4px;">
+            ${q.catchphrases.map(cp => `<span class="diff4-catch-tag">"${cp}"</span>`).join('')}
+          </div>
+        </div>
+
+        <div style="background: #f0fdf4; border: 1px solid #86efac; border-radius: 12px; padding: 12px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+            <span style="font-size: 12px; font-weight: 800; color: #166534;">🌟 이 질문을 들었을 때 바로 던져야 할 AL 첫 문장(Opening):</span>
+            <button onclick="playCustomSpeech('${encodeURIComponent(q.al_opening)}')" style="background: #16a34a; color: #ffffff; border: none; border-radius: 6px; padding: 2px 8px; font-size: 11px; font-weight: 700; cursor: pointer;">🔊 듣기</button>
+          </div>
+          <div style="font-size: 13px; font-weight: 600; color: #14532d; line-height: 1.4;">
+            "${q.al_opening}"
+          </div>
+        </div>
+      </div>
+    `;
+
+    feedbackBox.style.display = 'block';
   }
 
-  const resultCard = document.getElementById('quiz-result-card');
-  if (!resultCard) return;
-
-  const resultHeader = isCorrect
-    ? `<div style="font-size: 16px; font-weight: 800; color: #166534; margin-bottom: 6px;">🎉 정답입니다! (일치도: ${score}점) ⭕</div>`
-    : `<div style="font-size: 16px; font-weight: 800; color: #dc2626; margin-bottom: 6px;">💡 아쉽습니다! 핵심 의도를 확인해보세요 (일치도: ${score}점) ❌</div>`;
-
-  resultCard.innerHTML = `
-    <div style="background: ${isCorrect ? '#f0fdf4' : '#fff1f2'}; border: 1.5px solid ${isCorrect ? '#86efac' : '#fecdd3'}; border-radius: 16px; padding: 16px;">
-      ${resultHeader}
-      <div style="font-size: 14px; font-weight: 800; color: #1e3a8a; margin-bottom: 4px;">
-        🎯 정확한 질문 의도: <strong>[${q.topic}] ${info.intentName}</strong>
-      </div>
-      <div style="font-size: 12px; color: #475569; margin-bottom: 8px;">
-        🗣️ 내가 말한 한국어: "${userKorean}" (${matchedKeywords.length > 0 ? `인식된 키워드: [${matchedKeywords.join(', ')}]` : '키워드 미감지'})
-      </div>
-
-      <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; margin-bottom: 10px;">
-        <div style="font-size: 12px; font-weight: 700; color: var(--toss-blue); margin-bottom: 4px;">
-          🎧 실제 영어 질문 원문:
-        </div>
-        <div style="font-size: 14px; font-weight: 700; color: var(--toss-text-primary); line-height: 1.4; margin-bottom: 4px;">
-          "${q.question_text}"
-        </div>
-        <div style="font-size: 12px; color: #64748b;">
-          🔑 꼭 잡았어야 할 청취 단어: <strong>${info.englishCatchWords}</strong>
-        </div>
-      </div>
-
-      <div style="font-size: 12px; color: #166534; line-height: 1.5; margin-bottom: 10px;">
-        💡 <strong>1타 강사 공략 꿀팁:</strong> ${info.tacticTip}
-      </div>
-
-      <button onclick="playCustomSpeech('${encodeURIComponent(q.question_text)}')" style="width: 100%; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 10px; padding: 10px; font-size: 12px; font-weight: 700; color: var(--toss-text-primary); cursor: pointer;">
-        🔊 영어 질문 다시듣기 & 쉐도잉
-      </button>
-    </div>
-  `;
-
-  resultCard.style.display = 'block';
+  // [다음 문제] 버튼을 노출합니다.
+  const nextBtn = document.getElementById('btn-diff4-next-question');
+  if (nextBtn) {
+    nextBtn.style.display = 'block';
+    nextBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
 }
+
+// 질문 청취 퀴즈 관련 UI 이벤트 리스너들을 초기화하는 함수입니다.
+function initListeningQuizEvents() {
+  // 질문 다시듣기 버튼
+  const replayBtn = document.getElementById('btn-quiz-replay-audio');
+  if (replayBtn) {
+    replayBtn.addEventListener('click', () => playDiff4QuizAudio());
+  }
+
+  // 0.8배속 느리게 듣기 버튼
+  const slowBtn = document.getElementById('btn-diff4-speed-slow');
+  if (slowBtn) {
+    slowBtn.addEventListener('click', () => setDiff4QuizPlaybackSpeed(0.8));
+  }
+
+  // 1.0배속 표준 속도 듣기 버튼
+  const normalBtn = document.getElementById('btn-diff4-speed-normal');
+  if (normalBtn) {
+    normalBtn.addEventListener('click', () => setDiff4QuizPlaybackSpeed(1.0));
+  }
+
+  // 다음 난이도 4 문제 풀기 버튼
+  const nextBtn = document.getElementById('btn-diff4-next-question');
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => loadNextRandomDiff4Question());
+  }
+
+  // 퀴즈 종료 및 연습 메뉴로 복귀 버튼
+  const exitBtn = document.getElementById('btn-diff4-exit-quiz');
+  if (exitBtn) {
+    exitBtn.addEventListener('click', () => {
+      stopAllEvaAudio();
+      switchTab('practice');
+    });
+  }
+
+  // 홈 탭의 난이도4 청취 퀴즈 숏컷 버튼
+  const homeQuizBtn = document.getElementById('btn-quick-start-quiz');
+  if (homeQuizBtn) {
+    homeQuizBtn.addEventListener('click', () => startDifficulty4ListeningQuiz());
+  }
+
+  // 스피킹 탭의 청취 퀴즈 모드 카드
+  const pracListeningCard = document.getElementById('prac-mode-listening');
+  if (pracListeningCard) {
+    pracListeningCard.addEventListener('click', () => {
+      document.querySelectorAll('.mode-card-btn').forEach(b => b.classList.remove('selected'));
+      pracListeningCard.classList.add('selected');
+      startDifficulty4ListeningQuiz();
+    });
+  }
+}
+
+// 전역 윈도우 객체에 난이도 4 퀴즈 제어 함수들을 바인딩합니다.
+window.startDifficulty4ListeningQuiz = startDifficulty4ListeningQuiz;
+window.loadNextRandomDiff4Question = loadNextRandomDiff4Question;
+window.renderDiff4QuizQuestion = renderDiff4QuizQuestion;
+window.playDiff4QuizAudio = playDiff4QuizAudio;
+window.setDiff4QuizPlaybackSpeed = setDiff4QuizPlaybackSpeed;
+window.handleDiff4QuizAnswer = handleDiff4QuizAnswer;
+window.initListeningQuizEvents = initListeningQuizEvents;
+window.startListeningQuizSession = startDifficulty4ListeningQuiz;
+
 
 // 학습 플랜 탭 초기화 함수입니다.
 function initStudyPlanTab() {
@@ -1680,7 +2146,7 @@ function initPracticeTab() {
   if (startPracBtn) {
     startPracBtn.addEventListener('click', () => {
       if (state.practiceMode === 'listening') {
-        startListeningQuizSession();
+        startDifficulty4ListeningQuiz();
       } else if (state.practiceMode === 'script') {
         startScriptBuilderSession();
       } else {
@@ -1782,6 +2248,12 @@ function initExamTab() {
 
 // 스피킹 세션 시작 함수입니다.
 function startSpeakingSession(mode) {
+  // 청취 퀴즈 모드인 경우 전용 난이도 4 청취 퀴즈 엔진을 시작합니다.
+  if (mode === 'listening') {
+    startDifficulty4ListeningQuiz();
+    return;
+  }
+
   state.practiceMode = mode;
   const fullSet = createSurveyBasedExamSet(state.officialSurvey);
 

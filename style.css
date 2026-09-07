@@ -1053,3 +1053,171 @@ nav.bottom-tab-bar { /* 하단 고정 탭바 */
   border-radius: 8px; /* 곡률입니다. */
   padding: 6px 10px; /* 여백입니다. */
 }
+
+/* ============================================================================== */
+/* [신규]: 난이도 4(Difficulty 4) 전용 오픽 질문 청취 연습 & 객관식 퀴즈 인터페이스 스타일 */
+/* ============================================================================== */
+
+/* 난이도 4 퀴즈 헤어로 카드 스타일입니다. */
+.diff4-hero-card {
+  background: linear-gradient(135deg, #7e22ce 0%, #a855f7 100%); /* 보라색 그라데이션입니다. */
+  color: #ffffff; /* 흰색 글자입니다. */
+  border-radius: 20px; /* 모서리 곡률입니다. */
+  padding: 20px; /* 내부 여백입니다. */
+  margin-bottom: 12px; /* 하단 여백입니다. */
+  box-shadow: 0 4px 20px rgba(168, 85, 247, 0.2); /* 그림자 효과입니다. */
+}
+
+/* 퀴즈 상단 현황 배너 컨테이너입니다. */
+.diff4-status-banner {
+  display: flex; /* 플렉스 박스입니다. */
+  justify-content: space-between; /* 양쪽 정렬입니다. */
+  align-items: center; /* 수직 중앙 정렬입니다. */
+  background: #faf5ff; /* 연보라 배경입니다. */
+  border: 1px solid #e9d5ff; /* 테두리입니다. */
+  border-radius: 12px; /* 곡률입니다. */
+  padding: 8px 12px; /* 여백입니다. */
+  margin-bottom: 12px; /* 하단 여백입니다. */
+}
+
+/* 청취 오디오 플레이어 상자입니다. */
+.diff4-audio-box {
+  background: #ffffff; /* 흰색 배경입니다. */
+  border: 1.5px solid #d8b4fe; /* 보라 테두리입니다. */
+  border-radius: 16px; /* 모서리입니다. */
+  padding: 16px; /* 내부 여백입니다. */
+  margin-bottom: 14px; /* 하단 여백입니다. */
+  text-align: center; /* 가운데 정렬입니다. */
+  box-shadow: 0 2px 10px rgba(168, 85, 247, 0.08); /* 그림자입니다. */
+}
+
+/* 배속 조절 칩 그룹입니다. */
+.diff4-speed-group {
+  display: inline-flex; /* 인라인 플렉스입니다. */
+  background: #f3e8ff; /* 배경색입니다. */
+  border-radius: 10px; /* 곡률입니다. */
+  padding: 3px; /* 여백입니다. */
+  gap: 4px; /* 간격입니다. */
+  margin-top: 8px; /* 상단 여백입니다. */
+}
+
+/* 배속 조절 개별 버튼입니다. */
+.diff4-speed-btn {
+  border: none; /* 테두리 없음입니다. */
+  background: transparent; /* 투명 배경입니다. */
+  color: #7e22ce; /* 글자색입니다. */
+  font-size: 11px; /* 글자 크기입니다. */
+  font-weight: 700; /* 굵은 글씨입니다. */
+  padding: 4px 10px; /* 여백입니다. */
+  border-radius: 8px; /* 곡률입니다. */
+  cursor: pointer; /* 마우스 포인터입니다. */
+  transition: all 0.2s ease; /* 전환 효과입니다. */
+}
+
+/* 배속 버튼 활성 상태입니다. */
+.diff4-speed-btn.active {
+  background: #7e22ce; /* 보라색 배경입니다. */
+  color: #ffffff; /* 흰색 글자입니다. */
+  box-shadow: 0 1px 4px rgba(126, 34, 206, 0.3); /* 그림자입니다. */
+}
+
+/* 4지선다 객관식 선택지 목록 컨테이너입니다. */
+.diff4-options-list {
+  display: flex; /* 플렉스 박스입니다. */
+  flex-direction: column; /* 세로 배치입니다. */
+  gap: 10px; /* 선택지 간격입니다. */
+  margin-bottom: 14px; /* 하단 여백입니다. */
+}
+
+/* 객관식 개별 선택지 카드 버튼입니다. */
+.diff4-option-item {
+  display: flex; /* 플렉스 정렬입니다. */
+  align-items: flex-start; /* 상단 정렬입니다. */
+  gap: 10px; /* 내부 간격입니다. */
+  background: #ffffff; /* 기본 흰색 배경입니다. */
+  border: 1.5px solid #e2e8f0; /* 기본 회색 테두리입니다. */
+  border-radius: 14px; /* 모서리 곡률입니다. */
+  padding: 12px 14px; /* 내부 여백입니다. */
+  text-align: left; /* 왼쪽 정렬입니다. */
+  font-size: 13px; /* 글자 크기입니다. */
+  line-height: 1.45; /* 줄 간격입니다. */
+  color: var(--toss-text-primary); /* 기본 글자색입니다. */
+  cursor: pointer; /* 마우스 포인터입니다. */
+  transition: all 0.2s ease; /* 전환 효과입니다. */
+  width: 100%; /* 전체 너비입니다. */
+}
+
+/* 선택지 호버 상태입니다. */
+.diff4-option-item:hover {
+  border-color: #c084fc; /* 보라색 테두리입니다. */
+  background: #faf5ff; /* 연보라 배경입니다. */
+  transform: translateY(-1px); /* 살짝 위로 이동합니다. */
+}
+
+/* 선택지 번호(A, B, C, D) 배지입니다. */
+.diff4-option-num {
+  display: flex; /* 플렉스입니다. */
+  align-items: center; /* 중앙 정렬입니다. */
+  justify-content: center; /* 중앙 정렬입니다. */
+  width: 24px; /* 너비입니다. */
+  height: 24px; /* 높이입니다. */
+  min-width: 24px; /* 최소 너비입니다. */
+  border-radius: 50%; /* 원형입니다. */
+  background: #f1f5f9; /* 회색 배경입니다. */
+  color: #475569; /* 글자색입니다. */
+  font-weight: 800; /* 굵은 글씨입니다. */
+  font-size: 11px; /* 글자 크기입니다. */
+}
+
+/* 정답 선택지 스타일입니다. */
+.diff4-option-item.correct {
+  background: #f0fdf4 !important; /* 초록 배경입니다. */
+  border-color: #22c55e !important; /* 초록 테두리입니다. */
+  color: #15803d !important; /* 초록 글자색입니다. */
+  font-weight: 700; /* 굵은 글씨입니다. */
+}
+
+/* 정답 선택지 번호 배지입니다. */
+.diff4-option-item.correct .diff4-option-num {
+  background: #22c55e !important; /* 초록 배경입니다. */
+  color: #ffffff !important; /* 흰색 글자입니다. */
+}
+
+/* 오답 선택지 스타일입니다. */
+.diff4-option-item.wrong {
+  background: #fef2f2 !important; /* 빨강 배경입니다. */
+  border-color: #ef4444 !important; /* 빨강 테두리입니다. */
+  color: #b91c1c !important; /* 빨강 글자색입니다. */
+  opacity: 0.85; /* 약간 투명도입니다. */
+}
+
+/* 오답 선택지 번호 배지입니다. */
+.diff4-option-item.wrong .diff4-option-num {
+  background: #ef4444 !important; /* 빨강 배경입니다. */
+  color: #ffffff !important; /* 흰색 글자입니다. */
+}
+
+/* 해설 및 질문 원문 분석 카드입니다. */
+.diff4-feedback-card {
+  background: #ffffff; /* 흰색 배경입니다. */
+  border: 2px solid #a855f7; /* 보라 테두리입니다. */
+  border-radius: 18px; /* 모서리입니다. */
+  padding: 16px; /* 내부 여백입니다. */
+  margin-top: 14px; /* 상단 여백입니다. */
+  box-shadow: 0 4px 20px rgba(168, 85, 247, 0.12); /* 그림자입니다. */
+  animation: fadeIn 0.3s ease; /* 서서히 나타남 애니메이션입니다. */
+}
+
+/* 핵심 청취 키워드 태그입니다. */
+.diff4-catch-tag {
+  display: inline-block; /* 인라인 블록입니다. */
+  background: #f3e8ff; /* 연보라 배경입니다. */
+  border: 1px solid #d8b4fe; /* 테두리입니다. */
+  color: #7e22ce; /* 글자색입니다. */
+  font-size: 11px; /* 글자 크기입니다. */
+  font-weight: 700; /* 굵은 글씨입니다. */
+  padding: 3px 8px; /* 여백입니다. */
+  border-radius: 6px; /* 곡률입니다. */
+  margin: 2px; /* 마진입니다. */
+}
+

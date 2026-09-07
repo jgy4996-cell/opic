@@ -436,45 +436,72 @@ const state = {
   scriptDraftLang: 'ko-KR', // 스크립트 작성 음성인식 언어 설정('ko-KR' 또는 'en-US')입니다. // 스크립트 작성 음성 녹음 중 여부입니다.
   scriptDraftRecognition: null, // 스크립트 작성 음성인식 객체입니다.
   isScriptAudioPlaying: false, // 스크립트 AL 음성 재생 중 여부입니다.
-  currentScriptAudio: null, // 스크립트 재생 Audio 인스턴스입니다.
   apiBaseUrl: window.location.origin.includes('http') ? window.location.origin : 'http://localhost:8000', // API 서버 주소입니다.
   isServerAvailable: false, // 백엔드 서버 가용 여부입니다.
 };
+// 전역 윈도우 객체에 상태 객체를 바인딩합니다.
+window.state = state;
 
 // DOM 요소 준비 시 실행되는 메인 초기화 함수입니다.
 document.addEventListener('DOMContentLoaded', () => {
   initApp(); // 전체 앱을 초기화합니다.
 });
 
+// 브라우저 음성 합성(SpeechSynthesis) GC 방지 및 하트비트 관리 전역 객체입니다.
+window._activeEvaUtterance = null;
+// 브라우저 15초 음성 멈춤 방지용 하트비트 타이머 식별자입니다.
+window._activeSpeechHeartbeat = null;
+
+// 음성 합성 하트비트 타이머를 안전하게 정리하는 헬퍼 함수입니다.
+function clearSpeechHeartbeat() {
+  // 활성화된 하트비트 인터벌이 있는 경우 해제합니다.
+  if (window._activeSpeechHeartbeat) {
+    // 인터벌을 제거합니다.
+    clearInterval(window._activeSpeechHeartbeat);
+    // 식별자를 초기화합니다.
+    window._activeSpeechHeartbeat = null;
+  }
+}
+
 // 브라우저 내장 최상의 Eva 원어민 보이스 객체를 찾아 캐싱하는 함수입니다.
 function cacheBestEvaVoice() {
-  if (!window.speechSynthesis) return null; // SpeechSynthesis 미지원 시 null을 반환합니다.
-  const voices = window.speechSynthesis.getVoices(); // 사용 가능한 음성 목록을 가져옵니다.
-  if (!voices || voices.length === 0) return null; // 음성이 없으면 null을 반환합니다.
+  // SpeechSynthesis 미지원 시 null을 반환합니다.
+  if (!window.speechSynthesis) return null;
+  // 사용 가능한 음성 목록을 가져옵니다.
+  const voices = window.speechSynthesis.getVoices();
+  // 음성이 아직 로딩되지 않았으면 null을 반환합니다.
+  if (!voices || voices.length === 0) return null;
 
   // 1순위: Microsoft Aria (실제 OPIc Eva 공식 성우와 100% 동일한 목소리)를 검색합니다.
-  let best = voices.find(v => v.lang.startsWith('en') && (v.name.includes('Aria') || v.name.includes('AriaNeural')));
-  // 2순위: Microsoft Natural 계열 미국 여성 성우를 검색합니다.
+  let best = voices.find(v => (v.name.includes('Aria') || v.name.includes('AriaNeural')) && v.lang.startsWith('en'));
+  // 2순위: Microsoft Natural / Jenny / Ava / Emma 미국 여성 성우를 검색합니다.
   if (!best) {
-    best = voices.find(v => v.lang.startsWith('en') && v.name.includes('Natural') && (v.name.includes('Jenny') || v.name.includes('Ava') || v.name.includes('Emma')));
+    best = voices.find(v => v.lang.startsWith('en') && (v.name.includes('Jenny') || v.name.includes('Ava') || v.name.includes('Emma') || v.name.includes('Natural')));
   }
   // 3순위: 구글 크롬 고품질 미국 영어 (Google US English)를 검색합니다.
   if (!best) {
     best = voices.find(v => v.name.includes('Google US English') || (v.lang === 'en-US' && v.name.includes('Google')));
   }
-  // 4순위: 아이폰 Safari / Mac 고품질 미국 성우 (Samantha / Ava)를 검색합니다.
+  // 4순위: 아이폰 Safari / Mac 고품질 미국 성우 (Samantha / Ava / Victoria / Karen)를 검색합니다.
   if (!best) {
-    best = voices.find(v => v.lang.startsWith('en') && (v.name.includes('Samantha') || v.name.includes('Ava') || v.name.includes('Victoria')));
+    best = voices.find(v => v.lang.startsWith('en') && (v.name.includes('Samantha') || v.name.includes('Ava') || v.name.includes('Victoria') || v.name.includes('Karen')));
   }
   // 5순위: 기본 en-US 미국 여성 음성을 검색합니다.
   if (!best) {
-    best = voices.find(v => v.lang === 'en-US' || v.lang.startsWith('en'));
+    best = voices.find(v => v.lang === 'en-US');
+  }
+  // 6순위: 모든 영어 음성(en-) 중 첫 번째 음성을 검색합니다.
+  if (!best) {
+    best = voices.find(v => v.lang && v.lang.startsWith('en'));
   }
 
+  // 최적의 음성을 찾았으면 캐싱합니다.
   if (best) {
-    state.cachedBestVoice = best; // 전역 상태에 캐싱합니다.
+    // 전역 상태 객체에 캐싱합니다.
+    state.cachedBestVoice = best;
   }
-  return state.cachedBestVoice;
+  // 최종 선정된 음성 또는 기존 캐시 음성을 반환합니다.
+  return best || state.cachedBestVoice || null;
 }
 
 // 애플리케이션 초기화 함수입니다.
@@ -701,42 +728,54 @@ function selectScriptQuestion(idx) {
 
 // 현재 선택된 문항의 에바 공식 음성을 재생하는 함수입니다.
 function playScriptQuestionAudio() {
+  // 현재 선택된 스크립트 문항 데이터를 가져옵니다.
   const q = state.scriptQuestions[state.scriptSelectedQIndex];
+  // 문항 데이터가 없으면 함수를 종료합니다.
   if (!q) return;
 
+  // 질문 재생 버튼 요소를 가져옵니다.
   const btn = document.getElementById('btn-script-play-question-audio');
+  // 이미 재생 중인 경우 정지 처리합니다.
   if (state.isScriptAudioPlaying) {
+    // 스크립트 오디오 재생을 정지합니다.
     stopScriptAudio();
+    // 모든 에바 음성을 정지합니다.
     stopAllEvaAudio();
+    // 함수를 종료합니다.
     return;
   }
 
+  // 버튼 스타일을 재생 중(빨간색 정지 버튼) 상태로 변경합니다.
   if (btn) {
+    // 버튼 텍스트를 정지로 변경합니다.
     btn.innerText = '⏹ 재생 중지';
+    // 배경색을 붉은색 톤으로 변경합니다.
     btn.style.background = '#fee2e2';
+    // 글자색을 붉은색으로 변경합니다.
     btn.style.color = '#dc2626';
   }
 
+  // 재생 상태 플래그를 활성화합니다.
   state.isScriptAudioPlaying = true;
+  // 재생 종료 시 버튼을 원래대로 되돌리는 콜백 함수입니다.
   const resetBtn = () => {
+    // 재생 상태 플래그를 비활성화합니다.
     state.isScriptAudioPlaying = false;
+    // 현재 오디오 참조를 초기화합니다.
     state.currentEvaAudio = null;
+    // 버튼 스타일을 기본 파란색 듣기 버튼으로 복원합니다.
     if (btn) {
+      // 텍스트를 복원합니다.
       btn.innerText = '🔊 질문 듣기';
+      // 배경색을 복원합니다.
       btn.style.background = '#eff6ff';
+      // 글자색을 복원합니다.
       btn.style.color = 'var(--toss-blue)';
     }
   };
 
-  if (q.audio_file) {
-    const audio = new Audio(q.audio_file);
-    state.currentEvaAudio = audio;
-    audio.onended = resetBtn;
-    audio.onerror = () => playFallbackSpeech(q.question_text, null, resetBtn);
-    audio.play().catch(() => playFallbackSpeech(q.question_text, null, resetBtn));
-  } else {
-    playFallbackSpeech(q.question_text, null, resetBtn);
-  }
+  // 안전한 통합 오디오 재생 헬퍼를 호출합니다.
+  playEvaAudioSafe(q.audio_file, q.question_text, null, 1.0, resetBtn);
 }
 
 // 선택한 오픽 주제에 맞는 1타 강사 초안 템플릿을 입력창에 자동으로 불러오는 함수입니다.
@@ -1797,34 +1836,21 @@ function playDiff4QuizAudio(customRate = null) {
   // 기존 재생 중인 오디오를 중단합니다.
   stopAllEvaAudio();
 
+  // 현재 퀴즈 질문 객체를 가져옵니다.
   const q = state.diff4Quiz.currentQuestion;
+  // 질문이 없으면 종료합니다.
   if (!q) return;
 
-  // 적용할 배속을 결정합니다.
+  // 적용할 배속을 결정합니다 (기본 1.0x).
   const rate = customRate !== null ? customRate : (state.diff4Quiz.playbackRate || 1.0);
+  // 아바타 애니메이션 컨테이너 요소를 가져옵니다.
   const avatarEl = document.getElementById('quiz-eva-avatar-box');
 
-  // 오디오 파일이 있는 경우와 없는 경우를 분기 처리합니다.
-  if (q.audio_file) {
-    const audio = new Audio(q.audio_file);
-    audio.playbackRate = rate;
-    state.currentEvaAudio = audio;
-    if (avatarEl) avatarEl.style.transform = 'scale(1.1)';
-    audio.onended = () => {
-      if (avatarEl) avatarEl.style.transform = 'scale(1)';
-      state.currentEvaAudio = null;
-    };
-    audio.onerror = () => playFallbackSpeech(q.question_text, avatarEl, rate, () => {
-      if (avatarEl) avatarEl.style.transform = 'scale(1)';
-    });
-    audio.play().catch(() => playFallbackSpeech(q.question_text, avatarEl, rate, () => {
-      if (avatarEl) avatarEl.style.transform = 'scale(1)';
-    }));
-  } else {
-    playFallbackSpeech(q.question_text, avatarEl, rate, () => {
-      if (avatarEl) avatarEl.style.transform = 'scale(1)';
-    });
-  }
+  // 안전한 통합 오디오 재생 헬퍼를 호출합니다.
+  playEvaAudioSafe(q.audio_file, q.question_text, avatarEl, rate, () => {
+    // 재생 완료 시 아바타 크기를 원래대로 복원합니다.
+    if (avatarEl) avatarEl.style.transform = 'scale(1)';
+  });
 }
 
 // 청취 배속을 변경하는 함수입니다 (0.8x vs 1.0x).
@@ -2602,19 +2628,8 @@ function toggleDailyAudioPlay() {
     }
   };
 
-  if (item.audio_file) {
-    const audio = new Audio(item.audio_file);
-    state.currentEvaAudio = audio;
-    audio.onended = resetBtn;
-    audio.onerror = () => {
-      playFallbackSpeech(item.exam_sentence, null, resetBtn);
-    };
-    audio.play().catch(() => {
-      playFallbackSpeech(item.exam_sentence, null, resetBtn);
-    });
-  } else {
-    playFallbackSpeech(item.exam_sentence, null, resetBtn);
-  }
+  // 안전한 통합 오디오 재생 헬퍼를 호출하여 재생합니다.
+  playEvaAudioSafe(item.audio_file, item.exam_sentence, null, 0.95, resetBtn);
 }
 
 // 1일 1문장 오디오 정지 헬퍼 함수입니다.
@@ -3144,93 +3159,321 @@ function generateUpgradedALScript(question, transcript) {
 
 // 커스텀 텍스트를 공식 Eva 원어민 음성으로 즉시 재생하는 전역 헬퍼 함수입니다.
 window.playCustomSpeech = function (encodedText) {
-  const text = decodeURIComponent(encodedText);
+  // 디코딩된 텍스트 변수를 초기화합니다.
+  let text = '';
+  // 디코딩 예외를 안전하게 처리합니다.
+  try {
+    // URI 디코딩을 수행합니다.
+    text = decodeURIComponent(encodedText);
+  } catch (e) {
+    // 디코딩 실패 시 문자열 변환하여 사용합니다.
+    text = String(encodedText);
+  }
+  // 유효한 텍스트가 없으면 종료합니다.
+  if (!text || !text.trim()) return;
+
+  // 기존 에바 음성을 즉시 중단합니다.
   stopAllEvaAudio();
+  // 쉐도잉 배속을 설정합니다.
   const rate = state.shadowingPlaybackRate || 0.95;
 
-  if (state.isServerAvailable) {
+  // 백엔드 TTS API가 지원되고 활성화된 경우 서버 TTS를 시도합니다.
+  if (state.isServerAvailable && state.apiBaseUrl) {
+    // 선택된 보이스를 설정합니다.
     const voice = state.selectedVoice || 'en-US-AriaNeural';
+    // TTS 오디오 스트림 URL을 생성합니다.
     const ttsUrl = `${state.apiBaseUrl}/api/tts?text=${encodeURIComponent(text)}&voice=${encodeURIComponent(voice)}`;
-    const audio = new Audio(ttsUrl);
-    state.currentEvaAudio = audio;
-    audio.playbackRate = rate;
-    audio.onerror = () => playBrowserSpeechFallback(text, null, rate);
-    audio.play().catch(() => playBrowserSpeechFallback(text, null, rate));
+    // 안전한 통합 오디오 재생 헬퍼를 호출합니다.
+    playEvaAudioSafe(ttsUrl, text, null, rate);
   } else {
+    // 브라우저 내장 음성 합성(Web Speech)으로 즉시 무결점 재생합니다.
     playBrowserSpeechFallback(text, null, rate);
   }
 };
 
-// 브라우저 내장 Web Speech API를 활용한 Eva 원어민 음성 발화 폴백 함수입니다.
-
 // 브라우저 음성 합성 폴백 및 공통 음성 재생 헬퍼 함수입니다.
 function playFallbackSpeech(text, avatarEl = null, rateOrCallback = 0.95, onEndCallback = null) {
+  // 기본 배속을 설정합니다.
   let rate = 0.95;
+  // 콜백 함수를 설정합니다.
   let callback = onEndCallback;
+  // 세 번째 인자가 콜백 함수인 경우 처리합니다.
   if (typeof rateOrCallback === 'function') {
+    // 콜백 함수로 할당합니다.
     callback = rateOrCallback;
+    // 배속은 기본값으로 유지합니다.
     rate = 0.95;
   } else if (typeof rateOrCallback === 'number') {
+    // 배속 숫자로 할당합니다.
     rate = rateOrCallback;
   }
+  // 브라우저 음성 합성 함수를 호출합니다.
   playBrowserSpeechFallback(text, avatarEl, rate, callback);
 }
 
-function playBrowserSpeechFallback(text, avatarEl, rate = 0.95, onEndCallback = null) {
-  if (!window.speechSynthesis) return;
-  window.speechSynthesis.cancel();
+// 브라우저 내장 Web Speech API를 활용한 무결점 Eva 원어민 음성 발화 함수입니다.
+function playBrowserSpeechFallback(text, avatarEl = null, rate = 0.95, onEndCallback = null) {
+  // 유효한 텍스트가 없으면 콜백을 호출하고 종료합니다.
+  if (!text || typeof text !== 'string' || !text.trim()) {
+    // 종료 콜백이 있으면 호출합니다.
+    if (typeof onEndCallback === 'function') onEndCallback();
+    // 함수를 종료합니다.
+    return;
+  }
 
-  const utterance = new SpeechSynthesisUtterance(text);
+  // 브라우저가 SpeechSynthesis를 지원하지 않는 경우 처리합니다.
+  if (!window.speechSynthesis) {
+    // 콘솔에 경고 로그를 기록합니다.
+    console.warn('[TTS] Web Speech Synthesis 미지원 브라우저입니다.');
+    // 콜백을 호출합니다.
+    if (typeof onEndCallback === 'function') onEndCallback();
+    // 함수를 종료합니다.
+    return;
+  }
+
+  // 기존 하트비트 타이머를 정리합니다.
+  clearSpeechHeartbeat();
+
+  // 기존 발화 큐를 안전하게 취소하고 즉시 재개(Resume)하여 락을 해제합니다.
+  try {
+    // 기존 발화를 취소합니다.
+    if (typeof window.speechSynthesis.cancel === 'function') {
+      // 취소를 호출합니다.
+      window.speechSynthesis.cancel();
+    }
+    // 크롬 음성 합성 락 해제를 위해 즉시 재개합니다.
+    if (typeof window.speechSynthesis.resume === 'function') {
+      // 재개를 호출합니다.
+      window.speechSynthesis.resume();
+    }
+  } catch (e) {}
+
+  // 텍스트 앞뒤 공백을 제거합니다.
+  const cleanText = text.trim();
+  // 발화용 SpeechSynthesisUtterance 인스턴스를 생성합니다.
+  const utterance = new SpeechSynthesisUtterance(cleanText);
+  // 언어를 미국 영어(en-US)로 명시합니다.
   utterance.lang = 'en-US';
-  utterance.rate = rate;
-  utterance.pitch = 1.05;
+  // 안전한 발화 속도 범위를 지정합니다.
+  utterance.rate = Math.max(0.6, Math.min(1.5, rate || 0.95));
+  // 부드러운 음높이를 설정합니다.
+  utterance.pitch = 1.02;
 
-  const bestVoice = cacheBestEvaVoice();
-  if (bestVoice) utterance.voice = bestVoice;
+  // 최상의 Eva 원어민 음성을 찾아 설정합니다.
+  const bestVoice = state.cachedBestVoice || cacheBestEvaVoice();
+  // 음성이 발견된 경우 보이스 객체를 바인딩합니다.
+  if (bestVoice) {
+    // 보이스를 지정합니다.
+    utterance.voice = bestVoice;
+  }
 
+  // V8 가비지 컬렉터가 발화 도중 객체를 회수하여 소리가 끊어지는 크롬 버그를 방지합니다.
+  window._activeEvaUtterance = utterance;
+
+  // 중복 콜백 실행 방지 플래그입니다.
+  let isFinished = false;
+  // 발화 완료 및 오류 시 정리 함수입니다.
+  const finishSpeech = () => {
+    // 이미 완료 처리되었으면 무시합니다.
+    if (isFinished) return;
+    // 완료 플래그를 설정합니다.
+    isFinished = true;
+    // 하트비트 타이머를 정리합니다.
+    clearSpeechHeartbeat();
+    // 전역 발화 참조를 해제합니다.
+    window._activeEvaUtterance = null;
+    // 오디오 참조를 초기화합니다.
+    state.currentEvaAudio = null;
+    // 아바타 애니메이션을 원상 복구합니다.
+    if (avatarEl) {
+      // 스케일을 기본값으로 변경합니다.
+      avatarEl.style.transform = 'scale(1)';
+    }
+    // 전달된 종료 콜백 함수를 실행합니다.
+    if (typeof onEndCallback === 'function') {
+      // 콜백을 호출합니다.
+      onEndCallback();
+    }
+  };
+
+  // 발화 시작 이벤트 핸들러입니다.
   utterance.onstart = () => {
-    if (avatarEl) avatarEl.style.transform = 'scale(1.1)';
+    // 아바타 요소를 살짝 확대하여 말하는 효과를 부여합니다.
+    if (avatarEl) {
+      // 스케일을 1.1배로 확대합니다.
+      avatarEl.style.transform = 'scale(1.1)';
+    }
+    // 크롬 15초 이상 긴 문장 멈춤 버그 방지 하트비트를 가동합니다.
+    clearSpeechHeartbeat();
+    // 5초 간격으로 하트비트를 실행합니다.
+    window._activeSpeechHeartbeat = setInterval(() => {
+      // 발화가 끝났으면 타이머를 정리합니다.
+      if (!window.speechSynthesis || !window.speechSynthesis.speaking) {
+        // 타이머를 정리합니다.
+        clearSpeechHeartbeat();
+      } else {
+        // 일시정지 후 재개하여 엔진 슬립을 방지합니다.
+        if (typeof window.speechSynthesis.pause === 'function') {
+          // 일시정지를 호출합니다.
+          window.speechSynthesis.pause();
+        }
+        // 즉시 재개합니다.
+        if (typeof window.speechSynthesis.resume === 'function') {
+          // 재개를 호출합니다.
+          window.speechSynthesis.resume();
+        }
+      }
+    }, 5000);
   };
 
-  utterance.onend = () => {
-    if (avatarEl) avatarEl.style.transform = 'scale(1)';
+  // 발화 정상 종료 이벤트입니다.
+  utterance.onend = finishSpeech;
+  // 발화 오류 발생 이벤트입니다.
+  utterance.onerror = (err) => {
+    // 경고 로그를 기록합니다.
+    console.warn('[TTS Error]:', err);
+    // 정리 함수를 호출합니다.
+    finishSpeech();
+  };
+
+  // 발화를 실행하고 즉시 resume을 호출하여 브라우저 대기열을 활성화합니다.
+  try {
+    // 음성을 발화 큐에 등록합니다.
+    window.speechSynthesis.speak(utterance);
+    // 크롬 백그라운드 락을 해제합니다.
+    if (typeof window.speechSynthesis.resume === 'function') {
+      // 재개를 호출합니다.
+      window.speechSynthesis.resume();
+    }
+  } catch (e) {
+    // 예외 발생 시 에러 로그를 출력하고 정리합니다.
+    console.error('[TTS Speak Exception]:', e);
+    // 정리 함수를 호출합니다.
+    finishSpeech();
+  }
+}
+
+// 오디오 파일(MP3)과 브라우저 음성 합성(Web Speech)을 통합 지원하는 안전한 사운드 재생 헬퍼 함수입니다.
+function playEvaAudioSafe(audioPath, fallbackText, avatarEl = null, rate = 1.0, onEndCallback = null) {
+  // 기존 실행 중인 모든 오디오를 중지합니다.
+  stopAllEvaAudio();
+
+  // 완료 여부 플래그입니다.
+  let hasEnded = false;
+  // 폴백 실행 여부 플래그입니다.
+  let fallbackRan = false;
+
+  // 안전한 단일 완료 처리 핸들러입니다.
+  const handleEnd = () => {
+    // 이미 완료되었으면 무시합니다.
+    if (hasEnded) return;
+    // 완료 플래그를 설정합니다.
+    hasEnded = true;
+    // 오디오 참조를 초기화합니다.
     state.currentEvaAudio = null;
-    if (onEndCallback) onEndCallback();
-  };
-
-  utterance.onerror = () => {
+    // 아바타 크기를 복원합니다.
     if (avatarEl) avatarEl.style.transform = 'scale(1)';
-    state.currentEvaAudio = null;
-    if (onEndCallback) onEndCallback();
+    // 종료 콜백을 실행합니다.
+    if (typeof onEndCallback === 'function') onEndCallback();
   };
 
-  window.speechSynthesis.speak(utterance);
+  // 안전한 단일 폴백 발화 트리거 함수입니다.
+  const triggerFallback = () => {
+    // 이미 폴백이 실행되었거나 완료된 경우 중복 호출을 차단합니다.
+    if (fallbackRan || hasEnded) return;
+    // 폴백 플래그를 설정합니다.
+    fallbackRan = true;
+    // 브라우저 음성 합성으로 발화합니다.
+    playBrowserSpeechFallback(fallbackText, avatarEl, rate, handleEnd);
+  };
+
+  // 오디오 경로가 유효하게 전달된 경우 오디오 파일 재생을 우선 시도합니다.
+  if (audioPath && typeof audioPath === 'string' && audioPath.trim() !== '') {
+    try {
+      // Audio 객체를 생성합니다.
+      const audio = new Audio(audioPath.trim());
+      // 전역 상태에 오디오 객체를 보관합니다.
+      state.currentEvaAudio = audio;
+      // 재생 속도를 지정합니다.
+      audio.playbackRate = rate || 1.0;
+
+      // 오디오 재생 시작 시 아바타 효과를 적용합니다.
+      audio.onplay = () => {
+        // 아바타 요소를 확대합니다.
+        if (avatarEl) avatarEl.style.transform = 'scale(1.1)';
+      };
+
+      // 오디오 정상 재생 완료 시 핸들러를 연결합니다.
+      audio.onended = handleEnd;
+
+      // 오디오 파일 로드 또는 디코딩 실패 시 폴백으로 전환합니다.
+      audio.onerror = () => {
+        // 폴백 음성 합성을 실행합니다.
+        triggerFallback();
+      };
+
+      // 오디오 재생 프로미스를 실행합니다.
+      const playPromise = audio.play();
+      // 프로미스가 반환된 경우 catch 블록을 바인딩합니다.
+      if (playPromise !== undefined) {
+        // 재생 거부 또는 오류 시 폴백을 트리거합니다.
+        playPromise.catch(() => {
+          // 폴백 음성 합성을 실행합니다.
+          triggerFallback();
+        });
+      }
+    } catch (e) {
+      // 객체 생성 예외 시 즉시 폴백을 실행합니다.
+      triggerFallback();
+    }
+  } else {
+    // 오디오 파일이 없으면 즉시 브라우저 음성 합성을 실행합니다.
+    triggerFallback();
+  }
 }
 
 // 유튜브 실제 Eva 원본 음성 미리듣기 함수입니다.
 function previewSelectedVoice() {
+  // 기존 에바 음성을 정지합니다.
   stopAllEvaAudio();
-  const realAudioPath = 'audio/q1.mp3';
-  const audio = new Audio(realAudioPath);
-  state.currentEvaAudio = audio;
-  audio.play().catch(() => {
-    const previewText = "Let's start the interview now. Tell me a little bit about yourself.";
-    playBrowserSpeechFallback(previewText, null);
-  });
+  // 미리듣기용 표준 테스트 문장입니다.
+  const previewText = "Let's start the interview now. Tell me a little bit about yourself.";
+  // 에바 공식 1번 문항 음성을 안전하게 재생합니다.
+  playEvaAudioSafe('audio/q1.mp3', previewText, null, 1.0);
 }
 
-// 모든 에바 음성 재생을 즉시 중단하는 통합 함수입니다.
+// 모든 에바 음성 및 SpeechSynthesis 재생을 즉시 중단하는 통합 함수입니다.
 function stopAllEvaAudio() {
+  // 하트비트 타이머를 해제합니다.
+  clearSpeechHeartbeat();
+  // 오디오 파일이 재생 중인 경우 정지합니다.
   if (state.currentEvaAudio) {
     try {
+      // 오디오를 일시 정지합니다.
       state.currentEvaAudio.pause();
+      // 재생 위치를 시작점으로 초기화합니다.
       state.currentEvaAudio.currentTime = 0;
     } catch (e) {}
+    // 오디오 참조를 해제합니다.
     state.currentEvaAudio = null;
   }
+  // 브라우저 음성 합성이 활성화된 경우 취소 및 복구합니다.
   if (window.speechSynthesis) {
-    window.speechSynthesis.cancel();
+    try {
+      // 발화를 취소합니다.
+      if (typeof window.speechSynthesis.cancel === 'function') {
+        // 취소를 호출합니다.
+        window.speechSynthesis.cancel();
+      }
+      // 락을 해제합니다.
+      if (typeof window.speechSynthesis.resume === 'function') {
+        // 재개를 호출합니다.
+        window.speechSynthesis.resume();
+      }
+    } catch (e) {}
   }
+  // 활성 Utterance 참조를 해제합니다.
+  window._activeEvaUtterance = null;
 }
 
 // 브라우저 내장 음성 인식(STT) API 초기화 함수입니다.
@@ -3349,27 +3592,28 @@ function renderCurrentQuestion() {
 
 // 시험 문제 에바 질문 오디오 재생 함수입니다.
 function playQuestionAudio() {
+  // 기존 재생 중인 에바 음성을 중단합니다.
   stopAllEvaAudio();
 
+  // 현재 인덱스의 질문 객체를 가져옵니다.
   const q = state.questions[state.currentIndex];
+  // 질문 객체가 없으면 종료합니다.
+  if (!q) return;
+  // 아바타 박스 요소를 가져옵니다.
   const avatarEl = document.getElementById('eva-avatar-box');
 
-  if (q.audio_file) {
-    const audio = new Audio(q.audio_file);
-    state.currentEvaAudio = audio;
-    audio.onplay = () => { if (avatarEl) avatarEl.style.transform = 'scale(1.1)'; };
-    audio.onended = () => {
-      if (avatarEl) avatarEl.style.transform = 'scale(1)';
-      state.currentEvaAudio = null;
-      if (state.practiceMode === 'driving' && !state.isRecording) {
-        setTimeout(() => toggleRecording(), 1000);
-      }
-    };
-    audio.onerror = () => playFallbackSpeech(q.question_text, avatarEl);
-    audio.play().catch(() => playFallbackSpeech(q.question_text, avatarEl));
-  } else {
-    playFallbackSpeech(q.question_text, avatarEl);
-  }
+  // 안전한 통합 오디오 재생 헬퍼를 호출합니다.
+  playEvaAudioSafe(q.audio_file, q.question_text, avatarEl, 1.0, () => {
+    // 재생 완료 시 아바타 스케일을 복원합니다.
+    if (avatarEl) avatarEl.style.transform = 'scale(1)';
+    // 오디오 참조를 초기화합니다.
+    state.currentEvaAudio = null;
+    // 드라이빙 모드인 경우 자동 녹음을 시작합니다.
+    if (state.practiceMode === 'driving' && !state.isRecording) {
+      // 1초 후 녹음 시작 함수를 호출합니다.
+      setTimeout(() => toggleRecording(), 1000);
+    }
+  });
 }
 
 // 녹음 시작 및 정지 토글 함수입니다.

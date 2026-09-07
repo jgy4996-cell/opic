@@ -9,7 +9,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="theme-color" content="#ffffff" />
   <title>OPIc Master AI - 15문항 서베이 스크립트 & 실전 모의고사</title>
-  <link rel="stylesheet" href="style.css?v=20260906_kakao_export_v18" />
+  <link rel="stylesheet" href="style.css?v=20260907_greenopic_v19" />
 </head>
 <body>
 
@@ -137,47 +137,128 @@
     <section id="tab-script" class="tab-content">
       <div class="script-hero-card">
         <div style="font-size: 13px; opacity: 0.9; margin-bottom: 4px;">✍️ 마이 서베이 15문항 스크립트 첨삭 연구소</div>
+        <!-- 카드 메인 타이틀입니다. -->
         <h2 style="font-size: 18px; font-weight: 800; line-height: 1.3; margin-bottom: 6px;">
           문항을 클릭하고 내 생각을 적으면<br />AI가 AL 만점 스크립트로 첨삭해 드립니다!
         </h2>
-        <div style="font-size: 12px; opacity: 0.9; display: flex; justify-content: space-between; align-items: center;">
+        <!-- 서브 정보 및 비법서 버튼 영역입니다. -->
+        <div style="font-size: 12px; opacity: 0.9; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 4px;">
+          <!-- 모드 안내 문구입니다. -->
           <span>📋 내 서베이 15문항 완벽 정복 모드</span>
-          <button id="btn-open-nojam-guide-from-script" style="background: rgba(255,255,255,0.25); border: 1px solid rgba(255,255,255,0.4); color: #ffffff; border-radius: 8px; padding: 4px 10px; font-size: 11px; font-weight: 800; cursor: pointer;">
-            💡 오픽노잼 비법서 전체보기 ➔
-          </button>
+          <!-- 1타 강사 비법서 버튼 그룹입니다. -->
+          <div style="display: flex; gap: 4px;">
+            <!-- 오픽노잼 비법서 버튼입니다. -->
+            <button id="btn-open-nojam-guide-from-script" style="background: rgba(255,255,255,0.25); border: 1px solid rgba(255,255,255,0.4); color: #ffffff; border-radius: 8px; padding: 4px 8px; font-size: 11px; font-weight: 800; cursor: pointer;">
+              🔥 오픽노잼
+            </button>
+            <!-- 오픽그린 비법서 버튼입니다. -->
+            <button id="btn-open-greenopic-guide-from-script" style="background: rgba(255,255,255,0.25); border: 1px solid rgba(255,255,255,0.4); color: #ffffff; border-radius: 8px; padding: 4px 8px; font-size: 11px; font-weight: 800; cursor: pointer;">
+              🌿 오픽그린
+            </button>
+          </div>
         </div>
       </div>
 
-      <!-- 오픽노잼 5대 황금 법칙 아코디언 팁 박스 -->
-      <div class="nojam-tip-card">
+      <!-- 1타 강사 전략 듀얼 스위처 바입니다. -->
+      <div class="expert-tab-switcher">
+        <!-- 오픽노잼 탭 버튼입니다. -->
+        <button class="expert-tab-btn active tab-nojam" id="tab-btn-expert-nojam">
+          🔥 오픽노잼 5대 원칙
+        </button>
+        <!-- 오픽그린 탭 버튼입니다. -->
+        <button class="expert-tab-btn tab-green" id="tab-btn-expert-green">
+          🌿 오픽그린 콤보·롤플레이 전략
+        </button>
+      </div>
+
+      <!-- [1타 강사 1]: 오픽노잼 5대 황금 법칙 아코디언 팁 박스입니다. -->
+      <div class="nojam-tip-card" id="box-expert-nojam">
+        <!-- 아코디언 헤더입니다. -->
         <div class="nojam-accordion-header" id="btn-toggle-nojam-accordion">
+          <!-- 헤더 제목 및 아이콘입니다. -->
           <div style="display: flex; align-items: center; gap: 6px;">
+            <!-- 전구 아이콘입니다. -->
             <span style="font-size: 16px;">💡</span>
+            <!-- 타이틀 텍스트입니다. -->
             <span style="font-size: 13px; font-weight: 800; color: #92400e;">[오픽노잼 전수] AL 스크립트 5대 황금 법칙</span>
           </div>
+          <!-- 토글 화살표입니다. -->
           <span class="nojam-toggle-icon" id="nojam-accordion-arrow">▼</span>
         </div>
+        <!-- 아코디언 본문 영역입니다. -->
         <div class="nojam-accordion-body" id="nojam-accordion-content">
+          <!-- 룰 목록 그리드입니다. -->
           <div style="display: grid; grid-template-columns: 1fr; gap: 6px; margin-bottom: 8px;">
+            <!-- 1번 룰 카드입니다. -->
             <div class="nojam-rule-item">
               <strong style="color: #b45309; font-size: 12px;">① Rule of MP (메인 포인트)</strong>
               <div style="font-size: 11px; color: #78350f; margin-top: 2px;">서론 길게 끌지 말고 첫 문장에서 [감정(Feeling) + 결론]을 두괄식으로 확실하게 던지세요!</div>
             </div>
+            <!-- 2번 룰 카드입니다. -->
             <div class="nojam-rule-item">
               <strong style="color: #b45309; font-size: 12px;">② Rule of 1 Thing (한 가지만 깊게 파기)</strong>
               <div style="font-size: 11px; color: #78350f; margin-top: 2px;">이것저것 나열(List)하지 마세요! 단 1개의 특정 사건/디테일만 골라 감정과 함께 깊게 스토리텔링하세요.</div>
             </div>
+            <!-- 3번 룰 카드입니다. -->
             <div class="nojam-rule-item">
               <strong style="color: #b45309; font-size: 12px;">③ Direct Quote (직접 화법 대화체)</strong>
               <div style="font-size: 11px; color: #78350f; margin-top: 2px;">"And he was like, 'No way!', so I was like..." 대화체를 넣으면 원어민 유창성 점수가 폭발합니다.</div>
             </div>
+            <!-- 4번 룰 카드입니다. -->
             <div class="nojam-rule-item">
               <strong style="color: #b45309; font-size: 12px;">④ No Robot & 원어민 필러</strong>
               <div style="font-size: 11px; color: #78350f; margin-top: 2px;">에바를 친구라고 생각하고 <span style="font-weight:700;">You know, I mean, Like, To be honest</span> 필러를 구사하세요.</div>
             </div>
           </div>
+          <!-- 비법서 전체보기 버튼입니다. -->
           <button id="btn-open-nojam-full-modal-btn" style="width: 100%; background: #ffffff; border: 1.5px solid #f59e0b; color: #b45309; border-radius: 10px; padding: 8px; font-size: 12px; font-weight: 800; cursor: pointer;">
             📖 오픽노잼 유형별 만점 공식 & 필러 사전 열기
+          </button>
+        </div>
+      </div>
+
+      <!-- [1타 강사 2]: 오픽그린(@greenopic) 1타 전략 아코디언 팁 박스입니다. -->
+      <div class="greenopic-tip-card" id="box-expert-green" style="display: none;">
+        <!-- 아코디언 헤더입니다. -->
+        <div class="greenopic-accordion-header" id="btn-toggle-greenopic-accordion">
+          <!-- 헤더 제목 및 아이콘입니다. -->
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <!-- 나뭇잎 아이콘입니다. -->
+            <span style="font-size: 16px;">🌿</span>
+            <!-- 타이틀 텍스트입니다. -->
+            <span style="font-size: 13px; font-weight: 800; color: #065f46;">[오픽그린 전수] 3단 콤보 예측 & 롤플레이 만능 공식</span>
+          </div>
+          <!-- 토글 화살표입니다. -->
+          <span class="nojam-toggle-icon" id="greenopic-accordion-arrow">▼</span>
+        </div>
+        <!-- 아코디언 본문 영역입니다. -->
+        <div class="nojam-accordion-body" id="greenopic-accordion-content">
+          <!-- 룰 목록 그리드입니다. -->
+          <div style="display: grid; grid-template-columns: 1fr; gap: 6px; margin-bottom: 8px;">
+            <!-- 1번 콤보 예측 룰입니다. -->
+            <div class="greenopic-rule-item">
+              <strong style="color: #047857; font-size: 12px;">① 3단 콤보 출제 공식 (100% 예측)</strong>
+              <div style="font-size: 11px; color: #064e3b; margin-top: 2px;">1번 질문만 들으면 다음 문제가 보입니다: <strong>[1단계 장소묘사 ➔ 2단계 일상루틴 ➔ 3단계 과거 특별경험]</strong></div>
+            </div>
+            <!-- 2번 롤플레이 만능틀 룰입니다. -->
+            <div class="greenopic-rule-item">
+              <strong style="color: #047857; font-size: 12px;">② 롤플레이 11·12·13번 만능 격파</strong>
+              <div style="font-size: 11px; color: #064e3b; margin-top: 2px;"><strong>11번(질문 3~4개)</strong> ➔ <strong>12번(문제해결 대안 2개)</strong> ➔ <strong>13번(유사경험 연결)</strong> 정형화된 틀로 무조건 고득점!</div>
+            </div>
+            <!-- 3번 육하원칙 4박자 룰입니다. -->
+            <div class="greenopic-rule-item">
+              <strong style="color: #047857; font-size: 12px;">③ 육하원칙 4박자 키워드 트리</strong>
+              <div style="font-size: 11px; color: #064e3b; margin-top: 2px;">스크립트 통암기 금지! <strong>[When/Who ➔ Where ➔ What ➔ Emotion]</strong> 4개 키워드로 즉석 발화하세요.</div>
+            </div>
+            <!-- 4번 돌발 비상탈출 룰입니다. -->
+            <div class="greenopic-rule-item">
+              <strong style="color: #047857; font-size: 12px;">④ 돌발 주제 5초 비상탈출 키트</strong>
+              <div style="font-size: 11px; color: #064e3b; margin-top: 2px;">가구/재활용/은행/호텔 돌발이 나와도 <strong>'스마트폰 앱 활용/친구 추천'</strong> 만능 연결고리로 탈출하세요.</div>
+            </div>
+          </div>
+          <!-- 오픽그린 비법서 열기 버튼입니다. -->
+          <button id="btn-open-greenopic-full-modal-btn" style="width: 100%; background: #ffffff; border: 1.5px solid #10b981; color: #047857; border-radius: 10px; padding: 8px; font-size: 12px; font-weight: 800; cursor: pointer;">
+            📖 오픽그린(@greenopic) 1타 비법서 & 롤플레이 사전 열기
           </button>
         </div>
       </div>
@@ -262,6 +343,19 @@
           <div style="font-size: 13px; font-weight: 700; color: #1e293b; line-height: 1.4;" id="script-active-question-text">
             "Let's start the interview now. Tell me a little bit about yourself."
           </div>
+        </div>
+
+        <!-- [오픽그린 1타 비법] 콤보 예측 힌트 & 육하원칙 4박자 발화 힌트 바입니다. -->
+        <div id="greenopic-combo-hint-bar" style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 8px 12px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 4px;">
+          <!-- 콤보 단계 배지 및 예측 문구 컨테이너입니다. -->
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <!-- 콤보 단계 배지입니다. -->
+            <span style="font-size: 11px; font-weight: 800; background: #059669; color: #ffffff; padding: 2px 6px; border-radius: 6px;" id="greenopic-combo-step-badge">🔮 1콤보 장소묘사</span>
+            <!-- 다음 문제 예측 텍스트입니다. -->
+            <span style="font-size: 11px; color: #065f46; font-weight: 700;" id="greenopic-combo-prediction-text">다음 예상 문제: [2콤보] 방문 루틴 및 활동 순서</span>
+          </div>
+          <!-- 비법서 바로가기 링크 버튼입니다. -->
+          <span style="font-size: 11px; color: #047857; cursor: pointer; text-decoration: underline; font-weight: 700;" id="btn-quick-open-greenopic-modal">오픽그린 비법 ➔</span>
         </div>
 
         <!-- [신규] 4단계 등급별 맞춤 모범 스크립트 뷰어 카드 -->
@@ -934,6 +1028,206 @@
   </div>
 
   <!-- ========================================================================== -->
+  <!-- [전용 팝업 모달]: 🌿 오픽그린(@greenopic) 1타 전략 & 롤플레이 만능 비법서          -->
+  <!-- ========================================================================== -->
+  <div id="greenopic-full-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; justify-content: center; align-items: flex-end; backdrop-filter: blur(4px);">
+    <!-- 모달 컨테이너 카드입니다. -->
+    <div style="background: #ffffff; border-radius: 24px 24px 0 0; padding: 20px; max-width: 520px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 -4px 24px rgba(0,0,0,0.15); animation: slideUp 0.3s ease;">
+      <!-- 모달 상단 헤더 영역입니다. -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; position: sticky; top: -20px; background: #ffffff; padding: 10px 0; z-index: 10; border-bottom: 1px solid #f1f5f9;">
+        <!-- 제목 및 부제목 상자입니다. -->
+        <div>
+          <!-- 메인 타이틀입니다. -->
+          <h3 style="margin-bottom: 2px; font-size: 17px; font-weight: 800; color: #047857; display: flex; align-items: center; gap: 6px;">
+            <span>🌿 오픽그린(@greenopic) 1타 비법서</span>
+          </h3>
+          <!-- 채널 출처 및 설명 문구입니다. -->
+          <div style="font-size: 12px; color: var(--toss-text-secondary);">3단 콤보 예측 ➔ 롤플레이 만능틀 ➔ 육하원칙 4박자 발화</div>
+        </div>
+        <!-- 닫기 X 버튼입니다. -->
+        <button id="btn-close-greenopic-modal" style="background: #f1f5f9; border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 16px; font-weight: 700; cursor: pointer; color: #64748b; display: flex; align-items: center; justify-content: center;">✕</button>
+      </div>
+
+      <!-- 유튜브 채널 바로가기 배너입니다. -->
+      <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; padding: 8px 12px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+        <!-- 배너 텍스트입니다. -->
+        <span style="font-size: 11px; color: #166534; font-weight: 700;">📺 유튜브 [오픽그린] 공식 채널 분석 연동 완료</span>
+        <!-- 유튜브 이동 링크입니다. -->
+        <a href="https://www.youtube.com/@greenopic/playlists" target="_blank" rel="noreferrer" style="font-size: 11px; color: #059669; font-weight: 800; text-decoration: none;">채널 열기 ➔</a>
+      </div>
+
+      <!-- 모달 내부 4개 탭 버튼 네비게이션입니다. -->
+      <div style="display: flex; gap: 4px; margin-bottom: 14px; flex-wrap: wrap;">
+        <!-- 콤보 예측 탭 버튼입니다. -->
+        <button class="greenopic-modal-tab-btn active" data-green-tab="combo" id="tab-green-combo" style="flex: 1; min-width: 90px; padding: 8px 6px; font-size: 11px; font-weight: 800; border: none; border-radius: 8px; background: #047857; color: #ffffff; cursor: pointer;">🔮 콤보 예측</button>
+        <!-- 롤플레이 만능틀 탭 버튼입니다. -->
+        <button class="greenopic-modal-tab-btn" data-green-tab="roleplay" id="tab-green-roleplay" style="flex: 1; min-width: 90px; padding: 8px 6px; font-size: 11px; font-weight: 800; border: none; border-radius: 8px; background: #f1f5f9; color: #475569; cursor: pointer;">🎭 롤플레이</button>
+        <!-- 육하원칙 4박자 탭 버튼입니다. -->
+        <button class="greenopic-modal-tab-btn" data-green-tab="tree" id="tab-green-tree" style="flex: 1; min-width: 90px; padding: 8px 6px; font-size: 11px; font-weight: 800; border: none; border-radius: 8px; background: #f1f5f9; color: #475569; cursor: pointer;">🌳 4박자 키워드</button>
+        <!-- 돌발 비상탈출 탭 버튼입니다. -->
+        <button class="greenopic-modal-tab-btn" data-green-tab="unseen" id="tab-green-unseen" style="flex: 1; min-width: 90px; padding: 8px 6px; font-size: 11px; font-weight: 800; border: none; border-radius: 8px; background: #f1f5f9; color: #475569; cursor: pointer;">🚨 돌발 탈출</button>
+      </div>
+
+      <!-- [하위 탭 1]: 3단 콤보 출제 공식 예측 맵 -->
+      <div id="greenopic-view-combo" class="greenopic-sub-view">
+        <!-- 콤보 핵심 설명 박스입니다. -->
+        <div style="background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 14px; padding: 12px; margin-bottom: 10px;">
+          <!-- 소제목입니다. -->
+          <h4 style="margin: 0 0 4px 0; font-size: 14px; color: #065f46;">🎯 오픽그린의 콤보 100% 예측 원리</h4>
+          <!-- 본문 설명입니다. -->
+          <p style="font-size: 12px; color: #047857; line-height: 1.5; margin: 0;">
+            • 오픽은 한 주제당 2~3문제가 연달아 출제되는 <strong>'콤보 세트'</strong> 시스템입니다.<br />
+            • <strong>첫 번째 질문(묘사)</strong>만 들으면 뒤이어 나올 <strong>루틴</strong>과 <strong>과거 경험</strong>을 즉시 예측하고 머릿속으로 키워드를 미리 준비할 수 있습니다!
+          </p>
+        </div>
+
+        <!-- 3단계 콤보 흐름 카드입니다. -->
+        <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px;">
+          <!-- 1콤보 카드입니다. -->
+          <div style="background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 10px 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+              <strong style="color: #1e293b; font-size: 13px;">1단계: 장소 / 대상 묘사 (Description)</strong>
+              <span style="font-size: 10px; background: #e2e8f0; color: #334155; padding: 2px 6px; border-radius: 6px; font-weight: 700;">Q2, Q5, Q8</span>
+            </div>
+            <div style="font-size: 11px; color: #475569; line-height: 1.4;">"Tell me about the place..." ➔ 위치, 외관, 시설 특징, 분위기 3단 묘사</div>
+          </div>
+          <!-- 2콤보 카드입니다. -->
+          <div style="background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 10px 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+              <strong style="color: #1e293b; font-size: 13px;">2단계: 일상 루틴 및 활동 (Routine & Activity)</strong>
+              <span style="font-size: 10px; background: #e2e8f0; color: #334155; padding: 2px 6px; border-radius: 6px; font-weight: 700;">Q3, Q6, Q9</span>
+            </div>
+            <div style="font-size: 11px; color: #475569; line-height: 1.4;">"What do you normally do before/during/after...?" ➔ 시간 순서 연결사(First, Then, Finally)</div>
+          </div>
+          <!-- 3콤보 카드입니다. -->
+          <div style="background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 12px; padding: 10px 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+              <strong style="color: #1e293b; font-size: 13px;">3단계: 기억에 남는 특별한 경험 (Memorable Event)</strong>
+              <span style="font-size: 10px; background: #e2e8f0; color: #334155; padding: 2px 6px; border-radius: 6px; font-weight: 700;">Q4, Q7, Q10</span>
+            </div>
+            <div style="font-size: 11px; color: #475569; line-height: 1.4;">"Tell me about an unforgettable experience..." ➔ 과거 시제 일치 + 감정 결론</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- [하위 탭 2]: 롤플레이 11·12·13번 만능 격파 템플릿 -->
+      <div id="greenopic-view-roleplay" class="greenopic-sub-view" style="display: none;">
+        <!-- 11번 롤플레이 템플릿 카드입니다. -->
+        <div class="roleplay-kit-card">
+          <!-- 문항 라벨입니다. -->
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+            <strong style="color: #1d4ed8; font-size: 13px;">🎭 11번: 3~4가지 정보 질문하기 (Inquiry)</strong>
+            <span style="font-size: 10px; background: #dbeafe; color: #1e40af; padding: 2px 6px; border-radius: 6px; font-weight: 700;">만능 질문 틀</span>
+          </div>
+          <!-- 템플릿 공식 내용입니다. -->
+          <div style="font-size: 11px; color: #1e293b; line-height: 1.5; background: #f8fafc; padding: 8px; border-radius: 8px;">
+            <code>"Hi there, I'm calling because I'm planning to [상황/목적]. Could I ask you a few quick questions?"</code><br />
+            1. <code>"First, could you tell me where you are located and what your hours are?"</code><br />
+            2. <code>"Also, what is your best-selling item or personal recommendation?"</code><br />
+            3. <code>"Lastly, how much is it, and do you offer any special discounts or promotions?"</code><br />
+            • <strong>리액션:</strong> <code>"Oh, really? That sounds absolutely perfect! Thanks!"</code>
+          </div>
+        </div>
+
+        <!-- 12번 롤플레이 템플릿 카드입니다. -->
+        <div class="roleplay-kit-card" style="border-color: #fca5a5;">
+          <!-- 문항 라벨입니다. -->
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+            <strong style="color: #b91c1c; font-size: 13px;">🚨 12번: 문제 설명 & 2~3개 대안 제시 (Problem Solving)</strong>
+            <span style="font-size: 10px; background: #fee2e2; color: #991b1b; padding: 2px 6px; border-radius: 6px; font-weight: 700;">대안 2개 필수</span>
+          </div>
+          <!-- 템플릿 공식 내용입니다. -->
+          <div style="font-size: 11px; color: #1e293b; line-height: 1.5; background: #fef2f2; padding: 8px; border-radius: 8px;">
+            <code>"Hi, I'm calling because I have a slight problem. I'm terribly sorry, but [사유] came up."</code><br />
+            • <strong>대안 ①:</strong> <code>"Is it possible to exchange it for a new one by tomorrow?"</code><br />
+            • <strong>대안 ②:</strong> <code>"If that's not an option, could I possibly get a full refund instead?"</code><br />
+            • <strong>마무리:</strong> <code>"Please call me back as soon as you get this message. Thank you so much!"</code>
+          </div>
+        </div>
+
+        <!-- 13번 롤플레이 템플릿 카드입니다. -->
+        <div class="roleplay-kit-card" style="border-color: #a7f3d0;">
+          <!-- 문항 라벨입니다. -->
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+            <strong style="color: #047857; font-size: 13px;">📖 13번: 유사 과거 경험 연결 (Similar Experience)</strong>
+            <span style="font-size: 10px; background: #d1fae5; color: #065f46; padding: 2px 6px; border-radius: 6px; font-weight: 700;">시제 일치</span>
+          </div>
+          <!-- 템플릿 공식 내용입니다. -->
+          <div style="font-size: 11px; color: #1e293b; line-height: 1.5; background: #f0fdf4; padding: 8px; border-radius: 8px;">
+            <code>"Speaking of which, this actually reminds me of an experience I had about a year ago..."</code><br />
+            • 12번의 문제 상황과 똑같은 경험을 과거 완료/단순 과거 시제로 묘사하고 교훈으로 마무리!
+          </div>
+        </div>
+      </div>
+
+      <!-- [하위 탭 3]: 육하원칙 4박자 키워드 발화 트레이너 -->
+      <div id="greenopic-view-tree" class="greenopic-sub-view" style="display: none;">
+        <!-- 4박자 설명 헤더입니다. -->
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px 12px; margin-bottom: 8px;">
+          <!-- 소제목입니다. -->
+          <div style="font-size: 13px; font-weight: 800; color: #1e293b; margin-bottom: 2px;">🌳 스크립트 외우지 마세요! 4개 키워드로 말하기</div>
+          <!-- 설명입니다. -->
+          <div style="font-size: 11px; color: #64748b;">4단계 키워드 트리만 머릿속에 그리면 어떤 질문이 나와도 1분 30초 발화가 완성됩니다.</div>
+        </div>
+        <!-- 4박자 그리드 레이아웃입니다. -->
+        <div class="keyword-tree-grid">
+          <!-- 1박자 박스입니다. -->
+          <div class="keyword-tree-item">
+            <strong style="color: #047857; font-size: 12px;">1박자. When & Who</strong>
+            <div style="font-size: 11px; color: #475569; margin-top: 2px;">언제, 누구와 함께 방문했는지 첫 문장 세팅</div>
+          </div>
+          <!-- 2박자 박스입니다. -->
+          <div class="keyword-tree-item">
+            <strong style="color: #047857; font-size: 12px;">2박자. Where</strong>
+            <div style="font-size: 11px; color: #475569; margin-top: 2px;">장소의 시설 특징, 청결도, 시각적 디테일</div>
+          </div>
+          <!-- 3박자 박스입니다. -->
+          <div class="keyword-tree-item">
+            <strong style="color: #047857; font-size: 12px;">3박자. What Happened</strong>
+            <div style="font-size: 11px; color: #475569; margin-top: 2px;">거기서 실제로 겪은 구체적인 에피소드</div>
+          </div>
+          <!-- 4박자 박스입니다. -->
+          <div class="keyword-tree-item">
+            <strong style="color: #047857; font-size: 12px;">4박자. Emotion & Feeling</strong>
+            <div style="font-size: 11px; color: #475569; margin-top: 2px;"><em>"It blew my mind"</em> 같은 감정 형용사 결론</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- [하위 탭 4]: 돌발 주제 5초 비상탈출 키트 -->
+      <div id="greenopic-view-unseen" class="greenopic-sub-view" style="display: none;">
+        <!-- 돌발 주제 탈출 요령 박스입니다. -->
+        <div style="background: #fefce8; border: 1px solid #fef08a; border-radius: 12px; padding: 10px 12px; margin-bottom: 8px;">
+          <!-- 소제목입니다. -->
+          <div style="font-size: 13px; font-weight: 800; color: #854d0e; margin-bottom: 2px;">🚨 생소한 돌발 주제(가구/은행/재활용/호텔) 대처법</div>
+          <!-- 설명입니다. -->
+          <div style="font-size: 11px; color: #713f12; line-height: 1.4;">당황해서 말을 멈추지 마세요! 모든 돌발은 <strong>'모바일 앱 활용'</strong>과 <strong>'친구 추천'</strong>으로 100% 흡수됩니다.</div>
+        </div>
+        <!-- 돌발 만능 연결 템플릿 목록입니다. -->
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 10px; font-size: 11px; color: #1e293b;">
+            • <strong>은행 / 쇼핑 / 호텔 돌발:</strong> <code>"To be honest, I mostly do everything online using mobile apps because it's super fast and convenient."</code>
+          </div>
+          <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 10px; font-size: 11px; color: #1e293b;">
+            • <strong>재활용 / 친환경 돌발:</strong> <code>"These days, recycling is a huge trend in Korea. We strictly separate plastic, cans, and paper."</code>
+          </div>
+          <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 8px 10px; font-size: 11px; color: #1e293b;">
+            • <strong>가구 / 인테리어 돌발:</strong> <code>"I recently bought a comfortable ergonomic chair on a friend's recommendation, and it totally improved my back pain."</code>
+          </div>
+        </div>
+      </div>
+
+      <!-- 모달 하단 닫기 버튼입니다. -->
+      <div style="position: sticky; bottom: -20px; background: #ffffff; padding: 12px 0 6px 0; border-top: 1px solid #f1f5f9; margin-top: 12px;">
+        <!-- 확인 닫기 버튼입니다. -->
+        <button class="toss-btn-primary" id="btn-close-greenopic-modal-bottom" style="padding: 14px; font-size: 14px; border-radius: 14px; background: #059669;">
+          🌿 오픽그린 비법 확인 완료! 닫기
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================== -->
   <!-- [전용 팝업 모달]: 📋 백그라운드 서베이 12종 & 목표 난이도 설정 창              -->
   <!-- ========================================================================== -->
   <div id="survey-settings-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 1000; justify-content: center; align-items: flex-end; backdrop-filter: blur(4px);">
@@ -1078,6 +1372,6 @@
   </div>
 
   <!-- 메인 앱 컨트롤러 스크립트 연결 -->
-  <script src="app.js?v=20260906_kakao_export_v18"></script>
+  <script src="app.js?v=20260907_greenopic_v19"></script>
 </body>
 </html>

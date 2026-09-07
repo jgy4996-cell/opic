@@ -497,6 +497,7 @@ function initApp() {
   initKoreanSpeechRecognition(); // 한국어 음성인식을 초기화합니다.
   initScriptDraftSpeechRecognition(); // [신규] 스크립트 작성 음성인식을 초기화합니다.
   initOpicNojamEvents(); // [신규] 오픽노잼 비법소, 아코디언 및 필러 팔레트를 초기화합니다.
+  initGreenopicEvents(); // [신규] 오픽그린(@greenopic) 1타 전략, 콤보 예측 및 롤플레이 비법서를 초기화합니다.
   checkServerConnection(); // 백엔드 서버 연결 상태를 확인합니다.
 
   // 브라우저 음성 목록 비동기 로딩 이벤트 리스너 등록입니다.
@@ -675,6 +676,12 @@ function selectScriptQuestion(idx) {
   if (topicEl) topicEl.innerText = `[${q.topic}]`;
   if (typeEl) typeEl.innerText = `질문 유형: ${q.question_type}`;
   if (qTextEl) qTextEl.innerText = `"${q.question_text}"`;
+
+  // [오픽그린] 문항별 콤보 예측 배지 및 힌트 텍스트를 업데이트합니다.
+  if (typeof updateGreenopicComboHint === 'function') {
+    // 콤보 힌트를 화면에 반영합니다.
+    updateGreenopicComboHint(q);
+  }
 
   // 기존 저장된 스크립트가 있는지 확인
   const savedList = JSON.parse(localStorage.getItem('opic_saved_scripts') || '[]');
@@ -3294,6 +3301,315 @@ function insertFillerToScript(fillerText) {
 window.openOpicNojamGuideModal = openOpicNojamGuideModal;
 window.closeOpicNojamGuideModal = closeOpicNojamGuideModal;
 window.insertFillerToScript = insertFillerToScript;
+
+// ==============================================================================
+// [신규]: 오픽그린(@greenopic) 1타 전략, 3단 콤보 예측기 및 롤플레이 11-13 만능틀 제어 로직
+// ==============================================================================
+
+// 1타 강사 전략 탭 전환 함수입니다 (오픽노잼 vs 오픽그린).
+function switchExpertTab(expertName) {
+  // 오픽노잼 탭 버튼 요소를 가져옵니다.
+  const nojamBtn = document.getElementById('tab-btn-expert-nojam');
+  // 오픽그린 탭 버튼 요소를 가져옵니다.
+  const greenBtn = document.getElementById('tab-btn-expert-green');
+  // 오픽노잼 아코디언 상자 요소를 가져옵니다.
+  const nojamBox = document.getElementById('box-expert-nojam');
+  // 오픽그린 아코디언 상자 요소를 가져옵니다.
+  const greenBox = document.getElementById('box-expert-green');
+
+  // 선택된 강사가 오픽그린인 경우의 처리입니다.
+  if (expertName === 'green') {
+    // 오픽노잼 버튼의 활성 클래스를 제거합니다.
+    if (nojamBtn) nojamBtn.classList.remove('active');
+    // 오픽그린 버튼에 활성 클래스를 부여합니다.
+    if (greenBtn) greenBtn.classList.add('active');
+    // 오픽노잼 박스를 숨깁니다.
+    if (nojamBox) nojamBox.style.display = 'none';
+    // 오픽그린 박스를 노출합니다.
+    if (greenBox) greenBox.style.display = 'block';
+  // 선택된 강사가 오픽노잼인 경우의 처리입니다.
+  } else {
+    // 오픽노잼 버튼에 활성 클래스를 부여합니다.
+    if (nojamBtn) nojamBtn.classList.add('active');
+    // 오픽그린 버튼의 활성 클래스를 제거합니다.
+    if (greenBtn) greenBtn.classList.remove('active');
+    // 오픽노잼 박스를 노출합니다.
+    if (nojamBox) nojamBox.style.display = 'block';
+    // 오픽그린 박스를 숨깁니다.
+    if (greenBox) greenBox.style.display = 'none';
+  }
+}
+
+// 오픽그린 1타 비법서 팝업 모달을 여는 전역 함수입니다.
+function openGreenopicModal(defaultTab = 'combo') {
+  // 오픽그린 모달 요소를 가져옵니다.
+  const modal = document.getElementById('greenopic-full-modal');
+  // 모달이 존재하면 화면에 표시합니다.
+  if (modal) {
+    // flex 레이아웃으로 모달을 노출합니다.
+    modal.style.display = 'flex';
+    // 기본 하위 탭으로 전환합니다.
+    switchGreenopicModalTab(defaultTab);
+  }
+}
+
+// 오픽그린 1타 비법서 팝업 모달을 닫는 전역 함수입니다.
+function closeGreenopicModal() {
+  // 오픽그린 모달 요소를 가져옵니다.
+  const modal = document.getElementById('greenopic-full-modal');
+  // 모달이 존재하면 화면에서 숨깁니다.
+  if (modal) {
+    // display none으로 숨김 처리합니다.
+    modal.style.display = 'none';
+  }
+}
+
+// 오픽그린 모달 내부의 4가지 하위 탭을 전환하는 함수입니다.
+function switchGreenopicModalTab(tabName) {
+  // 모달 내부의 모든 탭 버튼들을 조회합니다.
+  const modalTabBtns = document.querySelectorAll('.greenopic-modal-tab-btn');
+  // 각 탭 버튼의 활성 스타일을 업데이트합니다.
+  modalTabBtns.forEach((btn) => {
+    // 버튼의 대상 탭 이름을 가져옵니다.
+    const target = btn.dataset.greenTab;
+    // 현재 선택된 탭인 경우 활성화 스타일을 적용합니다.
+    if (target === tabName) {
+      // active 클래스를 추가합니다.
+      btn.classList.add('active');
+      // 배경색을 진한 녹색으로 변경합니다.
+      btn.style.background = '#047857';
+      // 글자색을 흰색으로 변경합니다.
+      btn.style.color = '#ffffff';
+    // 선택되지 않은 탭인 경우 비활성 스타일을 적용합니다.
+    } else {
+      // active 클래스를 제거합니다.
+      btn.classList.remove('active');
+      // 배경색을 연한 회색으로 변경합니다.
+      btn.style.background = '#f1f5f9';
+      // 글자색을 어두운 회색으로 변경합니다.
+      btn.style.color = '#475569';
+    }
+  });
+
+  // 모든 서브 뷰 요소들을 숨김 처리합니다.
+  document.querySelectorAll('.greenopic-sub-view').forEach((view) => {
+    // 서브 뷰의 display를 none으로 설정합니다.
+    view.style.display = 'none';
+  });
+
+  // 선택된 탭에 대응하는 서브 뷰 요소를 가져옵니다.
+  const activeView = document.getElementById(`greenopic-view-${tabName}`);
+  // 서브 뷰가 존재하면 노출합니다.
+  if (activeView) {
+    // display를 block으로 설정합니다.
+    activeView.style.display = 'block';
+  }
+}
+
+// 문항 번호 및 유형에 따른 오픽그린 콤보 단계 정보와 다음 예측 질문을 계산하는 함수입니다.
+function getGreenopicComboStepInfo(qNumber, topic = '', qType = '') {
+  // 문항 번호를 정수형으로 파싱합니다.
+  const num = parseInt(qNumber, 10) || 1;
+  // 1번 문항 (자기소개)인 경우의 리턴값입니다.
+  if (num === 1) {
+    // 자기소개 배지와 첫 번째 콤보 예측 안내를 반환합니다.
+    return {
+      stepBadge: "🎯 1번 자기소개",
+      predictionText: "다음 예상 문제: [1콤보] 선택 서베이(영화/공원/음악 등) 장소 및 대상 묘사"
+    };
+  }
+  // 11번 문항 (롤플레이 질문하기)인 경우의 리턴값입니다.
+  if (num === 11) {
+    // 롤플레이 11번 배지와 12번 문제해결 예측을 반환합니다.
+    return {
+      stepBadge: "🎭 롤플레이 11번 (질문 3~4개)",
+      predictionText: "다음 예상 문제: [12번] 문제 발생 & 2가지 대안 제시 (교환/환불/일정변경)"
+    };
+  }
+  // 12번 문항 (롤플레이 문제해결)인 경우의 리턴값입니다.
+  if (num === 12) {
+    // 롤플레이 12번 배지와 13번 과거 유사경험 예측을 반환합니다.
+    return {
+      stepBadge: "🚨 롤플레이 12번 (대안 2개 제시)",
+      predictionText: "다음 예상 문제: [13번] 유사한 과거 경험 연결 발화 (시제 일치)"
+    };
+  }
+  // 13번 문항 (롤플레이 유사경험)인 경우의 리턴값입니다.
+  if (num === 13) {
+    // 롤플레이 13번 배지와 14번 심화 비교 예측을 반환합니다.
+    return {
+      stepBadge: "📖 롤플레이 13번 (유사 과거경험)",
+      predictionText: "다음 예상 문제: [14번] AL 고급 비교 질문 (과거 기술/트렌드 vs 현재)"
+    };
+  }
+  // 14번 문항 (과거 vs 현재 심화 비교)인 경우의 리턴값입니다.
+  if (num === 14) {
+    // 14번 비교 배지와 15번 시사 이슈 예측을 반환합니다.
+    return {
+      stepBadge: "🔥 14번 과거/현재 심화비교",
+      predictionText: "다음 예상 문제: [15번] 최신 산업 트렌드 및 사회적 시사 이슈 토론"
+    };
+  }
+  // 15번 문항 (최신 사회 시사 이슈)인 경우의 리턴값입니다.
+  if (num === 15) {
+    // 15번 시사 이슈 배지와 시험 종료 안내를 반환합니다.
+    return {
+      stepBadge: "🔥 15번 최신 사회이슈",
+      predictionText: "🏁 시험 완료: 최종 성적표 및 AI 1:1 복습 리포트 확인"
+    };
+  }
+  // 1콤보 문항 (Q2, Q5, Q8)인 경우의 리턴값입니다.
+  if (num === 2 || num === 5 || num === 8) {
+    // 1콤보 장소묘사 배지와 2콤보 루틴 예측을 반환합니다.
+    return {
+      stepBadge: "🔮 1콤보 장소/대상 묘사",
+      predictionText: `다음 예상 문제: [2콤보] ${topic || '해당 주제'} 방문 전후 루틴 및 주요 활동 순서`
+    };
+  }
+  // 2콤보 문항 (Q3, Q6, Q9)인 경우의 리턴값입니다.
+  if (num === 3 || num === 6 || num === 9) {
+    // 2콤보 활동루틴 배지와 3콤보 과거경험 예측을 반환합니다.
+    return {
+      stepBadge: "🔮 2콤보 활동/루틴 순서",
+      predictionText: `다음 예상 문제: [3콤보] ${topic || '해당 주제'} 잊지 못할 과거 특별 경험 (과거 시제)`
+    };
+  }
+  // 3콤보 문항 (Q4, Q7, Q10)인 경우의 리턴값입니다.
+  if (num === 4 || num === 7 || num === 10) {
+    // 3콤보 과거경험 배지와 다음 세트 전환 예측을 반환합니다.
+    return {
+      stepBadge: "🔮 3콤보 과거 특별경험",
+      predictionText: "다음 예상 문제: [다음 콤보 세트] 새로운 서베이 주제 1콤보(묘사) 시작"
+    };
+  }
+  // 그 외 일반 문항의 기본 리턴값입니다.
+  return {
+    stepBadge: `🎯 Q${num}. 맞춤 문항`,
+    predictionText: `다음 예상 문제: [연계 콤보] ${topic || '오픽'} 심화 스피킹 질문`
+  };
+}
+
+// 현재 선택된 문항에 맞춰 오픽그린 콤보 예측 힌트 바를 갱신하는 함수입니다.
+function updateGreenopicComboHint(q) {
+  // 문항 객체가 없으면 조기 반환합니다.
+  if (!q) return;
+  // 콤보 단계 배지 요소를 가져옵니다.
+  const badgeEl = document.getElementById('greenopic-combo-step-badge');
+  // 다음 예측 텍스트 요소를 가져옵니다.
+  const predEl = document.getElementById('greenopic-combo-prediction-text');
+
+  // 배지나 텍스트 요소가 없으면 반환합니다.
+  if (!badgeEl || !predEl) return;
+
+  // 콤보 정보 객체를 계산합니다.
+  const info = getGreenopicComboStepInfo(q.question_number, q.topic, q.question_type);
+  // 배지 텍스트를 업데이트합니다.
+  badgeEl.innerText = info.stepBadge;
+  // 예측 문구를 업데이트합니다.
+  predEl.innerText = info.predictionText;
+}
+
+// 오픽그린(@greenopic) 관련 UI 이벤트 리스너들을 초기화하는 함수입니다.
+function initGreenopicEvents() {
+  // 오픽노잼 탭 전환 버튼을 가져옵니다.
+  const nojamTabBtn = document.getElementById('tab-btn-expert-nojam');
+  // 오픽노잼 탭 클릭 시 오픽노잼으로 전환합니다.
+  if (nojamTabBtn) {
+    // 클릭 이벤트를 등록합니다.
+    nojamTabBtn.addEventListener('click', () => switchExpertTab('nojam'));
+  }
+
+  // 오픽그린 탭 전환 버튼을 가져옵니다.
+  const greenTabBtn = document.getElementById('tab-btn-expert-green');
+  // 오픽그린 탭 클릭 시 오픽그린으로 전환합니다.
+  if (greenTabBtn) {
+    // 클릭 이벤트를 등록합니다.
+    greenTabBtn.addEventListener('click', () => switchExpertTab('green'));
+  }
+
+  // 오픽그린 아코디언 토글 헤더 요소를 가져옵니다.
+  const accordionHeader = document.getElementById('btn-toggle-greenopic-accordion');
+  // 오픽그린 아코디언 바디 요소를 가져옵니다.
+  const accordionBody = document.getElementById('greenopic-accordion-content');
+  // 오픽그린 화살표 아이콘 요소를 가져옵니다.
+  const accordionArrow = document.getElementById('greenopic-accordion-arrow');
+
+  // 아코디언 토글 클릭 이벤트를 바인딩합니다.
+  if (accordionHeader && accordionBody) {
+    // 아코디언 클릭 리스너를 등록합니다.
+    accordionHeader.addEventListener('click', () => {
+      // show 클래스를 토글합니다.
+      const isShowing = accordionBody.classList.toggle('show');
+      // 화살표 아이콘에 회전 클래스를 토글합니다.
+      if (accordionArrow) accordionArrow.classList.toggle('expanded', isShowing);
+    });
+  }
+
+  // 아코디언 내부의 모달 전체보기 버튼을 가져옵니다.
+  const openModalBtn = document.getElementById('btn-open-greenopic-full-modal-btn');
+  // 버튼 클릭 시 오픽그린 가이드 모달을 엽니다.
+  if (openModalBtn) {
+    // 클릭 리스너를 등록합니다.
+    openModalBtn.addEventListener('click', () => openGreenopicModal('combo'));
+  }
+
+  // 힌트 바 우측의 오픽그린 비법 숏컷 링크를 가져옵니다.
+  const quickOpenModalBtn = document.getElementById('btn-quick-open-greenopic-modal');
+  // 링크 클릭 시 오픽그린 가이드 모달을 엽니다.
+  if (quickOpenModalBtn) {
+    // 클릭 리스너를 등록합니다.
+    quickOpenModalBtn.addEventListener('click', () => openGreenopicModal('combo'));
+  }
+
+  // 모달 상단 X 닫기 버튼을 가져옵니다.
+  const closeModalXBtn = document.getElementById('btn-close-greenopic-modal');
+  // X 버튼 클릭 시 모달을 닫습니다.
+  if (closeModalXBtn) {
+    // 클릭 리스너를 등록합니다.
+    closeModalXBtn.addEventListener('click', closeGreenopicModal);
+  }
+
+  // 모달 하단 확인 닫기 버튼을 가져옵니다.
+  const closeModalBottomBtn = document.getElementById('btn-close-greenopic-modal-bottom');
+  // 하단 버튼 클릭 시 모달을 닫습니다.
+  if (closeModalBottomBtn) {
+    // 클릭 리스너를 등록합니다.
+    closeModalBottomBtn.addEventListener('click', closeGreenopicModal);
+  }
+
+  // 모달 바깥 배경 오버레이를 가져옵니다.
+  const modalOverlay = document.getElementById('greenopic-full-modal');
+  // 오버레이 클릭 시 닫히도록 설정합니다.
+  if (modalOverlay) {
+    // 클릭 리스너를 등록합니다.
+    modalOverlay.addEventListener('click', (e) => {
+      // 배경 클릭 시에만 닫습니다.
+      if (e.target === modalOverlay) closeGreenopicModal();
+    });
+  }
+
+  // 모달 내부 4개 서브 탭 버튼들을 조회합니다.
+  const modalTabBtns = document.querySelectorAll('.greenopic-modal-tab-btn');
+  // 각 탭 버튼에 클릭 전환 이벤트를 등록합니다.
+  modalTabBtns.forEach((btn) => {
+    // 클릭 리스너를 등록합니다.
+    btn.addEventListener('click', () => {
+      // 대상 탭 이름을 추출합니다.
+      const tabName = btn.dataset.greenTab;
+      // 해당 탭으로 화면을 전환합니다.
+      if (tabName) switchGreenopicModalTab(tabName);
+    });
+  });
+}
+
+// 전역 윈도우 객체에 오픽그린 헬퍼 함수들을 바인딩합니다.
+window.switchExpertTab = switchExpertTab;
+window.openGreenopicModal = openGreenopicModal;
+window.closeGreenopicModal = closeGreenopicModal;
+window.switchGreenopicModalTab = switchGreenopicModalTab;
+window.getGreenopicComboStepInfo = getGreenopicComboStepInfo;
+window.updateGreenopicComboHint = updateGreenopicComboHint;
+window.initGreenopicEvents = initGreenopicEvents;
 
 
 // ==============================================================================

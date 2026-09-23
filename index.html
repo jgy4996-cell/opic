@@ -120,10 +120,12 @@
       <!-- 이전 복습 리포트 바로가기 -->
       <div class="toss-card" id="home-recent-report-card">
         <div style="display: flex; justify-content: space-between; align-items: center;">
-          <div>
-            <div style="font-size: 12px; color: var(--toss-text-secondary); margin-bottom: 2px;">최근 모의고사 성적</div>
+          <div> <!-- 레이아웃 컨테이너 영역입니다. -->
+            <!-- 최근 모의고사 응시 일자 라벨 요소입니다. -->
+            <div style="font-size: 12px; color: var(--toss-text-secondary); margin-bottom: 2px;" id="home-recent-date">최근 모의고사 성적</div>
+            <!-- 최근 모의고사 최종 등급 배지 요소입니다. -->
             <div style="font-size: 16px; font-weight: 800; color: var(--toss-blue);" id="home-last-grade-display">IH (평가 완료)</div>
-          </div>
+          </div> <!-- 레이아웃 컨테이너를 닫습니다. -->
           <button id="btn-go-review-from-home" style="background: var(--toss-blue-light); color: var(--toss-blue); border: none; border-radius: 10px; padding: 8px 14px; font-size: 12px; font-weight: 700; cursor: pointer;">
             오답노트 보기
           </button>
@@ -625,11 +627,16 @@
             <span class="hud-label">말하기 속도</span>
             <span class="hud-value" id="hud-wpm">0 WPM</span>
           </div>
-          <div class="hud-item">
-            <span class="hud-label">AL 유창성 판정</span>
-            <span class="hud-value" id="hud-fluency-grade" style="color: var(--toss-green);">준비 중</span>
-          </div>
-        </div>
+          <div class="hud-item"> <!-- 레이아웃 컨테이너 영역입니다. -->
+            <span class="hud-label">AL 유창성 판정</span> <!-- 텍스트 콘텐츠 표시 요소입니다. -->
+            <span class="hud-value" id="hud-fluency-grade" style="color: var(--toss-green);">준비 중</span> <!-- 텍스트 콘텐츠 표시 요소입니다. -->
+          </div> <!-- 레이아웃 컨테이너를 닫습니다. -->
+          <!-- 원어민 필수 필러 감지 배지 영역입니다. -->
+          <div class="hud-item"> <!-- 레이아웃 컨테이너 영역입니다. -->
+            <span class="hud-label">원어민 필러</span> <!-- 텍스트 콘텐츠 표시 요소입니다. -->
+            <span class="hud-value" id="hud-filler-detected" style="color: #d97706; font-size: 11px;">미사용</span> <!-- 텍스트 콘텐츠 표시 요소입니다. -->
+          </div> <!-- 레이아웃 컨테이너를 닫습니다. -->
+        </div> <!-- 레이아웃 컨테이너를 닫습니다. -->
 
         <!-- 텍스트 입력 및 STT 트랜스크립트 영역 -->
         <div class="toss-card">
@@ -880,7 +887,11 @@
 
       <!-- 설정 & 오답노트 가이드 카드 -->
       <div class="toss-card">
-        <h3 style="margin-bottom: 10px;">⚙️ 설정 & 가이드</h3>
+        <h3 style="margin-bottom: 10px;">⚙️ 설정 & 가이드</h3> <!-- 헤딩 요소입니다. -->
+        <!-- 마이페이지에서 스크립트 작성 및 보관함으로 바로 이동하는 버튼입니다. -->
+        <button id="btn-go-script-from-mypage" style="width: 100%; background: #eff6ff; border: 1.5px solid #bfdbfe; border-radius: 12px; padding: 12px; font-size: 13px; font-weight: 800; color: var(--toss-blue); cursor: pointer; margin-bottom: 8px;">
+          ✍️ 내 스크립트 작성 & AI 첨삭 보관함 열기 <!-- 버튼 텍스트입니다. -->
+        </button> <!-- 버튼 요소를 닫습니다. -->
         <button id="btn-open-review-from-mypage" style="width: 100%; background: #f2f4f6; border: none; border-radius: 12px; padding: 12px; font-size: 13px; font-weight: 700; color: var(--toss-text-primary); cursor: pointer; margin-bottom: 8px;">
           📖 오답노트 & 이전 복습 리포트 열기
         </button>
@@ -1421,7 +1432,7 @@
     </div>
   </div>
 
-  <!-- 메인 앱 컨트롤러 스크립트 연결 -->
-  <script src="app.js?v=20260907_diff4_listening_v20"></script>
+  <!-- 메인 앱 컨트롤러 스크립트 연결입니다. 최신 버전으로 캐시를 갱신합니다. -->
+  <script src="app.js?v=20260923_overall_fix_v21"></script> <!-- 자바스크립트 파일 로드 태그입니다. -->
 </body>
 </html>

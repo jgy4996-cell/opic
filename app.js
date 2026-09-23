@@ -2335,14 +2335,22 @@ function createSurveyBasedExamSet(survey) {
       { question_number: 5, topic: "집 묘사", question_type: "장소 묘사", question_text: "You indicated that you live in an apartment. Please describe your home to me in as much detail as possible.", audio_file: "audio/q5.mp3" },
       { question_number: 6, topic: "집에서의 일상 루틴", question_type: "활동/루틴", question_text: "What is your daily routine at home during the weekdays and weekends from morning until night?", audio_file: "audio/q6.mp3" },
       { question_number: 7, topic: "집에서의 문제 해결 경험", question_type: "과거 경험", question_text: "Have you ever experienced an unexpected problem or issue at your home? What was the problem and how did you resolve it?", audio_file: "audio/q7.mp3" },
-      { question_number: 8, topic: "호텔 묘사", question_type: "돌발: 호텔 묘사", question_text: "Tell me about a hotel you stayed at recently. What did the room and facilities look like?", audio_file: "audio/q15.mp3" },
-      { question_number: 9, topic: "호텔 루틴", question_type: "돌발: 호텔 루틴", question_text: "What do you usually do when you check in and stay at a hotel from start to finish?" },
-      { question_number: 10, topic: "호텔 문제 경험", question_type: "돌발: 호텔 문제 경험", question_text: "Have you ever had an unexpected issue or complaint at a hotel? What happened and how was it solved?" },
-      { question_number: 11, topic: "롤플레이 질문하기", question_type: "롤플레이 (11번: 질문하기)", question_text: "You want to plan a party with your friend. Call your friend and ask 3 or 4 questions about planning the party.", audio_file: "audio/q8.mp3" },
-      { question_number: 12, topic: "롤플레이 대안제시", question_type: "롤플레이 (12번: 대안 제시)", question_text: "An unexpected problem has come up and you cannot attend the party as planned. Call your friend, explain the situation, and offer 2 or 3 alternatives.", audio_file: "audio/q9.mp3" },
-      { question_number: 13, topic: "롤플레이 유사경험", question_type: "롤플레이 (13번: 유사경험)", question_text: "Have you ever had a memorable plan cancelled unexpectedly? How did you resolve the situation?" },
-      { question_number: 14, topic: "과거 현재 기술 비교", question_type: "심화 (14번: 과거 현재 비교)", question_text: "Compare electronic devices and technology people used in the past with devices people use today. What are the key differences?", audio_file: "audio/q12.mp3" },
-      { question_number: 15, topic: "최신 산업 시사 이슈", question_type: "심화 (15번: 이슈 토론)", question_text: "What are some current issues or challenges related to the hotel and accommodation industry today? What is your opinion?", audio_file: "audio/q15.mp3" }
+      // 8번 돌발 호텔 묘사 문항입니다. 정확한 질문 텍스트 발화를 위해 Web Speech API로 자동 연동합니다.
+      { question_number: 8, topic: "호텔 묘사", question_type: "돌발: 호텔 묘사", question_text: "Tell me about a hotel you stayed at recently. What did the room and facilities look like?", audio_file: null },
+      // 9번 호텔 루틴 문항입니다.
+      { question_number: 9, topic: "호텔 루틴", question_type: "돌발: 호텔 루틴", question_text: "What do you usually do when you check in and stay at a hotel from start to finish?", audio_file: null },
+      // 10번 호텔 문제 경험 문항입니다.
+      { question_number: 10, topic: "호텔 문제 경험", question_type: "돌발: 호텔 문제 경험", question_text: "Have you ever had an unexpected issue or complaint at a hotel? What happened and how was it solved?", audio_file: null },
+      // 11번 파티 계획 롤플레이 질문 문항입니다.
+      { question_number: 11, topic: "롤플레이 질문하기", question_type: "롤플레이 (11번: 질문하기)", question_text: "You want to plan a party with your friend. Call your friend and ask 3 or 4 questions about planning the party.", audio_file: null },
+      // 12번 파티 불참 롤플레이 대안 제시 문항입니다.
+      { question_number: 12, topic: "롤플레이 대안제시", question_type: "롤플레이 (12번: 대안 제시)", question_text: "An unexpected problem has come up and you cannot attend the party as planned. Call your friend, explain the situation, and offer 2 or 3 alternatives.", audio_file: null },
+      // 13번 계획 취소 유사 경험 문항입니다.
+      { question_number: 13, topic: "롤플레이 유사경험", question_type: "롤플레이 (13번: 유사경험)", question_text: "Have you ever had a memorable plan cancelled unexpectedly? How did you resolve the situation?", audio_file: null },
+      // 14번 과거 현재 전자기기 기술 비교 심화 문항입니다.
+      { question_number: 14, topic: "과거 현재 기술 비교", question_type: "심화 (14번: 과거 현재 비교)", question_text: "Compare electronic devices and technology people used in the past with devices people use today. What are the key differences?", audio_file: null },
+      // 15번 호텔 및 숙박 산업 시사 이슈 토론 문항입니다.
+      { question_number: 15, topic: "최신 산업 시사 이슈", question_type: "심화 (15번: 이슈 토론)", question_text: "What are some current issues or challenges related to the hotel and accommodation industry today? What is your opinion?", audio_file: null }
     ];
   }
 
@@ -2459,17 +2467,26 @@ function switchTab(tabName) {
 
 // 홈 탭의 최근 성적 위젯을 렌더링하는 함수입니다.
 function renderHomeDashboard() {
+  // 로컬 스토리지에서 이전 모의고사 성적 기록을 가져옵니다.
   const notes = JSON.parse(localStorage.getItem('opic_review_notes') || '[]');
+  // 최근 응시 일자 요소를 조회합니다.
   const recentDateEl = document.getElementById('home-recent-date');
-  const recentLevelEl = document.getElementById('home-recent-level-badge');
+  // 최근 등급 배지 요소를 조회합니다 (두 가지 ID 모두 호환 지원).
+  const recentLevelEl = document.getElementById('home-last-grade-display') || document.getElementById('home-recent-level-badge');
 
+  // 기록이 존재하는 경우 최신 기록으로 갱신합니다.
   if (notes.length > 0) {
+    // 가장 최근의 모의고사 결과 객체를 가져옵니다.
     const latest = notes[0];
+    // 응시 일자를 표시합니다.
     if (recentDateEl) recentDateEl.innerText = `최근 연습: ${latest.date}`;
-    if (recentLevelEl) recentLevelEl.innerText = latest.overall_level;
+    // 최종 판정 등급을 표시합니다.
+    if (recentLevelEl) recentLevelEl.innerText = `${latest.overall_level} (평가 완료)`;
   } else {
+    // 기록이 없는 경우 안내 텍스트를 표시합니다.
     if (recentDateEl) recentDateEl.innerText = '아직 연습 기록이 없습니다.';
-    if (recentLevelEl) recentLevelEl.innerText = '-';
+    // 등급 영역에 미응시 상태를 표시합니다.
+    if (recentLevelEl) recentLevelEl.innerText = '미응시 (모의고사 도전)';
   }
 }
 
@@ -2774,17 +2791,27 @@ function initChipInteractions() {
 
 // 서베이 선택 문항 개수 카운터 배지 업데이트 함수입니다.
 function updateSurveyCounterDisplay() {
-  const badge = document.getElementById('survey-selection-count-badge');
+  // 카운터 배지 요소를 조회합니다 (두 가지 ID 모두 호환 지원).
+  const badge = document.getElementById('survey-count-badge') || document.getElementById('survey-selection-count-badge');
+  // 배지가 없으면 함수를 종료합니다.
   if (!badge) return;
 
+  // 여가 활동 선택 개수를 집계합니다.
   const checkedLeisure = document.querySelectorAll('input[name="survey_q4_leisure"]:checked').length;
+  // 취미/관심사 선택 개수를 집계합니다.
   const checkedHobby = document.querySelectorAll('input[name="survey_q5_hobby"]:checked').length;
+  // 스포츠/운동 선택 개수를 집계합니다.
   const checkedSports = document.querySelectorAll('input[name="survey_q6_sports"]:checked').length;
+  // 여행/휴가 선택 개수를 집계합니다.
   const checkedTravel = document.querySelectorAll('input[name="survey_q7_travel"]:checked').length;
 
+  // 필수 3개(직업/학생/거주지) + 체크된 선택 항목의 총합을 계산합니다.
   const totalSelections = 3 + checkedLeisure + checkedHobby + checkedSports + checkedTravel;
-  badge.innerText = `선택: ${totalSelections}개 / 12개 이상`;
+  // 배지에 실시간 선택 개수를 반영합니다.
+  badge.innerText = `${totalSelections}/12개 선택됨`;
+  // 12개 이상인 경우 파란색 정상 스타일, 미만인 경우 빨간색 경고 스타일을 적용합니다.
   badge.style.backgroundColor = totalSelections >= 12 ? 'var(--toss-blue-light)' : '#fee2e2';
+  // 글자색을 적용합니다.
   badge.style.color = totalSelections >= 12 ? 'var(--toss-blue)' : 'var(--toss-red)';
 }
 
@@ -3019,36 +3046,62 @@ async function checkServerConnection() {
 
 // 실시간 발화 HUD 정보를 갱신하는 함수입니다.
 function updateSpeakingHUD(text) {
+  // 공백 기준으로 단어를 분리하여 단어 배열을 만듭니다.
   const words = text ? text.trim().split(/\s+/).filter(Boolean) : [];
+  // 현재 발화된 총 단어 수를 계산합니다.
   const wordCount = words.length;
 
+  // 발화 단어 수 표시 엘리먼트를 조회합니다.
   const countEl = document.getElementById('hud-word-count');
-  if (countEl) countEl.innerText = `${wordCount}단어`;
+  // 단어 수가 유효하면 화면에 갱신합니다.
+  if (countEl) countEl.innerText = `${wordCount} 단어`;
 
+  // 최소 1초 이상의 녹음 경과 시간을 확보합니다.
   const duration = Math.max(1, state.recordingDuration);
+  // 분당 발화 속도(WPM)를 계산합니다.
   const wpm = Math.round((wordCount / (duration / 60)));
 
-  const wpmEl = document.getElementById('hud-wpm-live');
+  // 실시간 WPM 표시 엘리먼트를 조회합니다 (두 가지 ID 모두 호환 지원).
+  const wpmEl = document.getElementById('hud-wpm') || document.getElementById('hud-wpm-live');
+  // WPM 텍스트를 화면에 갱신합니다.
   if (wpmEl) wpmEl.innerText = `${wpm} WPM`;
 
-  let level = "IM2";
-  if (wordCount >= 40 && wpm >= 85) level = "AL";
-  else if (wordCount >= 25 && wpm >= 65) level = "IH";
-  else if (wordCount >= 15) level = "IM3";
+  // 단어 수와 WPM을 기반으로 실시간 예측 등급을 산출합니다.
+  let level = "준비 중";
+  // 40단어 이상 및 85 WPM 이상이면 AL 등급으로 판정합니다.
+  if (wordCount >= 40 && wpm >= 85) level = "AL (만점)";
+  // 25단어 이상 및 65 WPM 이상이면 IH 등급으로 판정합니다.
+  else if (wordCount >= 25 && wpm >= 65) level = "IH (우수)";
+  // 15단어 이상이면 IM3 등급으로 판정합니다.
+  else if (wordCount >= 15) level = "IM3 (양호)";
+  // 5단어 이상이면 IM2 등급으로 판정합니다.
+  else if (wordCount >= 5) level = "IM2 (기초)";
 
-  const gradeEl = document.getElementById('hud-predicted-grade');
+  // 예측 등급 표시 엘리먼트를 조회합니다 (두 가지 ID 모두 호환 지원).
+  const gradeEl = document.getElementById('hud-fluency-grade') || document.getElementById('hud-predicted-grade');
+  // 예측 등급 텍스트를 화면에 갱신합니다.
   if (gradeEl) gradeEl.innerText = level;
 
-  const fillers = ["you know", "speaking of", "to be honest", "as a matter of fact", "i mean", "like", "actually"];
+  // 원어민 핵심 1타 필러 단어 목록입니다.
+  const fillers = ["you know", "speaking of", "to be honest", "as a matter of fact", "i mean", "like", "actually", "well"];
+  // 감지된 필러를 보관할 배열입니다.
   let detectedFillers = [];
-  const lower = text.toLowerCase();
+  // 발화 텍스트를 소문자로 변환합니다.
+  const lower = text ? text.toLowerCase() : '';
+  // 각 필러가 발화문에 포함되었는지 검사합니다.
   fillers.forEach((f) => {
+    // 필러가 포함되어 있으면 목록에 추가합니다.
     if (lower.includes(f)) detectedFillers.push(f);
   });
 
+  // 필러 감지 표시 엘리먼트를 조회합니다.
   const fillerEl = document.getElementById('hud-filler-detected');
+  // 필러 엘리먼트가 존재하면 감지 결과를 화면에 반영합니다.
   if (fillerEl) {
+    // 감지된 필러가 있으면 최대 2개까지 표시하고 없으면 미사용으로 표시합니다.
     fillerEl.innerText = detectedFillers.length > 0 ? detectedFillers.slice(0, 2).join(', ') : '미사용';
+    // 필러 사용 여부에 따라 하이라이트 색상을 조정합니다.
+    fillerEl.style.color = detectedFillers.length > 0 ? '#16a34a' : '#d97706';
   }
 }
 
@@ -3802,7 +3855,9 @@ function renderReportView(report) {
   document.getElementById('final-score-display').innerText = `평가 점수: ${report.overall_score}점 / 100점`;
   document.getElementById('report-summary-comment').innerText = report.summary_comment;
 
-  const container = document.getElementById('full-review-list-container');
+  // 15문항 1:1 비교 복습 리스트 컨테이너 요소를 조회합니다 (두 가지 ID 모두 호환 지원).
+  const container = document.getElementById('report-question-comparison-list') || document.getElementById('full-review-list-container');
+  // 컨테이너가 존재하면 15개 문항별 비교 카드를 동적 렌더링합니다.
   if (container) {
     container.innerHTML = report.evaluations.map((item) => `
       <div class="review-item-card">
